@@ -1,0 +1,169 @@
+﻿@model Eskul.Models.ScoreDescriptor
+@{
+
+    var listmodel = Model.scoreDescriptors;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-lg">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Score Descriptor</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="descriptorId" />
+                                            <div class="form-group">
+                                                <label asp-for="Class" class="control-label" style="font-weight: normal !important;">Class</label>
+                                                @Html.DropDownList("Class", (IEnumerable<SelectListItem>) ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="scoreCode" style="font-weight:normal;">Score Code</label>
+                                                <input asp-for="scoreCode" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="scorePoints" style="font-weight:normal;">Score Points</label>
+                                                <input asp-for="scorePoints" type="text" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="lowerScore" style="font-weight:normal;">Lower Score</label>
+                                                <input asp-for="lowerScore" type="text" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="upperScore" style="font-weight:normal;">Upper Score</label>
+                                                <input asp-for="upperScore" type="text" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="scoreRank" style="font-weight:normal;">score Rank</label>
+                                                <input asp-for="scoreRank" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="scoreDescriptor" style="font-weight:normal;">score Descriptor</label>
+                                                <textarea asp-for="scoreDescriptor" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="comment" style="font-weight:normal;">comment</label>
+                                                <textarea asp-for="comment" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" style="" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>                                    <!-- /.card-body -->
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+        <div class="row">
+             <div class="col-md-12">
+            <div class="box box-primary">
+            <div class="card-body">
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg"><i class="fa fa-plus"></i>&nbsp; Add Score Descriptor</a>
+                                    </p>
+            <table id="example2" class="table table-bordered table-striped table-sm">
+            <thead>
+            <tr>
+            <th>
+            Class
+            </th>
+            <th>
+            score
+            </th>
+            <th>
+           Points
+            </th>
+            <th>
+            Lower
+            </th>
+            <th>
+            Upper
+            </th>
+            <th>
+            Rank
+            </th>
+            <th>
+            Comment
+            </th>
+            <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (listmodel!=null)
+            {
+            @foreach (var item in listmodel)
+            {
+            <tr>
+            <td>
+            @item.ClassCode
+            </td>
+            <td>
+            @item.Identifier
+            </td>
+            <td>
+            @item.scorePoints
+            </td>
+            <td>
+            @item.lowerScore
+            </td>
+            <td>
+            @item.upperScore
+            </td>
+            <td>
+            @item.scoreRank
+            </td>
+             <td>
+            @item.comment
+            </td>
+            <td>
+            <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.descriptorId">Edit</a>
+            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.descriptorId"data-toggle="modal" data-target="#modal-info" onclick="del('@item.descriptorId')" data-controller="ScoreDescriptor" data-body-message="Are You Sure You Want To Delete This Stream">Del</button>
+
+            </td>
+            </tr>
+            }
+            }
+            else
+            {
+            <tr>
+            <td colspan="8" class="text-centere">
+            No Record Found
+            </td>
+
+            </tr>
+            }
+            </tbody>
+            </table>
+            </div>
+            </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

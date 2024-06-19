@@ -1,0 +1,322 @@
+﻿@model Eskul.Models.SchoolSubject
+@{
+
+    var listmodel = Model.SchoolSubjects;
+
+}
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="col-md-12">
+
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Index" class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="col-sm-12">
+                                        <div id="input-type" class="row">
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline" style="font-weight:normal;">
+                                                    <input name="Level" class="Core" value="O" type="radio"
+                                                           onchange="this.form.submit()"
+                                                    @(Model.Level == "O" ? "checked" : "")>O-Level
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline" style="font-weight:normal;">
+                                                    <input name="Level" class="finetype" value="A" type="radio"
+                                                           onchange="this.form.submit()"
+                                                    @(Model.Level == "A" ? "checked" : "")>A-Level
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+
+                <div class="box box-primary">
+                    <div class="card-body">
+                        <form id="PaperSave" method="post">
+                            <input type="hidden" id="sid" name="sid" />
+
+                            <table id="example" class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Subject Name</th>
+                                        <th>Subject Papers</th>
+                                        <th>Offered</th>
+                                        <th>Compulsory</th> <!-- Added new header for Compulsory -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (listmodel != null)
+                                    {
+                                        @foreach (var studentSubject in listmodel)
+                                        {
+                                            <tr>
+                                                <td>@studentSubject.SubjectName</td>
+                                                <td>
+                                                    @if (studentSubject.SubjectPapers != null)
+                                                    {
+                                                        <div>
+                                                            @foreach (var paper in studentSubject.SubjectPapers)
+                                                            {
+                                                                <div style="display: inline-block; margin-right: 10px;">
+                                                                    <input type="hidden" name="paper_@paper?.PaperCode" value="off" />
+                                                                    <input type="checkbox" @(paper?.StatusId == 3 ? "checked" : "") name="paper_@paper?.PaperCode" @(studentSubject.IsCompulsory ? "checked disabled" : "") value="on" />
+                                                                    <label>@paper?.PaperCode</label>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>No papers</p>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="statusId_@studentSubject.SubjectCode" value="@studentSubject.StatusId" />
+                                                    <input type="checkbox" name="isOffered_@studentSubject.SubjectCode" @(studentSubject.IsOffered ? "checked" : "") value="on" />
+                                                </td>
+                                                <td>
+                                                    <!-- New column for Compulsory -->
+                                                    <input type="checkbox" name="isCompulsory_@studentSubject.SubjectCode" @(studentSubject.IsCompulsory ? "checked" : "") value="on" />
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="4" class="text-center">
+                                                <!-- Updated colspan to 4 -->
+                                                No Record Found
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="d-flex justify-content-center">
+                                <div class="form-group">
+                                    <button class="btn btn-block btn-sm mybtn" style="width:200px;" type="submit">Save School Subjects</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script src="~/js/signalr.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/StudentCountHub")
+        .build();
+
+    connection.on("UserCountChanged", function (userCount) {
+        $("#userCount").text(userCount);
+
+    });
+    connection.on("StudentCountChanged", function (StudentCount) {
+        $("#StudentCount").text(StudentCount);
+    });
+    connection.start().then(function () {
+        console.log("SignalR connection established.");
+    });
+</script>
+<script>
+    function populateDropdown() {
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/Create', '').replace('/Index', '');
+        console.log('full url', fullUrl);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+                var dropdown1 = document.getElementById('Class');
+                dropdown1.innerHTML = '';
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        function populateStreamDropdown() {
+            var dropdown = document.getElementById('Stream');
+            dropdown.innerHTML = '';
+            var selectedClass = document.getElementById('Class').value;
+            var baseUrl = window.location.protocol + "//" + window.location.host;
+            var pathName = window.location.pathname;
+            if (pathName.charAt(0) === '/') {
+                pathName = pathName.slice(1);
+            }
+            var fullUrl = baseUrl + '/' + pathName.replace('Create', '').replace('Students', 'Students/').replace('Students//', 'Students/').replace('/Index', '');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', fullUrl + '/StreamsByClass?classs=' + selectedClass);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var streamedClasses = JSON.parse(xhr.responseText);
+                    var hasStreamedClasses = streamedClasses.length > 0;
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '';
+                    if (hasStreamedClasses) {
+                        for (var i = 0; i < streamedClasses.length; i++) {
+                            var option = document.createElement('option');
+                            option.value = streamedClasses[i].StreamId;
+                            option.text = streamedClasses[i].Name;
+                            dropdown.appendChild(option);
+                        }
+                    } else {
+                        var option = document.createElement('option');
+                        option.text = 'Class Not Streamed';
+                        option.disabled = true;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                    dropdown.disabled = true;
+                }
+            };
+            xhr.send();
+        }
+
+        $(function () {
+            $('#Class').change(function () {
+                populateStreamDropdown();
+            });
+        });
+    });
+</script>
+<script>
+    function populateStudentDropdown() {
+        var dropdown = document.getElementById('StudentId');
+        dropdown.innerHTML = '';
+        var selectedClass = document.getElementById('Class').value;
+        var selectedStream = document.getElementById('Stream').value;
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        console.log('selectedClass', selectedClass);
+        console.log('selectedStream', selectedStream);
+        console.log('level', level);
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName.replace('Create', '').replace('Students', 'Students/').replace('Students//', 'Students/').replace('/Index', '');
+
+        var queryString = '?level=' + level + '&classs=' + selectedClass + '&stream=' + selectedStream;
+        var mine = fullUrl + '/LoadStudentList' + queryString;
+        console.log('my url is ', mine);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/LoadStudentList' + queryString);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var studentList = JSON.parse(xhr.responseText);
+                console.log('studentList', studentList);
+                var hasStudents = studentList.length > 0;
+
+                var dropdown = document.getElementById('StudentId');
+                dropdown.innerHTML = '';
+                if (hasStudents) {
+                    for (var i = 0; i < studentList.length; i++) {
+                        var option = document.createElement('option');
+                        var student = studentList[i];
+                        option.value = student.StudentId;
+                        option.text = student.FullName;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'No Student';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('StudentId');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = true;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Stream').change(function () {
+            populateStudentDropdown();
+        });
+    });
+</script>
+<script>
+    $('#PaperSave').on('submit', function (e) {
+        e.preventDefault();
+
+        // Extracting base URL and path name
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // Constructing the full URL
+        var fullUrl = baseUrl + '/' + pathName.replace('Create', '').replace('Students', 'Students/').replace('Students//', 'Students/').replace('StudentSubjects/', '').replace('/Index', '');
+        console.log('fullUrl', fullUrl);
+
+        // Setting student ID
+        $('#sid').val($('#StudentId').val());
+
+        // Sending AJAX request
+        $.ajax({
+            url: fullUrl + "/Create",
+            method: 'POST',
+            data: $(this).serialize(), // Serialize form data
+            dataType: 'json',
+            success: function (response) {
+                if (response.status === 100) {
+                    toastr.success(response.res);
+                } else {
+                    toastr.error("Error: " + response.res);
+                }
+            },
+            error: function (xhr, status, error) {
+                toastr.error("An error occurred while processing the request.");
+                console.log(xhr.responseText);
+            }
+        });
+    });
+</script>
+
+
+
+

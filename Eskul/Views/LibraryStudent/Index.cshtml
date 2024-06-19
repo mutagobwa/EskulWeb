@@ -1,0 +1,128 @@
+﻿@model Eskul.Models.StudentMember
+@{
+//@if (Model.Libstudents!=null)
+//    {
+//        var listmodel = Model.Libstudents;
+//    }
+      var AddLibstud = Model.libraryMember;
+    var listmodel = Model.Libstudents;
+
+}
+
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<div class="col-md-12">
+     <partial name="_AddLibMember" />
+
+<section class="content">
+    <div class="container-fluid">
+        @*<partial name="_Subject" />*@
+        <div class="row">
+
+            <div class="col-md-3">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" id="LibStd" class="needs-validation" novalidate>
+                        <div class="card-body">
+                            <div class="form-group">
+                                        <label asp-for="ClassId" class="control-label" style="font-weight: normal !important;">Class</label>
+                                            @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="ClassId",name="ClassId",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Stream" class="control-label" style="font-weight: normal !important;"></label>
+                                            @Html.DropDownList("Stream", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="Stream",name="Stream"})
+                                        
+                                    </div>
+                            <div class="form-group">
+                                                <input type="submit" value="Search" class="btn btn-block btn-sm mybtn" />
+                        </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+           <div class="col-md-9">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Student No
+                                </th>
+                                <th>
+                                    Names
+                                </th>
+                                <th>
+                                   Class 
+                                </th>
+                                <th>
+                                   Stream 
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.StudentNo
+                                            </td>
+                                            <td>
+                                                    @item.FullName
+                                            </td>
+                                            <td>
+                                                    @item.ClassName
+                                            </td>
+                                            <td>
+                                                    @item.StreamName
+                                            </td>
+                                            
+                                            <td>
+                                                 <a asp-action="AddLibStaff" asp-route-id="@item.StudentId" data-toggle="modal" data-target="#modal-default" id="BookReturn" data-id="@item.StudentId"><i class="fa fa-plus-circle"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+
+</div>
+</div>
+</div>
+</div>
+<script src="~/js/jquery-3.6.2.min.js"></script>
+<script type="text/javascript">
+    var delAccountId;
+
+    $(document).delegate('#BookReturn',
+    'click',
+    function (e) {
+      delAccountId = $(this).attr('data-id');
+      $('#bookid').val(delAccountId);
+    });
+</script>

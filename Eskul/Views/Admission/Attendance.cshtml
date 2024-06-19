@@ -1,0 +1,355 @@
+﻿@model Eskul.Models.StdAttendance
+@{
+
+    var listmodel = Model.AttendenceLists;
+    var regdate = Model.AttendanceDate == null ? DateTime.Now.ToString("yyyy-MM-dd") : Model.AttendanceDate.Value.ToString("yyyy-MM-dd");
+}
+<br />
+<style>
+    .round {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        background: gray;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+    }
+</style>
+<div class="col-md-12">
+
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <div class="col-md-12">
+
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Attendance" id="StudAtt" class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <div id="input-type" class="row">
+                                                <div class="col-sm-4">
+                                                    <label class="radio-inline" style="font-weight:normal;">
+
+                                                        <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="radio-inline" style="font-weight:normal;">
+                                                        <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="ClassId" class="control-label" style="font-weight: normal !important;">Class</label><small class="req"> *</small>
+                                        @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",name="Class",id="Class",required = "required"} )
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="SteamCode" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                        @Html.DropDownList("SteamCode", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="Stream",name="Stream"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="AttendanceDate" class="control-label" style="font-weight: normal !important;">Attendance Date</label><small class="req"> *</small>
+                                        <input asp-for="AttendanceDate" type="date" id="AttendanceDate" value="@regdate" class="form-control form-control-sm" required />
+                                    </div>
+                                    <div class="invalid-feedback">This Field is Required</div>
+                                </div>
+
+                              </div>
+                            <div class="form-group">
+                                <div class="float-right">
+                                    <input type="submit" value="Load" class="btn btn-block btn-sm mybtn" style="margin: 30px; width: 150px" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Student No
+                                    </th>
+                                    <th>
+                                        Student Name
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Comment
+                                    </th>
+                                    <th class="d-none"></th>
+                                    <th class="d-none"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (listmodel != null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StudentNo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StudentName)
+                                            </td>
+
+                                            <td>
+                                                <input type="radio" name="status-@item.StudentNo" value="P" @(item.Status == "P" ? "checked" : "") /> Present
+                                                <input type="radio" name="status-@item.StudentNo" value="A" @(item.Status == "A" ? "checked" : "") /> Absent
+                                                <input type="radio" name="status-@item.StudentNo" value="L" @(item.Status == "L" ? "checked" : "") /> Late
+                                                <input type="radio" name="status-@item.StudentNo" value="HD" @(item.Status == "HD" ? "checked" : "") /> Half Day
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <textarea class="form-control form-control-sm" asp-for="@item.Remarks" style="height: 30px;"></textarea>
+                                                </div>
+                                            </td>
+                                            <td class="d-none">
+                                                <input type="hidden" name="studentId" value="@item.StudentId">
+                                                <input type="hidden" name="attendanceId" value="@item.AttendanceId">
+                                            </td>
+                                            <td>
+                                                <span id="status-@item.StudentId" class="status round">
+                                                    <div class="spinner-border spinner-border-sm" role="status" style="display: none;">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                    <span id="tick-@item.StudentId" class="tick" style="display: none;">✔</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="10" class="text-centere">
+                                            No Record Found
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- /.col-md-12 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/Jquery.min.3.6.0"></script>
+<script>
+    $(document).ready(function () {
+        $("input[type='radio']").change(function () {
+            saveAttendance($(this));
+        });
+
+        $("textarea").change(function () {
+            saveAttendance($(this));
+        });
+    });
+
+    function saveAttendance(element) {
+        var row = element.closest('tr');
+        var studentno = row.find("td:first").text().replace(/\n/g, '');
+        var studentname = row.find("td:eq(1)").text().replace(/\n/g, '');
+        var status = row.find("input[type='radio']:checked").val();
+        var comment = row.find("textarea").val();
+        var attendanceid = row.find('[name="attendanceId"]').val();
+        var studentId = row.find('[name="studentId"]').val();
+        var attendanceDate = $('#AttendanceDate').val();
+        var selectedClass = $("#Class").val();
+        var selectedStream = $("#Stream").val();
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl1= baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace(/attendance|Attendance/g, '');
+        console.log('fullUrlrerr',fullUrl);
+        $.ajax({
+            type: "POST",
+            url: fullUrl+"UpdateStatus",
+            data: {
+                attendanceId: attendanceid,
+                studentno: studentno,
+                studentname: studentname,
+                status: status,
+                remarks: comment,
+                attendanceDate: attendanceDate,
+                classId: selectedClass,
+                steamCode: selectedStream,
+                studentId: studentId
+            },
+            success: function (data) {
+                console.log('resp',data.res);
+                document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+            },
+            error: function () {
+                document.getElementById("status-" + studentId).innerHTML = "&#10060;";
+
+            }
+        });
+    }
+
+</script>
+<script>
+    function populateStreamDropdown() {
+        // reset Stream dropdown value
+        document.getElementById('Stream').innerHTML = '';
+        var selectedCla = document.getElementById('Stream').value = 0;
+        console.log(selectedCla);
+        // get selected Class value
+        var selectedClass = document.getElementById('Class').value;
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName.replace('Attendance', '').replace('attendance', '');
+        console.log(fullUrl);
+        // make AJAX call to retrieve streamed classes based on selected Class
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + 'StreamsByClass?classs=' + selectedClass);
+    @*xhr.open('GET', '/ClassTeacher/StreamsByClass?classs=' + selectedClass);*@
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // parse retrieved values as JSON
+                    var streamedClasses = JSON.parse(xhr.responseText);
+
+                    // check if there are any streamed classes
+                    var hasStreamedClasses = streamedClasses.length > 0;
+
+                    // populate Stream dropdown with retrieved values
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '';
+
+                    if (hasStreamedClasses) {
+                        for (var i = 0; i < streamedClasses.length; i++) {
+                            var option = document.createElement('option');
+                            option.value = streamedClasses[i].StreamId;
+                            option.text = streamedClasses[i].Name;
+                            dropdown.appendChild(option);
+                        }
+                    } else {
+                        var option = document.createElement('option');
+                        option.text = 'Class Not Streamed';
+                        option.disabled = true;
+                        dropdown.appendChild(option);
+                    }
+                    // reset selected value of Stream dropdown
+                    document.getElementById('Stream').value = 0;
+                } else {
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                    dropdown.disabled = false;
+                }
+            };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown();
+        });
+    });
+</script>
+<script>
+    function populateDropdown() {
+        // get selected radio button value
+        var level = document.querySelector('input[name="Level"]:checked').value;
+
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace(/attendance|Attendance/g, '');
+        console.log('full url', fullUrl);
+        // make first AJAX call to retrieve dropdown values based on selected level
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + 'ClassByLevel?level=' + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var values = JSON.parse(xhr.responseText);
+
+                // populate first dropdown with retrieved values
+                var dropdown1 = document.getElementById('Class');
+                dropdown1.innerHTML = '';
+
+                // append default option with value 0
+                var defaultOption = document.createElement('option');
+                defaultOption.value = 0;
+                defaultOption.text = 'Select';
+                dropdown1.appendChild(defaultOption);
+
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+
+
+
+

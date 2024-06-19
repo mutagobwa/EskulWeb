@@ -1,0 +1,116 @@
+﻿@model Eskul.Models.IncomeType
+@{
+
+    var listmodel = Model.incomeTypes;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-3">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Income</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+                             <input type="hidden" asp-for="IncomeCode"/>
+                            <div class="form-group">
+                <label asp-for="IncomeCode" style="font-weight: normal !important;">Code</label>
+                <input asp-for="IncomeCode" class="form-control form-control-sm" required disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="IncomeName" style="font-weight: normal !important;">Name</label>
+                <input asp-for="IncomeName" class="form-control form-control-sm" required autocomplete="off" />
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="IncomeDesc" style="font-weight: normal !important;">Description</label>
+                <textarea asp-for="IncomeDesc" class="form-control form-control-sm" required autocomplete="off"></textarea>
+           <div class="invalid-feedback">This Field is Required</div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre"  style=""/>
+            </div>
+        </div>
+                        <!-- /.card-body -->   
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-9">
+                <div class="box box-primary">
+                     <div class="card-body">
+                         <p>
+                         <a asp-action="Create" class="btn btn-sm mybtnsm"><i class="fa fa-plus"></i>&nbsp; Add Income Type</a>
+                       </p>
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Code
+                                </th>
+                                <th>
+                                   Name
+                                </th>
+                                <th>
+                                  Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.IncomeCode
+                                                </td>
+                                            <td>
+                                                    @item.IncomeName
+                                            </td>
+                                            <td>
+                                                    @item.IncomeDesc
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.IncomeCode">Edit</a>
+                                                 <button class="btn btn-xs btn-danger " id="delete" data-id="@item.IncomeCode"data-toggle="modal" data-target="#modal-info" onclick="del('@item.IncomeCode')" data-controller="IncomeType" data-body-message="Are You Sure You Want To Delete This Stream">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

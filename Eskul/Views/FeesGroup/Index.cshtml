@@ -1,0 +1,77 @@
+﻿@model Eskul.Models.FeesGroupViewModel
+@{
+
+    var listmodel = Model.feesGroups;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- /.col-md-8 -->
+            <div class="col-md-12">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Code
+                                </th>
+                                <th>
+                                   Name
+                                </th>
+                                <th>
+                                 Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.GroupCode
+                                                </td>
+                                            <td>
+                                                    @item.GroupName
+                                            </td>
+                                            <td>
+                                                    @item.GroupDescription
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.GroupCode">Edit</a>
+                                                <button class="btn btn-xs btn-danger " id="delete" data-id="@item.GroupCode"data-toggle="modal" data-target="#modal-info" onclick="del('@item.GroupCode')" data-controller="FeesGroup">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

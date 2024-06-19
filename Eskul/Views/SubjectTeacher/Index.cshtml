@@ -1,0 +1,360 @@
+﻿@model Eskul.Models.Subjecteacher
+@{
+
+    var listmodel = Model.subjecteachers;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-lg" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 800px;">
+                            <!-- Adjusted width for better layout -->
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit Subject Teacher</h6>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="Steacher" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="Id" />
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <div id="input-type" class="row">
+                                                        <div class="col-sm-6">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <label for="year" style="font-weight: normal !important;">Year</label>
+                                                    <input asp-for="year" class="form-control form-control-sm" required autocomplete="off" />
+                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label asp-for="Class" class="control-label" style="font-weight: normal !important;">Class</label>
+                                                    @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select", style = "width: 100%;", id="Class", name="Class", required = "required" })
+                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <label asp-for="Stream" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                                    @Html.DropDownList("Stream", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select", style = "width: 100%;", id="Stream", name="Stream", required = "required" })
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label asp-for="subjectcode" class="control-label" style="font-weight: normal !important;">Subject</label>
+                                                    @Html.DropDownList("subjectcode", (IEnumerable<SelectListItem>)ViewBag.Subjects, new { @class = "select", style = "width: 100%;", id="subjectcode", name="subjectcode", required = "required" })
+                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <label asp-for="papercode" class="control-label" style="font-weight: normal !important;">Subject Paper</label>
+                                                    @Html.DropDownList("papercode", (IEnumerable<SelectListItem>)ViewBag.SubjectPapers, new { @class = "select", style = "width: 100%;", id="Papercode", name="papercode", required = "required" })
+                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label asp-for="tearcherid" class="control-label" style="font-weight: normal !important;">Teacher</label>
+                                                    @Html.DropDownList("tearcherid", (IEnumerable<SelectListItem>)ViewBag.Teachers, new { @class = "select", style = "width: 100%;", id="tearcherid", name="tearcherid", required = "required" })
+                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" asp-for="ApplyToAllStreams" id="ApplyToAllStreams" />
+                                                        <label class="form-check-label" for="ApplyToAllStreams">
+                                                            All Streams
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg"><i class="fa fa-plus"></i>&nbsp; Subject Teacher</a>
+                                    </p>
+                                    <table id="example2" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+
+                                                <th>
+                                                    Class
+                                                </th>
+                                                <th>
+                                                    Stream
+                                                </th>
+                                                <th>
+                                                    Subject
+                                                </th>
+                                                <th>
+                                                    Paper
+                                                </th>
+                                                <th>
+                                                    Teacher
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+
+                                                        <td>
+                                                            @item.ClassName
+                                                        </td>
+                                                        <td>
+                                                            @item.SteamName
+                                                        </td>
+                                                        <td>
+                                                            @item.SubjectName
+                                                        </td>
+                                                        <td>
+                                                            @item.papercode
+                                                        </td>
+                                                        <td>
+                                                            @item.FullName
+                                                        </td>
+                                                        <td>
+                                                            <button asp-action="Edit" id="editButton" class="btn btn-xs btn-primary" data-id="@item.Id" onclick="loadEditModal(this)">Edit</button>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.Id" data-class="@item.Class" data-teacher="@item.tearcherid" data-stream="@item.Stream" data-subject="@item.subjectcode" data-paper="@item.papercode" data-toggle="modal" data-target="#modal-lg">Edit</a>
+
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.Id" data-toggle="modal" data-target="#modal-info" onclick="del('@item.Id')" data-controller="SubjectTeacher" data-body-message="Are You Sure You Want To Delete This Stream">Del</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="4" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+
+<script>
+    function getBaseUrl() {
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        return baseUrl + '/' + pathName.replace('Index', '').replace('SubjectTeacher', 'SubjectTeacher/').replace('SubjectTeacher//', 'SubjectTeacher/');
+    }
+
+    function populateDropdown() {
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        var finalUrl = getBaseUrl();
+
+        return Promise.all([
+            fetch(finalUrl + 'ClassByLevel?level=' + level)
+                .then(response => response.json())
+                .then(values => {
+                    var dropdown = $('#Class');
+                    dropdown.empty().append('<option value="">Select</option>');
+                    if (values.length > 0) {
+                        values.forEach(value => {
+                            dropdown.append(`<option value="${value.classcode}">${value.Name}</option>`);
+                        });
+                    } else {
+                        dropdown.append('<option disabled>No Classes Available</option>');
+                    }
+                    dropdown.val('').trigger('change');
+                }),
+            fetch(finalUrl + 'SubjectByLevel?level=' + level)
+                .then(response => response.json())
+                .then(subjects => {
+                    var dropdown = $('#subjectcode');
+                    dropdown.empty().append('<option value="">Select</option>');
+                    if (subjects.length > 0) {
+                        subjects.forEach(subject => {
+                            dropdown.append(`<option value="${subject.Subjectcode}">${subject.Subjectname}</option>`);
+                        });
+                    } else {
+                        dropdown.append('<option disabled>No Subjects Available</option>');
+                    }
+                    dropdown.val('').trigger('change');
+                })
+        ]);
+    }
+
+    function populateStreamDropdown(classCode) {
+        var finalUrl = getBaseUrl();
+
+        return fetch(finalUrl + 'StreamsByClass?classs=' + classCode)
+            .then(response => response.json())
+            .then(streamedClasses => {
+                var dropdown = $('#Stream');
+                dropdown.empty().append('<option value="0">Select</option>');
+                if (streamedClasses.length > 0) {
+                    streamedClasses.forEach(stream => {
+                        dropdown.append(`<option value="${stream.StreamId}">${stream.Name}</option>`);
+                    });
+                } else {
+                    dropdown.append('<option disabled>Class Not Streamed</option>');
+                }
+                dropdown.val('0').trigger('change');
+            })
+            .catch(() => {
+                var dropdown = $('#Stream');
+                dropdown.empty().append('<option disabled>An error occurred</option>').prop('disabled', true);
+            });
+    }
+
+    function populatePaperDropdown(subjectCode, selectedPaperCode) {
+        var finalUrl = getBaseUrl();
+
+        return fetch(finalUrl + 'SubPaperByLevel?paper=' + subjectCode)
+            .then(response => response.json())
+            .then(streamed => {
+                var dropdown = $('#Papercode');
+                dropdown.empty().append('<option value="">Select</option>');
+                if (streamed.length > 0) {
+                    streamed.forEach(paper => {
+                        var option = `<option value="${paper.PaperCode}">${paper.PaperName}</option>`;
+                        if (paper.PaperCode === selectedPaperCode) {
+                            option = `<option value="${paper.PaperCode}" selected>${paper.PaperName}</option>`;
+                        }
+                        dropdown.append(option);
+                    });
+                } else {
+                    dropdown.append('<option disabled>No Papers</option>');
+                }
+                dropdown.trigger('change');
+            })
+            .catch(() => {
+                var dropdown = $('#Papercode');
+                dropdown.empty().append('<option disabled>An error occurred</option>').prop('disabled', true);
+            });
+    }
+
+    function populateModalFields(data) {
+        $('#Class').val(data.class).trigger('change');
+
+        // Wait for the dropdowns to populate before setting values
+        Promise.all([
+            populateStreamDropdown(data.class).then(() => {
+                $('#Stream').val(data.stream).trigger('change');
+            }),
+            populatePaperDropdown(data.subjectcode, data.papercode).then(() => {
+                $('#Papercode').val(data.papercode).trigger('change'); // Set selected value before triggering change event
+            })
+        ]);
+
+        $('#subjectcode').val(data.subjectcode).trigger('change');
+        $('#tearcherid').val(data.tearcherid).trigger('change');
+
+        // Set the "Apply to all streams" checkbox
+        $('#applyToAllStreamsCheckbox').prop('checked', data.applyToAllStreams);
+    }
+
+    function loadEditModal(button) {
+        var id = $(button).data('id');
+        var finalUrl = getBaseUrl();
+
+        $.ajax({
+            url: finalUrl + 'Edit/' + id,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                populateModalFields(data);
+                $('#modal-lg').modal('show');
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown($(this).val());
+        });
+
+        $('#subjectcode').change(function () {
+            populatePaperDropdown($(this).val());
+        });
+
+        var today = new Date();
+        $('#DispalyDate').text("Full date=" + today.toDateString());
+        $('#FullYear').text("Full year=" + today.getFullYear());
+        $('#DayOfMonth').text("Day=" + today.getDate());
+        $('#GetMonth').text("Number of month=" + today.getMonth());
+    });
+</script>
+
+
+@* <script>
+    $(document).delegate('#Edit', 'click', function (e) {
+        var classtid = $(this).data('id');
+        var classs = $(this).data('class');
+        var stream = $(this).data('stream');
+        var teacherr = $(this).data('teacher');
+
+        console.log('stream', stream);
+        console.log('classtid', classtid);
+        console.log('classs', classs);
+        console.log('teacherr', teacherr);
+
+        $('#modal-lg #Class').val(classs).trigger('change');
+        $('#modal-lg #tearcherid').val(teacherr).trigger('change');
+
+        populateStreamDropdown(function () {
+            $('#modal-lg #Stream').val(stream).trigger('change');
+        });
+</script> *@
+<script src="~/js/ModalRest.js"></script>
+

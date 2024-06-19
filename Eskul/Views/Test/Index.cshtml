@@ -1,0 +1,172 @@
+﻿@*@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.TopicMaster;
+@{
+    var listmodel = Model.Topics.OrderBy(t => t.TopicName)
+                                   //.ThenBy(t => t.StartTime)
+                                   //.ThenBy(t => t.EndTime)
+                                   .ToList();
+    var records = Model.Topics.GroupBy(t => t.TopicName).ToList();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lesson Plans</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/js/Service.js" defer></script>
+    <script src="~/js/Notif.js" defer></script>
+    <style>
+        /* Style for the notification */
+        .notification {
+            background-color: #e2e2e2;
+            padding: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+        }
+
+            /* Style for the notification title */
+            .notification .title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 8px;
+            }
+
+            /* Style for the notification body */
+            .notification .body {
+                font-size: 14px;
+                margin-bottom: 0;
+            }
+    </style>
+    <style>
+        .mright5 {
+            margin-right: 5px !important;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .attachment-block {
+            /* border: 1px solid #f4f4f4; */
+            border-radius: 3px;
+            padding: 5px;
+            margin-bottom: 10px;
+            background: #fff;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+        }
+    </style>
+</head>
+<body>
+    <table class="table table-bordered">
+        <thead>
+           <tr>
+    @foreach (var rec in records)
+    {
+        var dayOfWeek = rec.Key.DayOfWeek;
+        <th class="text" style="border: none;">@dayOfWeek</th>
+    }
+</tr>
+        </thead>
+        <tbody>
+            @foreach (var item in listmodel)
+            {
+                <tr>
+                    @foreach (var rec in records)
+                    {
+                        var dayOfWeek = rec.Key.DayOfWeek;
+                        var topics = rec.Where(t => t.TopicTime.DayOfWeek == dayOfWeek && t.StartTime == item.StartTime && t.EndTime == item.EndTime).ToList();
+                        <td>
+                            @if (topics.Any())
+                            {
+                                <div class="attachment-block attachment-block-normal clearfix">
+                                    @if (Model.StatusId == 3)
+                                    {
+                                        <div class="card bg-danger">
+                                            <div class="card-body">
+                                                <h5 class="card-title">@topics.First().SubjectName</h5>
+                                                <p class="card-text">Class: Class @topics.First().ClassId (@item.TopicTime.ToString("hh:mm tt") - @item.EndTime.ToString("hh:mm tt"))</p>
+                                                <p class="card-text"><strong>@item.TopicTime.ToString("hh:mm tt") - @item.EndTime.ToString("hh:mm tt")</strong></p>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="relative attachment-left-space-blue mt15"><i class="fa fa-book"></i>Subject: @topics.First().SubjectName</div>
+                                        <div class="relative attachment-left-space-blue">
+                                            <i class="fa fa-clock-o"></i>Class: Class @topics.First().ClassId (@item.TopicTime.ToString("hh:mm tt") - @item.EndTime.ToString("hh:mm tt"))
+                                            <strong class="text-blue-light">@item.TopicTime.ToString("hh:mm tt")</strong>
+                                            <b class="text text-centere">-</b>
+                                            <strong class="text-blue-light">@item.EndTime.ToString("hh:mm tt")</strong>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>
+<script>
+    // Request permission to show notifications
+    Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+            console.log('Notification permission granted.');
+        }
+    });
+
+    // Call the showLessonReminderNotification function with appropriate parameters
+    // Example usage with dummy data, replace with actual data from your application
+    var subjectName = 'Math';
+    var classId = 'A1';
+    var startTime = new Date(Date.now() + 900000); // 15 minutes from now
+    var endTime = new Date(Date.now() + 3600000); // 1 hour from now
+    showLessonReminderNotification(subjectName, classId, startTime, endTime);
+</script>
+
+
+
+
+*@
+@model Eskul.Models._student;
+@{
+    var listmodel = Model._students;
+    //var subjectList = Model._subjects;
+}
+<br/>
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="card-body">
+            <table id="example2" class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        @foreach (var subject in ViewBag.Subjects)
+                        {
+                            <th>@subject</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in listmodel)
+                    {
+                        <tr>
+                            <td>@student.Name</td>
+                            @foreach (var subject in ViewBag.Subjects)
+                            {
+                                <td>@student.Scores[subject]</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+}

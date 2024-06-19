@@ -1,0 +1,231 @@
+﻿@model Eskul.Models.IssueBook
+@{
+
+    var issuedBooks = Model.issuedBooks;
+    var LibraryMember = Model.libraryMembers;
+
+}
+<link rel="stylesheet" href="~/css/custom.css" />
+@*<script src="~/js/bootstrap.min.js"></script>
+*@
+<style>
+    .nav-tabs-custom > .nav-tabs {
+        margin: 0;
+        border-bottom-color: #f4f4f4;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+    }
+    .nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+    :after, :before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+    .nav-tabs > li > a {
+        margin-right: 2px;
+        line-height: 1.42857143;
+        border: 1px solid transparent;
+        border-radius: 4px 4px 4px 4px;
+    }
+
+    .nav > li > a {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+    }
+    .pull-right {
+    float: right!important;
+}
+</style>
+<br/>
+
+<div class="col-md-12">
+      <partial name="_BookReturn" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<div class="content">
+    
+        <div class="row">
+           
+            <div class="col-md-3">
+
+<div class="box box-primary">
+    <div class="box-body box-profile">
+        <img class="profile-user-img img-responsive img-circle" src="/Files/noimage.png" alt="User profile picture">
+        <h3 class="profile-username text-center">@LibraryMember.FirstOrDefault().FullName</h3>
+        <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+                <b>Member Id</b> <a class="pull-right text-aqua">@LibraryMember.FirstOrDefault().MembershipNo</a>
+            </li>
+            <li class="list-group-item">
+                <b>Library Card No</b> <a class="pull-right text-aqua">@LibraryMember.FirstOrDefault().LibraryCardNo</a>
+            </li>
+            <li class="list-group-item">
+                <b>Admission No</b> <a class="pull-right text-aqua">@LibraryMember.FirstOrDefault().AdmissionNo</a>
+            </li>
+
+            <li class="list-group-item">
+                <b>Gender</b> <a class="pull-right text-aqua">@LibraryMember.FirstOrDefault().Gender</a>
+            </li>
+
+            <li class="list-group-item">
+                <b>Member Type</b> <a class="pull-right text-aqua">@LibraryMember.FirstOrDefault().MemberType1</a>
+            </li>
+            @*<li class="list-group-item">
+                <b>Mobile Number</b> <a class="pull-right text-aqua">69898565464</a>
+            </li>*@
+
+        </ul>
+    </div>
+</div>
+            </div>
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Issue Book</h3>
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                      <form asp-action="IssueBook" id="IssueBook" class="needs-validation" novalidate>
+                        <div class="box-body">
+                       <input type="hidden" asp-for="MembershipId" value="@LibraryMember.FirstOrDefault().MembershipNo" />
+                       <input type="hidden" asp-for="MembershipId" value="Bookid" />
+
+                                    <div class="form-group">
+                                        <label asp-for="BookId" class="control-label" style="font-weight: normal !important;">Books</label>
+                                        @Html.DropDownList("BookId", (IEnumerable<SelectListItem>)ViewBag.Books, new { @class = "select",style = "width: 100%;",id="BookId",name="BookId",required = "required"})
+                                         <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ReturnDate" class="control-label" style="font-weight: normal !important;">Return Date</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <input type="date" asp-for="ReturnDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control form-control-sm" required />
+
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                    <div class="form-group">
+                                        <input type="submit" value="Save" class="btn btn-block btn-sm mybtnlg" style="width:200px;" />
+            </div>
+            </div>
+                        </div><!-- /.box-body -->
+                        
+                    </form>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-header ptbnull">
+                        <h3 class="box-title titlefix">Book Issued</h3>
+                    </div>
+                    <div class="card-body">
+                         
+                        <input type="hidden" asp-for="MembershipId" value="@LibraryMember.FirstOrDefault().MembershipNo" name="MembershipId" />
+                    <table id="example2" class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Book Tittle
+                                </th>
+                                <th>
+                                    Book Number
+                                </th>
+                                <th>
+                                   Issue Date
+                                </th>
+                                <th>
+                                   Return Date
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (issuedBooks!=null)
+                                {
+                                    @foreach (var item in issuedBooks)
+                                    {
+                                        <input type="hidden" asp-for="BookId" value="@item.BookId" />
+                                        <tr>
+                                            <td>
+                                                @item.BookTittle
+                                            </td>
+                                            <td>
+                                                    @item.BookNumber
+                                            </td>
+                                            <td>
+                                                    @item.IssueDate
+                                            </td>
+                                            <td>
+                                                    @item.Due_ReturnDate
+                                            </td>
+                                            <td hidden id="id">
+                                                    @item.BookId
+                                            </td>
+                                            @if (item.Returned)
+                                                    {
+                                                      <td>
+                                                         <span style="color: green;" title="Returned">&#10004;</span> <!-- green tick symbol with tooltip -->
+                                            </td>  
+                                                    }else
+                                                    {
+                                                      <td>
+                                                <a asp-action="" asp-route-id="@item.IssueId"  data-toggle="modal" data-target="#modal-default" data-id="@item.IssueId" id="BookReturn" action="ReturnBook/@item.IssueId"><i class="fa fa-reply"></i></a>
+                                            </td>      
+                                                    }
+                                            
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.6.2.min.js"></script>
+<script type="text/javascript">
+    var delAccountId;
+
+    $(document).delegate('#BookReturn',
+    'click',
+    function (e) {
+      delAccountId = $(this).attr('data-id');
+      //console.log(delAccountId);
+      $('#bookid').val(delAccountId);
+    });
+ </script>

@@ -1,0 +1,529 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.ExamScore
+@{
+
+    var listmodel = Model.examScores;
+}
+<br />
+<style>
+    .small-textbox {
+        width: 50px;
+        height: 25px;
+        font-size: 14px;
+        padding: 2px;
+        border: 1px solid gray;
+    }
+
+    .big-textbox {
+        width: 100%;
+        height: 25px;
+        font-size: 14px;
+        padding: 2px;
+        border: 1px solid gray;
+    }
+
+    .round {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        background: gray;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid black;
+        text-align: center;
+    }
+</style>
+<div class="col-md-12">
+
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <div class="col-md-12">
+
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        
+                           
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="ExamScoreT"  class="needs-validation" novalidate>
+                            <div class="row">
+                               @* <div class="col-md-3">
+                                    <div class="col-sm-12">
+                                        <div id="input-type" class="row">
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline" style="font-weight:normal;">
+
+                                                    <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline" style="font-weight:normal;">
+                                                    <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="YearCode" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                        <input asp-for="YearCode" id="YearCode" type="text" class="form-control form-control-sm" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Term" style="font-weight: normal !important;">Academic Term</label><small class="req"> *</small>
+                                        @Html.DropDownListFor(m => m.TermCode, new List<SelectListItem>
+                                        {       new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="Term One", Value="1"},
+                                        new SelectListItem{Text="Term Two", Value="2"},
+                                        new SelectListItem{Text="Term Three", Value="3"}},htmlAttributes:new { @class = "select",style = "width: 100%;",id="Term",name="Term",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                        @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"} )
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Stream" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                        @Html.DropDownList("Stream", (IEnumerable<SelectListItem>) ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="Stream",name="Stream"})
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="SubjectCode" class="control-label" style="font-weight: normal !important;">Subject</label><small class="req"> *</small>
+                                        @Html.DropDownList("SubjectCode", (IEnumerable<SelectListItem>)ViewBag.Subjects, new { @class = "select", style = "width: 100%;", id = "SubjectCode", name = "SubjectCode", required = "required" })
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="PaperCode" class="control-label" style="font-weight: normal !important;">Paper</label><small class="req"> *</small>
+                                        @Html.DropDownList("PaperCode", (IEnumerable<SelectListItem>)ViewBag.SubjectPapers, new { @class = "select",style = "width: 100%;",id="PaperCode",name="PaperCode",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="ExamCode" class="control-label" style="font-weight: normal !important;">Exam</label>
+                                        @Html.DropDownList("ExamCode", (IEnumerable<SelectListItem>) ViewBag.ExamType, new { @class = "select",style = "width: 100%;",id="ExamCode",name="ExamCode",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="submit" value="Search" class="btn btn-block btn-sm mybtn" style="margin-top:30px;" />
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-body">
+                        <div class="dt-buttons btn-group btn-group2 float-lg-right">
+                            <a href="javascript:void(0)" class="btn btn-xs mybtn" onclick="openReport()" style="border-radius:5px;">Generate MarkList</a>
+                            &nbsp; &nbsp; &nbsp;
+                            <a href="javascript:void(0)" class="btn btn-xs mybtn" onclick="openReportM()" style="border-radius:5px;">Generate MarkSheet</a>
+                        </div>
+                        <br/>
+                        <br/>
+                        <table id="example2" class="table table-bordered table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="d-none"></th>
+                                    <th>
+                                        Student No
+                                    </th>
+                                    <th class="d-none"></th>
+                                    <th>
+                                        Student Name
+                                    </th>
+                                    <th>
+                                        Score
+                                    </th>
+                                    <th>
+                                        Comment
+                                    </th>
+
+                                    <th class="d-none"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (listmodel != null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td style="display:none">
+                                                @Html.DisplayFor(modelItem => item.ScoreId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StudentNo)
+                                            </td>
+                                            <td style="display:none">
+                                                @Html.DisplayFor(modelItem => item.StudentId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StudentName)
+                                            </td>
+                                            <td style="width:30px;">
+                                                <input type="number" class="big-textbox" id="score-@item.StudentId" oninput="validateScore(this)" value="@item.Score" onchange="saveData('@item.StudentId', this.value, $('#comment-@item.StudentId').val())" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="big-textbox" id="comment-@item.StudentId" value="@item.Comment" onchange="saveData('@item.StudentId', $('#score-@item.StudentId').val(), this.value)" />
+                                            </td>
+                                            <td>
+                                                <span id="status-@item.StudentId" class="status round">
+                                                    <div class="spinner-border spinner-border-sm" role="status" style="display: none;">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                    <span id="tick-@item.StudentId" class="tick" style="display: none;">✔</span>
+                                                    <span id="cross-@item.StudentId" class="cross" style="display: none; background-color:red;">X</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="10" class="text-centere">
+                                            No Record Found
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                    <!-- /.col-md-12 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    function saveData(studentId, score, comment) {
+        // Get the base URL
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // Get the path to the application files
+        var pathName = window.location.pathname;
+
+        // Remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // Combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName + '/AssignMarks';
+        var newurl = fullUrl.replace('/ExamScoreT','');
+            console.log(newurl);
+        // Send an AJAX request to the server to save the data
+        $.ajax({
+            type: "POST",
+            url: newurl,
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: {
+                scoreId: $('#score-' + studentId).closest('tr').find('td:first-child').text(),
+                studentId: studentId,
+                score: score,
+                comment: comment
+            },
+            success: function (res) {
+                // Log the server response to the console
+                document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+                console.log("Server Response: " + res.status);
+                if (res.status == "200") {
+                    // Update the UI with a tick mark to indicate success
+                    document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+                    console.log("Data saved successfully for student: " + studentId);
+                } else {
+                    document.getElementById("status-" + studentId).innerHTML = "&#10006;";
+                    console.log("Error" + res.res + " while saving data for student: " + studentId);
+                }
+            }
+        });
+    }
+
+</script>
+<script>
+    function validateScore(input) {
+        var value = parseInt(input.value);
+        if (isNaN(value) || value < 0 || value > 100) {
+            input.value = "";  // Clear the input field
+        }
+    }
+</script>
+<script>
+    // Add this script after including jQuery library
+
+    function populateDropdown() {
+        var classs = document.getElementById('Class').value;
+        var stream = document.getElementById('Stream').value;
+        var userid = "@SessionData.UserId";
+        var subject = document.getElementById('SubjectCode').value;
+        // make AJAX call to retrieve streamed classes based on selected Class
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/ExamScore/SubPaperByLevels?userid=' + encodeURIComponent(userid) + '&classs=' + encodeURIComponent(classs) + '&streamcode=' + encodeURIComponent(stream) + '&subjectcode=' + encodeURIComponent(subject));
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var subjects = JSON.parse(xhr.responseText);
+
+                // check if there are any streamed classes
+                var hasSubjects = subjects.length > 0;
+
+                // populate Stream dropdown with retrieved values
+                var dropdown = document.getElementById('PaperCode');
+                dropdown.innerHTML = '';
+                if (hasSubjects) {
+                    for (var i = 0; i < subjects.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = subjects[i].PaperCode;
+                        option.text = subjects[i].Paper_Name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'No Papers';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('PaperCode');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = true;
+            }
+        };
+        xhr.send();
+    }
+
+    $(document).ready(function () {
+        // Event handler for subject dropdown change
+        $('#SubjectCode').change(function () {
+            populateDropdown();
+        });
+    });
+</script>
+<script>
+    function populateStreamDropdown() {
+        // get selected Class value
+        var classs = document.getElementById('Class').value;
+        var userid = "@SessionData.UserId";
+        // make AJAX call to retrieve streamed classes based on selected Class
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/ExamScore/StreamsByClasss?userid=' + encodeURIComponent(userid) + '&classs=' + encodeURIComponent(classs));
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var streamedClasses = JSON.parse(xhr.responseText);
+
+                // check if there are any streamed classes
+                var hasStreamedClasses = streamedClasses.length > 0;
+
+                // populate Stream dropdown with retrieved values
+                var dropdown = document.getElementById('Stream');
+                dropdown.innerHTML = '';
+                if (hasStreamedClasses) {
+                    for (var i = 0; i < streamedClasses.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = streamedClasses[i].streamcode;
+                        option.text = streamedClasses[i].streamname;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'No streams';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('Stream');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = true;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown();
+        });
+    });
+</script>
+<script>
+    function populateSubjectDropdown() {
+        // get selected Class value
+        var classs = document.getElementById('Class').value;
+        var stream = document.getElementById('Stream').value;
+        var userid = "@SessionData.UserId";
+        // make AJAX call to retrieve streamed classes based on selected Class
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/ExamScore/SubjectByLevels?userid=' + encodeURIComponent(userid) + '&classs=' + encodeURIComponent(classs) + '&streamcode=' + encodeURIComponent(stream));
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var subjects = JSON.parse(xhr.responseText);
+
+                // check if there are any streamed classes
+                var hasSubjects = subjects.length > 0;
+
+                // populate Stream dropdown with retrieved values
+                var dropdown = document.getElementById('SubjectCode');
+                dropdown.innerHTML = '';
+                if (hasSubjects) {
+                    // Append new "Select" option
+                    var selectOption = document.createElement('option');
+                    selectOption.value = 0;
+                    selectOption.text = 'Select';
+                    dropdown.appendChild(selectOption);
+                    for (var i = 0; i < subjects.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = subjects[i].Subjectcode;
+                        option.text = subjects[i].Subject_name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'No Subjects';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('SubjectCode');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = true;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Stream').change(function () {
+            populateSubjectDropdown();
+        });
+    });
+</script>
+<script>
+    function openReport() {
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName + '/PrintSubjectMarkList';
+        var newurl = fullUrl.replace('/ExamScoreT', '');
+        console.log('newurl', newurl);
+        var YearCode = $('#YearCode').val();
+        var classs = document.getElementById('Class').value;
+        var stream = document.getElementById('Stream').value;
+        var Subject = document.getElementById('SubjectCode').value;
+        var Term = document.getElementById('Term').value;
+        var ExamCode = document.getElementById('ExamCode').value;
+        var PaperCode = document.getElementById('PaperCode').value;
+
+        const model = {
+            Year: YearCode,
+            subjectcode: Subject,
+            TermCode: Term,
+            Class: classs,
+            Stream: stream,
+            PaperCode: PaperCode,
+            ExamCode: ExamCode
+        };
+
+        var queryParams = Object.entries(model)
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+            .join('&');
+
+        var urlWithParams = newurl + '?' + queryParams;
+
+        var newWindow = window.open(urlWithParams, '_blank');
+        if (newWindow) {
+            newWindow.focus();
+        }
+    }
+</script>
+<script>
+    function openReportM() {
+    var baseUrl = window.location.protocol + "//" + window.location.host;
+    var pathName = window.location.pathname;
+    if (pathName.charAt(0) === '/') {
+        pathName = pathName.slice(1);
+    }
+    var fullUrl = baseUrl + '/' + pathName + '/PrintSubjectMarkSheet';
+    var newurl1 = fullUrl.replace('/ExamScoreT', '');
+    console.log('newurl1', newurl1);
+    var YearCode = $('#YearCode').val();
+    var classs = document.getElementById('Class').value;
+    var stream = document.getElementById('Stream').value;
+    var Subject = document.getElementById('SubjectCode').value;
+    var Term = document.getElementById('Term').value;
+    var ExamCode = document.getElementById('ExamCode').value;
+    var PaperCode = document.getElementById('PaperCode').value;
+
+    const model = {
+        Year: YearCode,
+        subjectcode: Subject,
+        TermCode: Term,
+        Class: classs,
+        Stream: stream,
+        PaperCode: PaperCode,
+        ExamCode: ExamCode
+    };
+
+    var queryParams = Object.entries(model)
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+        .join('&');
+
+    var urlWithParams = newurl1 + '?' + queryParams;
+
+    var newWindow = window.open(urlWithParams, '_blank');
+    if (newWindow) {
+        newWindow.focus();
+    }
+        }
+</script>
+

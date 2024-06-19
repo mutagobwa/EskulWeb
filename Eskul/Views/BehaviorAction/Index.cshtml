@@ -1,0 +1,127 @@
+﻿@model Eskul.Models.BehaviorAction
+@{
+    var listmodel = Model.behaviorActions;
+}
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-lg">
+                        <div class="modal-dialog modal-lg" style="width:450px">
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h5 class="modal-title" style="font-weight:bold;">Add/Edit Behavior Action</h5>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form id="myform" class="needs-validation" novalidate="" asp-action="Create" method="post">
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="ActionID" name="ActionID" id="ActionID" />
+                                            <div class="form-group">
+                                                <label style="font-weight: normal !important;" for="Name">Action Name</label>
+                                                <input class="form-control form-control-sm" required autocomplete="off" type="text" id="Name" asp-for="Name">
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-weight: normal !important;" for="Description">Action Description</label>
+                                                <textarea asp-for="Description"  class="form-control form-control-sm" required" autocomplete="off" id="Description"></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre">
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg">Add Behavior Action</a>
+                                    </p>
+                                    <table id="example2" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Description
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null && listmodel.Count > 0)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.Name
+                                                        </td>
+                                                        <td>
+                                                            @item.Description
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.ActionID" data-names="@item.Name" data-desco="@item.Description"  data-toggle="modal" data-target="#modal-lg">Edit</a>
+                                                            <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.ActionID" data-toggle="modal" data-target="#modal-info" onclick="del('@item.ActionID')" data-controller="Branch">Del</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="5" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var Id = $(this).data('id');
+            var Names = $(this).data('names');
+            var descr = $(this).data('desco');
+            // Populate the modal with the data
+            $('#modal-lg #ActionID').val(Id);
+            $('#modal-lg #Name').val(Names);
+            $('#modal-lg #Description').val(descr);
+            
+        });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#closeModalBtn').click(function () {
+            $('#modal-lg').find('form')[0].reset();
+        });
+    });
+</script>

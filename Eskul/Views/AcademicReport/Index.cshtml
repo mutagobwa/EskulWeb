@@ -1,0 +1,447 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.reportfil
+@{
+var listmodel = Model.Studs;
+}
+<style>
+   .discount-options{
+   /*border: 2px solid black;*/
+   float:right;
+   padding: -20px; /* optional - adds padding inside the border */
+   }
+   .toast-body {
+   padding: 0.75rem;
+   color:red;
+   font-size:1.2rem;
+   }
+   b, strong {
+   font-weight: bolder;
+   font-size:1.2rem;
+   }
+   .toast.bg-info .toast-header {
+   background-color: rgba(23,162,184,.85);
+   color: orangered;
+   /* font-size:1.2rem;*/
+   /*width: 300px;*/
+   }
+   .small, small {
+   font-size: 80%;
+   font-weight: 400;
+   color: antiquewhite;
+   }
+   .toasts-top-right {
+   position: fixed;
+   top: 40%;
+   left: 60%;
+   transform: translate(-50%, -50%);
+   z-index: 1040;
+   width:300px;
+   }
+
+   #open-pdf-link {
+  display: none;
+}
+a.pdf-link {
+  display: inline-block;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+a.pdf-link:hover {
+  background-color: #0056b3;
+}
+
+    .animated-stripes {
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
+  animation: progressAnimation 2s linear infinite;
+}
+
+    @@keyframes progressBarAnimation {
+        from {
+            width: 0%;
+        }
+
+        to {
+            width: 100%;
+        }
+        }
+
+</style>
+ <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/plugs/jquery.dataTables.min.js"></script>
+<br />
+<div class="col-md-12">
+    <partial name="_ProgressModal" />
+   <div class="card card-outline card-default">
+      <div class="card-body">
+         <section class="content">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-md-4">
+                     <div class="box box-primary">
+                        <div class="card-body">
+                                    <form asp-action="Index" id="myform" class="needs-validation" novalidate>
+                              <div class="card-body">
+                                  <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+                                                
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+                                           <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                            </label>
+                                        </div>
+                              
+                                    </div>
+                                </div>
+                            </div>
+                                 <div class="form-group">
+                                    <label for="Year" style="font-weight:normal;">Year</label>
+                                    <input asp-for="Year" class="form-control form-control-sm" autocomplete="off" required />
+                                 </div>
+                                 @* <div class="form-group">
+                                    <label asp-for="Branch" class="control-label" style="font-weight: normal !important;">Branch</label><small class="req"> *</small>
+                                    @Html.DropDownList("Branch", (IEnumerable<SelectListItem>)ViewBag.Branches, new { @class = "select",style = "width: 100%;",id="Branch",name="Branch",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                </div> *@
+                                 <div class="form-group">
+                                    <label for="Term" style="font-weight: normal !important;">Term</label><small class="req"> *</small>
+                                    @Html.DropDownListFor(m => m.Term, new List                           <SelectListItem>
+                                    {new SelectListItem{Text="Term One", Value="1"},new SelectListItem{Text="Term Two", Value="2"},new SelectListItem{Text="Term Three", Value="3"}}
+                                    ,htmlAttributes:new { @class = "select",style = "width: 100%;",name="Term",id="Term",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                </div>
+                                 <div class="form-group">
+                                    <label asp-for="Class" class="control-label" style="font-weight: normal !important;">Class</label>
+                                    @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                </div>
+                                 <div class="form-group">
+                                    <label asp-for="Stream" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                    @Html.DropDownList("Stream", (IEnumerable<SelectListItem>) ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="Stream",name="Stream"})
+                                 </div>
+                                 <div class="form-group">
+                                    <input type="submit" value="Search" class="btn btn-block btn-sm mybtnsm"/>
+                                 </div>
+                              </div>
+                              <!-- /.card-body -->
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-8">
+                     <div class="box box-primary">
+                        <div class="card-body">
+                                    <form class="needs-validation" novalidate>
+                                         <div class="row">
+                                              <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="ReportType" style="font-weight: normal !important;">Report Type</label>
+                                                    <small class="req"> *</small>
+                                                    @Html.DropDownListFor(m => m.ReportType, new List<SelectListItem>
+                                                    {
+                                                    new SelectListItem { Text = "Select", Value = "0" },
+                                                    new SelectListItem { Text = "E.O.T Formative Report", Value = "1" },
+                                                    new SelectListItem { Text = "E.O.T Summative Report", Value = "2" },
+                                                    new SelectListItem { Text = "E.O.Y Formative Report", Value = "3" },
+                                                    new SelectListItem { Text = "E.O.Y Summative Report", Value = "4" },
+                                                    new SelectListItem { Text = "B.O.T Only Report", Value = "5" },
+                                                    new SelectListItem { Text = "MID Only Report", Value = "6" },
+                                                    new SelectListItem { Text = "E.O.T Only Report", Value = "7" },
+                                                    new SelectListItem { Text = "Termly Performance Report", Value = "8" }
+                                                    }, htmlAttributes: new { @class = "select", style = "width: 100%;", id = "ReportType", name = "ReportType", required = "required" })
+                                                    <div class="invalid-feedback">Please select a report type</div>
+                                                </div>
+
+                                 </div>
+                                 <div class="col-md-4">
+                              <div class="form-group">
+                                <a  href="javascript:void(0)" type="submit" class="btn btn-xs mybtnsm" onclick="openReport()" style="margin-top:30px; width:150px;">View Report</a>
+
+                             </div> 
+                             </div>
+                             </div>
+                                       
+                          </form>
+                           <table id="example2" class="table table-bordered table-striped table-sm">
+                              <thead>
+                                 <tr>
+                                     <th class="d-none">
+                                       
+                                   @*  </th>
+                                                <th class="d-none">
+                                       No
+                                    </th> *@
+                                    <th>
+                                       Name
+                                    </th>
+                                    <th>
+                                       Class
+                                    </th>
+                                    <th>
+                                       Stream
+                                    </th>
+                                    <th>
+                                       <label for="checkAll">
+                                       <input type="checkbox" id="checkAll" name="chckbx">
+                                       Generate All
+                                       </label>
+                                    </th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @if (listmodel!=null && listmodel.Count>0)
+                                 {
+                                 @foreach (var item in listmodel.OrderBy(p=>p.FullName))
+                                 {
+                                 <tr>
+                                    <td style="display:none">
+                                       @item.StudentId
+                                    </td>
+                                    @* <td style="display:none">
+                                       @item.StudentNo
+                                    </td> *@
+                                    <td>
+                                       @item.FullName
+                                    </td>
+                                    <td>
+                                       @item.Class
+                                    </td>
+                                    <td>
+                                       @item.StreamName
+                                    </td>
+                                    <td>
+                                       <input type="checkbox" name="chckbx" @*value="@item.StudentNo"*@>
+                                    </td>
+                                 </tr>
+                                 }
+                                 }
+                                 else
+                                 {
+                                 <tr>
+                                    <td colspan="5" class="text-centere">
+                                       No Record Found 
+                                       </td>
+                                 </tr>
+                                 }
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            </section>
+      </div>
+      
+   </div>
+</div>
+
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/plugs/toastr.min.js"></script>
+<script src="~/js/jquery-3.5.1.slim.min.js"></script>
+<script>
+   $(document).ready(function () {
+       $("#checkAll").click(function () {
+           $("input[name='chckbx']").prop('checked', $(this).prop('checked'));
+       });
+   });
+</script>
+<script>
+    function populateDropdown() {
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var final = fullUrl.replace('Index','');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', final + 'ClassByLevel?level=' + level);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+                var dropdown1 = document.getElementById('Class');
+                dropdown1.innerHTML = '';
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+<script>
+    function populateStreamDropdown() {
+        var selectedClass = document.getElementById('Class').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var final = fullUrl.replace('/Index', '');
+        console.log('fullurl', final);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', final + '/StreamsByClass?classs=' + selectedClass);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var streamedClasses = JSON.parse(xhr.responseText);
+                var hasStreamedClasses = streamedClasses.length > 0;
+                var dropdown = document.getElementById('Stream');
+                dropdown.innerHTML = '';
+                if (hasStreamedClasses) {
+                    for (var i = 0; i < streamedClasses.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = streamedClasses[i].StreamId;
+                        option.text = streamedClasses[i].Name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'Class Not Streamed';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('Stream');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = true;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown();
+        });
+    });
+</script>
+
+<script>
+    function openReport() {
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName + '/PrintReport';
+        const url = fullUrl;
+
+        var checkAll = $('#checkAll').is(':checked') ? 'All' : 'Single';
+        var reportType = $('#ReportType').val();
+        var year = $('#Year').val();
+        var branch = $('#Branch').val();
+        var term = $('#Term').val();
+        var classs = $('#Class').val();
+        var stream = $('#Stream').val();
+        var studentId = '';
+        if (!($('#checkAll').is(':checked'))) {
+            studentId = $('input[type="checkbox"]:checked').closest('tr').find('td:hidden').text();
+            console.log('studentId', studentId);
+        }
+        const model = {
+            checkAll: checkAll,
+            reportType: reportType,
+            year: year,
+            branch: branch,
+            term: term,
+            classs: classs,
+            stream: stream,
+            studentId: studentId
+        };
+
+        if (!reportType) {
+            console.log('reportType', reportType);
+            document.getElementById('ReportType').classList.add('is-invalid');
+            return;
+        }
+
+        var checkboxes = document.getElementsByName('chckbx');
+        var checked = false;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checked = true;
+                break;
+            }
+        }
+
+        if (!checked) {
+            console.log('checked count', checkboxes.length);
+            $(document).Toasts('create', {
+                class: 'bg-info',
+                body: 'You have not selected a student.',
+                title: 'Eskul',
+                subtitle: 'Streamlining school administration',
+            });
+            return false;
+        } else {
+            $('#processingModal').modal('show');
+        }
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = fullUrl;
+
+        for (const key in model) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = model[key];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+
+        fetch(fullUrl, { method: 'POST', body: new FormData(form) })
+            .then(response => {
+                document.body.removeChild(form);
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('text/html')) {
+                    return response.text().then(text => {
+                        $('#processingModal').modal('hide');
+                        if (text.includes('error')) {
+                            toastr.error('Error Occurred Contact Admin', "Eskul");
+                        } else {
+                            toastr.info('No Report To Show', "Eskul");
+                        }
+                    });
+                } else {
+                    return response.blob().then(blob => {
+                        $('#processingModal').modal('hide');
+                        if (blob.type === 'text/html') {
+                            toastr.info('No Report To Show', "Eskul");
+                        } else {
+                            const newWindow = window.open('', '_blank');
+                            const blobUrl = URL.createObjectURL(blob);
+                            newWindow.location.href = blobUrl;
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                $('#processingModal').modal('hide');
+                toastr.error('Error Occurred Contact Admin', "Eskul");
+            });
+    }
+
+</script>

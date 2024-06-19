@@ -1,0 +1,63 @@
+﻿@model Eskul.Models.subject
+@{
+
+    var editmodel = Model.SubEdit;
+}
+<div class="modal fade" id="modal-info">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit  Subject</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                    <form asp-action="Edit" class="needs-validation" novalidate>
+                            <div class="card-body">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="@Model.SubEdit.Subject_code" />
+                            <input type="hidden" asp-for="@Model.SubEdit.Subject_code" />
+
+                            <div class="form-group">
+                                    <label for="Subjectcode">Subject Code</label>
+                                <input asp-for="@Model.SubEdit.Subject_code" class="form-control form-control-sm" />
+                                <div class="invalid-feedback">This Field is Required</div>
+
+                            </div>
+                                <div class="form-group">
+                                    <label for="Subjectname">Subject Name</label>
+                                <input asp-for="@Model.SubEdit.Subject_name" class="form-control form-control-sm" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="Examlevel">Exam Level</label>
+                                @Html.DropDownListFor(m =>@Model.SubEdit.Examlevel, new List<SelectListItem>
+                                    {       new SelectListItem{Text="Select", Value=""},
+                                new SelectListItem{Text="O Level", Value="O"},
+                                new SelectListItem{Text="A Level", Value="A"}},htmlAttributes:new {@class=" form-control form-control-sm",required = "required"})
+                                <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                                <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input custom-control-input-primary custom-control-input-outline" type="checkbox" id="customCheckbox5" asp-for="@Model.SubEdit.Compulsory">
+                                    <label for="customCheckbox5" class="custom-control-label"> Is Compulsory </label>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-block btn-sm mybtn" />
+                        </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,667 @@
+﻿@model Eskul.Models.subject
+@{
+    ViewData["Title"] = "Home Page";
+}
+<br />
+<style>
+    .info-box {
+        box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+        border-radius: 0.25rem;
+        background-color: #fff;
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 1rem;
+        min-height: 70px;
+        padding: 0.5rem;
+        position: relative;
+        width: 100%;
+        height: 20px;
+    }
+
+        .info-box .info-box-icon {
+            border-radius: 0.25rem;
+            -ms-flex-align: center;
+            align-items: center;
+            display: -ms-flexbox;
+            display: flex;
+            font-size: 1.875rem;
+            -ms-flex-pack: center;
+            justify-content: center;
+            text-align: center;
+            width: 50px;
+        }
+</style>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-6 col-sm-6 col-md-3">
+                <div class="info-box bg-success">
+                    <span class="info-box-icon"><i class="fas fa-check-circle" style="color:azure;"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Present</span>
+                        <span class="info-box-number" id="PresentCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-3">
+                <div class="info-box bg-danger">
+                    <span class="info-box-icon"><i class="fas fa-times-circle" style="color:azure;"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Absent</span>
+                        <span class="info-box-number" id="AbsentCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-3">
+                <div class="info-box bg-warning">
+                    <span class="info-box-icon"><i class="fas fa-clock" style="color:azure;"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Late</span>
+                        <span class="info-box-number" id="LateCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-3">
+                <div class="info-box bg-info">
+                    <span class="info-box-icon"><i class="fas fa-exclamation-circle" style="color:azure;"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Half Day</span>
+                        <span class="info-box-number" id="HalfDayCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- /.row -->
+        <!-- Main row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card box box-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Daily  Attendance</h3>
+                        <div class="card-tools">
+                            <div class="form-group">
+                                <label for="classFilter">Filter by Class:</label>
+                                <select id="classFilter" class="form-control">
+                                    <option value="all">All</option>
+                                    <option value="Senior One">Senior One</option>
+                                    <option value="Senior Two">Senior Two</option>
+                                    <option value="Senior Three">Senior Three</option>
+                                    <option value="Senior Four">Senior Four</option>
+                                    <option value="Senior Five">Senior Five</option>
+                                    <option value="Senior Six">Senior Six</option>
+                                </select>
+                            </div>
+                            @*<button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>*@
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="d-md-flex">
+                            <div class="p-1 flex-fill" style="overflow: hidden">
+                                <canvas id="monthlyAttendanceChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card box box-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Student Attendance Summary</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Present</th>
+                                    <th>Absent</th>
+                                    <th>Late</th>
+                                    <th>Half Day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>January</td>
+                                    <td>25</td>
+                                    <td>5</td>
+                                    <td>3</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>February</td>
+                                    <td>23</td>
+                                    <td>7</td>
+                                    <td>1</td>
+                                    <td>4</td>
+                                </tr>
+                                <!-- Add more rows for other months -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card box box-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Attendance Distribution</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="attendanceDonutChart"></canvas>
+                </div>
+            </div>
+            </div>
+        </div>
+        @*<div class="row">
+            <div class="col-lg-12">
+                <div class="card box box-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Attendance Trends</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card box box-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Students with High Absenteeism Rate</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Absenteeism Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>12%</td>
+                                </tr>
+                                <!-- Add more rows for other students with high absenteeism rate -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card box box-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Attendance by Class</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="attendanceByClassChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card box box-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Monthly Attendance by Class</h3>
+                        <div class="card-tools">
+                            <div class="form-group">
+                                <label for="attendanceByClassSelect">Class:</label>
+                                <select class="form-control" id="attendanceByClassSelect">
+                                    <option value="Senior One">Senior One</option>
+                                    <option value="Senior Two">Senior Two</option>
+                                    <option value="Senior Three">Senior Three</option>
+                                    <option value="Senior Four">Senior Four</option>
+                                    <option value="Senior Five">Senior Five</option>
+                                    <option value="Senior Six">Senior Six</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="d-md-flex">
+                            <div class="p-1 flex-fill" style="overflow: hidden">
+                                <canvas id="monthlyAttendanceByClassChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/plugs/Chart.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Fetch attendance data from the server (replace with your API endpoint or data source)
+        var attendanceData = [
+            { class: 'Senior One', present: 80, absent: 10, halfDay: 5, late: 5 },
+            { class: 'Senior Two', present: 75, absent: 15, halfDay: 4, late: 6 },
+            { class: 'Senior Three', present: 85, absent: 8, halfDay: 2, late: 5 },
+            { class: 'Senior Four', present: 90, absent: 5, halfDay: 3, late: 2 },
+            { class: 'Senior Five', present: 70, absent: 20, halfDay: 7, late: 3 },
+            { class: 'Senior Six', present: 80, absent: 12, halfDay: 6, late: 2 }
+        ];
+
+        // Prepare labels and data arrays for the chart (initially for all classes)
+        var labels = attendanceData.map(function (item) {
+            return item.class;
+        });
+        var presentData = attendanceData.map(function (item) {
+            return item.present;
+        });
+        var absentData = attendanceData.map(function (item) {
+            return item.absent;
+        });
+        var halfDayData = attendanceData.map(function (item) {
+            return item.halfDay;
+        });
+        var lateData = attendanceData.map(function (item) {
+            return item.late;
+        });
+
+        // Create the monthly attendance chart
+        var ctx = document.getElementById('monthlyAttendanceChart').getContext('2d');
+        var monthlyAttendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Present',
+                        data: presentData,
+                        backgroundColor: 'rgba(40, 167, 69, 0.8)'
+                    },
+                    {
+                        label: 'Absent',
+                        data: absentData,
+                        backgroundColor: 'rgba(220, 53, 69, 0.8)'
+                    },
+                    {
+                        label: 'Half Day',
+                        data: halfDayData,
+                        backgroundColor: 'rgba(255, 193, 7, 0.8)'
+                    },
+                    {
+                        label: 'Late',
+                        data: lateData,
+                        backgroundColor: 'rgba(0, 123, 255, 0.8)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Handle class filter change event
+        $('#classFilter').on('change', function () {
+            var selectedClass = $(this).val();
+
+            if (selectedClass === 'all') {
+                // Show data for all classes
+                monthlyAttendanceChart.data.labels = labels;
+                monthlyAttendanceChart.data.datasets[0].data = presentData;
+                monthlyAttendanceChart.data.datasets[1].data = absentData;
+                monthlyAttendanceChart.data.datasets[2].data = halfDayData;
+                monthlyAttendanceChart.data.datasets[3].data = lateData;
+            } else {
+                // Show data for the selected class
+                var selectedClassData = attendanceData.find(function (item) {
+                    return item.class === selectedClass;
+                });
+                monthlyAttendanceChart.data.labels = [selectedClass];
+                monthlyAttendanceChart.data.datasets[0].data = [selectedClassData.present];
+                monthlyAttendanceChart.data.datasets[1].data = [selectedClassData.absent];
+                monthlyAttendanceChart.data.datasets[2].data = [selectedClassData.halfDay];
+                monthlyAttendanceChart.data.datasets[3].data = [selectedClassData.late];
+            }
+
+            monthlyAttendanceChart.update();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Fetch attendance data from the server (replace with your API endpoint or data source)
+        var attendanceData = [
+            { month: 'January', count: 80 },
+            { month: 'February', count: 85 },
+            { month: 'March', count: 90 },
+            // Add more data points for other months
+        ];
+
+        // Prepare labels and data arrays for the chart
+        var labels = attendanceData.map(function (item) {
+            return item.month;
+        });
+        var data = attendanceData.map(function (item) {
+            return item.count;
+        });
+
+        // Create the attendance trends line chart
+        var ctx = document.getElementById('attendanceChart').getContext('2d');
+        var attendanceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Attendance',
+                    data: data,
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointBackgroundColor: 'rgba(0, 123, 255, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(0, 123, 255, 1)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function (value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Fetch attendance data from the server (replace with your API endpoint or data source)
+        var attendanceData = [
+            { label: 'Present', count: 75 },
+            { label: 'Absent', count: 10 },
+            { label: 'Half Day', count: 8 },
+            { label: 'Late', count: 7 }
+        ];
+
+        // Prepare labels and data arrays for the chart
+        var labels = attendanceData.map(function (item) {
+            return item.label;
+        });
+        var data = attendanceData.map(function (item) {
+            return item.count;
+        });
+
+        // Create the attendance distribution donut chart
+        var ctx = document.getElementById('attendanceDonutChart').getContext('2d');
+        var attendanceDonutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        'rgba(0, 123, 255, 0.8)',
+                        'rgba(255, 0, 0, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(0, 166, 90, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Fetch attendance data from the server (replace with your API endpoint or data source)
+        var attendanceData = [
+            { class: 'Senior One', present: 80, absent: 10, halfDay: 5, late: 5 },
+            { class: 'Senior Two', present: 75, absent: 15, halfDay: 4, late: 6 },
+            { class: 'Senior Three', present: 85, absent: 8, halfDay: 2, late: 5 },
+            { class: 'Senior Four', present: 90, absent: 5, halfDay: 3, late: 2 },
+            { class: 'Senior Five', present: 70, absent: 20, halfDay: 7, late: 3 },
+            { class: 'Senior Six', present: 80, absent: 12, halfDay: 6, late: 2 }
+        ];
+
+        // Prepare labels and data arrays for the chart
+        var labels = attendanceData.map(function (item) {
+            return item.class;
+        });
+        var presentData = attendanceData.map(function (item) {
+            return item.present;
+        });
+        var absentData = attendanceData.map(function (item) {
+            return item.absent;
+        });
+        var halfDayData = attendanceData.map(function (item) {
+            return item.halfDay;
+        });
+        var lateData = attendanceData.map(function (item) {
+            return item.late;
+        });
+
+        // Create the attendance by class bar chart
+        var ctx = document.getElementById('attendanceByClassChart').getContext('2d');
+        var attendanceByClassChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Present',
+                        data: presentData,
+                        backgroundColor: 'rgba(40, 167, 69, 0.8)'
+                    },
+                    {
+                        label: 'Absent',
+                        data: absentData,
+                        backgroundColor: 'rgba(220, 53, 69, 0.8)'
+                    },
+                    {
+                        label: 'Half Day',
+                        data: halfDayData,
+                        backgroundColor: 'rgba(255, 193, 7, 0.8)'
+                    },
+                    {
+                        label: 'Late',
+                        data: lateData,
+                        backgroundColor: 'rgba(0, 123, 255, 0.8)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script>
+$(document).ready(function () {
+  var classData = {
+    'Senior One': {
+      present: [90, 92, 87, 91, 89, 92, 88, 90, 86, 91, 87, 90],
+      absent: [4, 3, 6, 5, 4, 6, 3, 4, 6, 3, 5, 4],
+      late: [3, 4, 2, 3, 3, 2, 4, 3, 4, 2, 3, 4],
+      halfDay: [3, 1, 5, 4, 4, 2, 5, 3, 4, 5, 2, 3]
+    },
+    'Senior Two': {
+      present: [92, 91, 90, 89, 88, 91, 90, 92, 87, 91, 89, 90],
+      absent: [3, 4, 5, 6, 3, 4, 5, 6, 3, 4, 5, 4],
+      late: [2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 2],
+      halfDay: [5, 3, 3, 2, 1, 5, 3, 3, 2, 3, 1, 5]
+    },
+    'Senior Three': {
+      present: [88, 90, 91, 87, 89, 90, 88, 91, 87, 90, 86, 92],
+      absent: [6, 5, 4, 6, 5, 3, 6, 4, 5, 3, 4, 2],
+      late: [3, 2, 3, 4, 3, 2, 4, 3, 2, 4, 3, 4],
+      halfDay: [3, 4, 3, 2, 2, 5, 3, 3, 3, 2, 2, 6]
+    },
+    'Senior Four': {
+      present: [90, 88, 91, 87, 90, 86, 92, 88, 89, 91, 87, 90],
+      absent: [5, 6, 4, 6, 3, 6, 2, 5, 4, 3, 6, 4],
+      late: [3, 4, 3, 2, 4, 2, 5, 4, 3, 4, 2, 3],
+      halfDay: [2, 2, 2, 5, 3, 6, 1, 3, 4, 2, 5, 3]
+    },
+    'Senior Five': {
+      present: [91, 89, 87, 92, 90, 91, 88, 89, 87, 93, 88, 90],
+      absent: [4, 6, 5, 4, 3, 6, 5, 4, 5, 3, 6, 5],
+      late: [3, 4, 2, 4, 3, 4, 3, 2, 4, 2, 3, 4],
+      halfDay: [2, 1, 6, 3, 4, 3, 2, 3, 2, 5, 3, 1]
+    },
+    'Senior Six': {
+      present: [87, 89, 90, 88, 91, 87, 92, 90, 89, 91, 86, 90],
+      absent: [6, 5, 3, 4, 6, 4, 5, 3, 6, 4, 3, 4],
+      late: [3, 2, 4, 3, 2, 4, 3, 2, 4, 3, 2, 3],
+      halfDay: [4, 4, 3, 5, 3, 4, 2, 5, 3, 4, 5, 3]
+    }
+  };
+
+  // Create the initial chart
+  var ctx = document.getElementById('monthlyAttendanceByClassChart').getContext('2d');
+  var monthlyAttendanceByClassChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      datasets: [
+        {
+          label: 'Present',
+          data: classData['Senior One'].present,
+          backgroundColor: 'rgba(40, 167, 69, 0.5)',
+          borderColor: 'rgba(40, 167, 69, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Absent',
+          data: classData['Senior One'].absent,
+          backgroundColor: 'rgba(220, 53, 69, 0.5)',
+          borderColor: 'rgba(220, 53, 69, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Late',
+          data: classData['Senior One'].late,
+          backgroundColor: 'rgba(255, 193, 7, 0.5)',
+          borderColor: 'rgba(255, 193, 7, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Half Day',
+          data: classData['Senior One'].halfDay,
+          backgroundColor: 'rgba(0, 123, 255, 0.5)',
+          borderColor: 'rgba(0, 123, 255, 1)',
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: function (value) {
+              return value + '%';
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Update the chart with new data based on the selected class
+  function updateMonthlyAttendanceByClassChart(selectedClass) {
+    monthlyAttendanceByClassChart.data.datasets[0].data = classData[selectedClass].present;
+    monthlyAttendanceByClassChart.data.datasets[1].data = classData[selectedClass].absent;
+    monthlyAttendanceByClassChart.data.datasets[2].data = classData[selectedClass].late;
+    monthlyAttendanceByClassChart.data.datasets[3].data = classData[selectedClass].halfDay;
+    monthlyAttendanceByClassChart.update();
+  }
+
+  // Handle class selection change
+  $('#attendanceByClassSelect').on('change', function () {
+    var selectedClass = $(this).val();
+    updateMonthlyAttendanceByClassChart(selectedClass);
+  });
+});
+
+</script>
+
+
+
+

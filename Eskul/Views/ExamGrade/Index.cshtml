@@ -1,0 +1,169 @@
+﻿@model Eskul.Models.ExamGradeAdd
+@{
+
+    var listmodel = Model.examGrades;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        @*<partial name="_Subject" />*@
+        <div class="row">
+
+            <div class="col-md-3">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Exam Grade</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+           <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+           <div class="card-body">
+               <input type="hidden" asp-for="ExamGradeId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label>
+                    @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"})
+                    <div class="invalid-feedback">This Field is Required</div>                   
+            </div>
+            <div class="form-group">
+                <label asp-for="GradeCode" class="control-label" style="font-weight: normal !important;"></label>
+                <input asp-for="GradeCode" type="text" class="form-control form-control-sm" required autocomplete="off" />
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="GradePoints" class="control-label" style="font-weight: normal !important;"></label>
+                <input asp-for="GradePoints" type="text" class="form-control form-control-sm" required autocomplete="off"/>
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PercentageFrom" class="control-label" style="font-weight: normal !important;"></label>
+                <input asp-for="PercentageFrom" type="text" value"" class="form-control form-control-sm" max="100" required autocomplete="off" />
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PercentagefTo" class="control-label" style="font-weight: normal !important;"></label>
+                <input asp-for="PercentagefTo" type="text" class="form-control form-control-sm" required autocomplete="off" max="100"/>
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="GradeRank" class="control-label" style="font-weight: normal !important;"></label>
+                <input asp-for="GradeRank" type="text" class="form-control form-control-sm" required autocomplete="off"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label" style="font-weight: normal !important;"></label>
+                <textarea asp-for="Comment" class="form-control form-control-sm" required autocomplete="off"></textarea>
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="GradeDescriptor" class="control-label" style="font-weight: normal !important;">Grade Descriptor</label>
+                <textarea asp-for="GradeDescriptor" class="form-control form-control-sm" required autocomplete="off"></textarea>
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+            </div>
+            </div>
+            
+        </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-9">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Class
+                            </th>
+                            <th>
+                              Code
+                            </th>
+                            <th>
+                               Points
+                            </th>
+                            <th>
+                              From
+                            </th>
+                            <th>
+                              To
+                            </th>
+                            <th>
+                              Rank
+                            </th>
+                            <th>
+                                Comment
+                            </th>
+
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                @if (listmodel != null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Classcode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.GradeCode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.GradePoints)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PercentageFrom)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PercentagefTo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.GradeRank)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Comment)
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.ExamGradeId">Edit</a>
+                                                <button class="btn btn-xs btn-danger " id="delete" data-id="@item.ExamGradeId"data-toggle="modal" data-target="#modal-info" onclick="del('@item.ExamGradeId')" data-controller="ExamGrade" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                            No Record Found
+                                        </td>
+
+                                    </tr>
+                                }
+                                
+                    </tbody>
+                </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/additional-methods.min.js"></script>
+<script src="~/js/FormValidation.js"></script>

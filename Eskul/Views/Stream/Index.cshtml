@@ -1,0 +1,211 @@
+﻿@model Eskul.Models.stream
+@{
+
+    var listmodel = Model.streams;
+}
+
+<br />
+<style>
+
+    .modal-dialog {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        border-radius: 8px;
+    }
+
+</style>
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit Stream</h6>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="" id="BookReturn" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <div id="input-type" class="row">
+                                                        <input type="hidden" name="StreamId" asp-for="streamId" id="streamid" />
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Class" id="my-dropdown" class="control-label" style="font-weight: normal !important;">Class</label>
+                                                @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select", style = "width: 100%;", id="Class", name="Class", required = "required" })
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="name" style="font-weight: normal !important;"> Name</label>
+                                                <input asp-for="name" name="name" id="name" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="StudentLimit" style="font-weight: normal !important;"> Student Limit</label>
+                                                <input asp-for="StudentLimit" name="StudentLimit" id="StudentLimit" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" formaction="~/Stream/Create" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                    <div class="row">
+                        <!-- /.col-md-8 -->
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <p>
+                                        <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp; Add Stream</a>
+                                    </p>
+                                    <table id="example2" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Code
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Class
+                                                </th>
+                                                <th>
+                                                    Limit
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.StreamId
+                                                        </td>
+                                                        <td>
+                                                            @item.Name
+                                                        </td>
+                                                        <td>
+                                                            @item.Class
+                                                        </td>
+                                                        <td>
+                                                            @item.StudentLimit
+                                                        </td>
+                                                        <td>
+
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.StreamId" data-lim="@item.StudentLimit" data-name="@item.Name" data-myclass="@item.Class" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.StreamId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.StreamId')" data-action="Delete" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="4" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-md-8 -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    function populateDropdown() {
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        pathName = pathName.replace('StreamClassByLevel', 'Stream/ClassByLevel').replace('/Index', '');
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl1 = fullUrl1 + '/ClassByLevel?level=' + level;
+        var Url2 = fullUrl1.replace('StreamClassByLevel', 'Stream/ClassByLevel');
+        var fullUrl = Url2.replace('undefined', '');
+        var controllerName = pathName.split('/')[0];
+        console.log(pathName);
+        console.log(fullUrl);
+        console.log(controllerName);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+                var dropdown1 = document.getElementById('Class');
+                dropdown1.innerHTML = '';
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var streamid = $(this).data('id');
+            var name = $(this).data('name');
+            var myclass = $(this).data('myclass');
+            var Limit = $(this).data('lim');
+            console.log('Class', myclass);
+            $('#modal-default #streamid').val(streamid);
+            $('#modal-default #name').val(name);
+            $('#Class').val(myclass).change();
+            $('#modal-default #StudentLimit').val(Limit);
+        });
+</script>
+<script src="~/js/ModalRest.js"></script>
+

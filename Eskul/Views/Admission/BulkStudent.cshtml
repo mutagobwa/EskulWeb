@@ -1,0 +1,86 @@
+﻿@model Eskul.Models.BulkImport
+@{
+
+    var listmodel = Model.ImportFiles;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    @*<partial name="_Subject" />*@
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                
+                                <div class="card-body">
+                                    <p>
+                                        <a asp-action="Create" class="btn btn btn-sm mybtn">Back</a>
+                                    </p>
+                                    <table id="example1" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>File Name</th>
+                                                <th>File Path</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.FileName
+                                                        </td>
+                                                        <td>
+                                                            @item.FilePath
+                                                        </td>
+                                                        <td>
+                                                            <a href="@Url.Action("BulkStudentImport", "Admission", new { fileName = @item.FileName, fileExt = @item.FileExt })" class="btn btn-xs btn-primary">Import</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="4" class="text-centere">
+                                                        No File To Import
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-md-8 -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/signalr.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/StudentCountHub")
+        .build();
+
+    connection.on("UserCountChanged", function (userCount) {
+        $("#userCount").text(userCount);
+
+    });
+    connection.on("StudentCountChanged", function (StudentCount) {
+        $("#StudentCount").text(StudentCount);
+    });
+    connection.start().then(function () {
+        console.log("SignalR connection established.");
+    });
+</script>

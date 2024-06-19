@@ -1,0 +1,161 @@
+﻿@model Eskul.Models.ExhibitedValues
+@{
+
+    var listmodel = Model.exhibitedValues;
+}
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="modal fade" id="modal-lg">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content box box-primary">
+                    <div class="modal-header myheader">
+                        <h4 class="modal-title">Add/Edit Student Values</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                            <div class="card-body">
+                                <div class="row">
+                                    <input hidden asp-for="StudentId" name="StudentId" id="StudentId" />
+                                    <input hidden asp-for="Class" name="Class" id="Class1" />
+                                    <input hidden asp-for="Stream" name="Stream" id="Stream1" />
+                                    <input hidden asp-for="Level" name="Level" id="Level1" />
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="valueId" class="control-label" style="font-weight: normal !important;">Value</label><small class="req"> *</small>
+                                            @Html.DropDownList("valueId", (IEnumerable<SelectListItem>)ViewBag.ValueDefinitions, new { @class = "select",style = "width: 100%;",id="valueId",name="valueId",required = "required"} )
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label style="font-weight: normal !important;">Score</label><small class="req"> *</small>
+                                            @Html.DropDownListFor(m => m.valueRating, new List<SelectListItem>
+                                            {
+                                            new SelectListItem{Text="Failed to meet the expectations", Value="0"},
+                                            new SelectListItem{Text="Greatly below expectations", Value="1"},
+                                            new SelectListItem{Text="Below expectations", Value="2"},
+                                            new SelectListItem{Text="Met expectations", Value="3"},
+                                            new SelectListItem{Text="Exceded expectations", Value="4"},
+                                            new SelectListItem{Text="Greatly exceeded expectations", Value="5"}
+                                            },
+                                            htmlAttributes:new { @class = "select",style = "width: 100%;",name="valueRating",id="valueRating",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label" style="font-weight: normal !important;" for="comments">Comments</label>
+                                            <textarea asp-for="comments" class="form-control form-control-sm" name="comments" id="comments" required="required"></textarea>
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+                                        <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <div class="card-body">
+            <div class="content">
+                <p>
+                    <a asp-action="Index" class="btn btn-sm mybtn" asp-route-Class="@Model.Class" asp-route-Stream="@Model.Stream">Back To List</a>
+                </p>
+                <div class="col-md-12">
+
+                    <div class="box box-primary">
+                        <div class="card-body">
+                            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="row"><div class="col-sm-12 col-md-6"></div><div class="col-sm-12 col-md-6"></div></div><div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="example1" class="table table-bordered table-striped table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Student Values
+                                                    </th>
+                                                    <th>
+                                                        Score
+                                                    </th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (listmodel != null)
+                                                {
+                                                    @foreach (var item in listmodel)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @item.valueDescription
+                                                            </td>
+                                                            <td>
+                                                                @item.valueRating
+                                                            </td>
+
+                                                            <td>
+                                                                <a asp-action="Edit" asp-route-id="@item.valueId" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#modal-lg" data-id="@item.valueId" data-comments="@item.comments" data-valueRating="@item.valueRating" id="BookReturn" action="Edit/@item.valueId">Edit</a>
+@*                                                                 <a asp-action="Edit" class="edit-button btn btn-xs btn-primary" asp-route-id="@item.valueId">Edit</a>
+ *@                                                                <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.valueId" data-toggle="modal" data-controller="ExhibitedValues" data-target="#modal-info" onclick="del('@item.valueId')">Del</button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td colspan="3" class="text-centere">
+                                                            No Record Found
+                                                        </td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script src="~/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#modal-lg').on('show.bs.modal', function (e) {
+            var selectedValue = $('#BookReturn').data('id');
+            $('#BookReturn').data('valueId', selectedValue);
+            $('#modal-lg #valueId').val(selectedValue);
+            $('#modal-lg #valueRating').val($('#valueRating').val());
+            $('#modal-lg textarea[name=comments]').val($('#comments').val());
+        });
+
+        $(document).on('click', '#BookReturn', function () {
+            var valueId = $(this).data('valueId');
+            var comments = $(this).data('comments');
+            var valueRating = $(this).data('valueRating');
+
+            console.log(valueId);
+            console.log(comments);
+            console.log(valueRating);
+        });
+    });
+
+</script>
+

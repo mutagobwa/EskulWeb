@@ -1,0 +1,162 @@
+﻿@model Eskul.Models.MarkVm
+@{
+
+    var listmodel = Model.StudentList;
+     var marklistmodel = Model.studentMarkLists;
+}
+
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-3">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                                    <form asp-action="Create" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                 <div class="form-group">
+               <label asp-for="StudentClass" class="control-label" style="font-weight: normal !important;" id="Disabilitycode">Class</label>
+                                            @Html.DropDownList("classcode", (IEnumerable<SelectListItem>)ViewBag.Classs, new { @class = "select",style = "width: 100%;",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+             <div class="form-group">
+               <label asp-for="Stream" class="control-label" style="font-weight: normal !important;" id="Disabilitycode">Streams</label>
+               @Html.DropDownList("streamname", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select",style = "width: 100%;"})    
+             </div>
+              <div class="form-group">
+               <label asp-for="StudentSubject" class="control-label" style="font-weight: normal !important;" id="Disabilitycode">Subject</label>
+                                            @Html.DropDownList("Subject_name", (IEnumerable<SelectListItem>)ViewBag.Subjects, new { @class = "select",style = "width: 100%;",onchange="getPapers(this)",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+             <div class="form-group">
+               <label asp-for="SubjectPaper" class="control-label" style="font-weight: normal !important;" id="Disabilitycode">Subject Paper</label>
+                                            @Html.DropDownList("Paper_Name", (IEnumerable<SelectListItem>)ViewBag.SubPaper, new { @class = "select",style = "width: 100%;",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+            <div class="form-group">
+                                         <label for="Examlevel">Term</label>
+                                            @Html.DropDownListFor(m => m.TermCode, new List<SelectListItem>
+                                            {       new SelectListItem{Text="Select", Value=""},
+                                            new SelectListItem{Text="Term One", Value="1"},
+                                            new SelectListItem{Text="Term Two", Value="2"}, new SelectListItem{Text="Term Three", Value="3"}},htmlAttributes:new { @class = "select",style = "width: 100%;",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                        </div> 
+            <div class="form-group">
+                <label asp-for="StudentNo" class="control-label" style="font-weight: normal !important;"></label>
+                <input asp-for="StudentNo" class="form-control" />
+                <span asp-validation-for="StudentNo" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+               <label asp-for="StudentNmae" class="control-label" style="font-weight: normal !important;" id="Disabilitycode">Student Name</label>
+                                            @Html.DropDownList("Firstname", (IEnumerable<SelectListItem>)ViewBag.Students, new { @class = "select",style = "width: 100%;"})
+                                        </div>
+            <div class="form-group">
+                                            <input type="submit" value="Load" class="btn btn-block btn-sm mybtn" />
+            </div>
+
+        </form>
+         </div>
+                </div>
+                </div>
+            <!-- /.col-md-9 -->
+            <div class="col-md-9">
+                <div class="box box-primary">
+                     <div class="card-body">
+
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                  Student Number
+                                </th>
+                                <th>
+                                    Student Name
+                                </th>
+                                <th>
+                                    Score
+                                </th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          @if (listmodel != null)
+                              {
+                        @foreach (var item in listmodel)
+                                {
+                                        <tr  data-id="@item.Nin">
+                                            <td>
+                                                @item.Studentno
+                                                </td>
+                                            <td>
+                                                    @item.Firstname
+                                            </td>
+                                            <td>
+                                               <input asp-for="@marklistmodel.FirstOrDefault().Score" class="form-control" type="text" value="@marklistmodel.FirstOrDefault().Score" style="width:40px; height:30px;" onenter="alert('clicked')"/>  
+                                            </td>
+                                            <td>
+                                            <input asp-for="@marklistmodel.FirstOrDefault().Score" class="form-control"  value="@marklistmodel.FirstOrDefault().Score"  style="width:40px; height:30px;" />
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-9 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script>
+    function getPapers(e){
+        var code = e.value;
+        $.ajax({
+            url:'',
+            method:'GET',
+            data:{
+                code:code
+            },
+            beforeSend: function(){},
+            success: function(resp){
+                console.log(resp)
+            }
+        })
+    }
+    
+    $(document).on('click','#yourExam',function(){
+        alert('hello world')
+    })
+    $(document).ready(function () {
+        $('#yourExam').on('change',function(){
+            alert('hello world')
+        })
+
+        $('tr').click(function () {
+            alert('values: ' + $(this).data('id')); 
+        });
+    });
+
+    
+
+</script>

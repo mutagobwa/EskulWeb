@@ -1,0 +1,112 @@
+﻿@model Eskul.Models.Designation
+@{
+
+    var listmodel = Model.designations;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        @*<partial name="_Subject" />*@
+        <div class="row">
+
+            <div class="col-md-3">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Designation</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+                             <input type="hidden" asp-for="DesignationCode"/>
+                            <div class="form-group">
+                                <label for="DesignationCode" style="font-weight: normal !important;">Code</label>
+                                <input asp-for="DesignationCode" class="form-control form-control-sm" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label for="DesignationName" style="font-weight: normal !important;">Name</label>
+                                <input asp-for="DesignationName" name="DesignationName" class="form-control form-control-sm" required />
+                                <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre"/>
+                        </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-9">
+                <div class="box box-primary">
+                     <div class="card-body">
+                          <p>
+                             <a asp-action="Create" class="btn btn-sm mybtnsm"><i class="fa fa-plus"></i>&nbsp; Add Designation</a>
+                         </p>
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Designation Code
+                                </th>
+                                <th>
+                                    Designation Name
+                                </th>
+                                
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.DesignationCode
+                                                </td>
+                                            <td>
+                                                    @item.DesignationName
+                                            </td>
+                                           
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.DesignationCode">Edit</a>
+                                                 <button class="btn btn-xs btn-danger " id="delete" data-id="@item.DesignationCode"data-toggle="modal" data-target="#modal-info" onclick="del('@item.DesignationCode')" data-controller="Designation" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/additional-methods.min.js"></script>
+<script src="~/js/FormValidation.js"></script>

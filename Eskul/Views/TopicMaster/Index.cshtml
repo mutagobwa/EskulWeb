@@ -1,0 +1,332 @@
+﻿@model Eskul.Models.SubjectTopics
+@{
+
+
+    var listmodel = Model.Topics;
+}
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        display: none;
+    }
+</style>
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-default">
+                        <div class="modal-dialog">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="font-weight:bold;">Add/Edit Topic</h5>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="Steacher" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="TopicId" />
+                                            <input type="hidden" asp-for="StatusId" />
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <div id="input-type" class="row">
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="ClassId" class="control-label" style="font-weight: normal !important;">Class</label>
+                                                @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select", style = "width: 100%;", id="ClassId", name="ClassId", required="required" })
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="SubjectCode" class="control-label" style="font-weight: normal !important;">Subject</label>
+                                                @Html.DropDownList("SubjectCode", (IEnumerable<SelectListItem>)ViewBag.Subjects, new { @class = "select", style = "width: 100%;", id="SubjectCode", name="SubjectCode", required="required" })
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="TopicName" style="font-weight: normal !important;">Topic Name</label>
+                                                <input asp-for="TopicName" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Period" style="font-weight: normal !important;">Period</label>
+                                                <input asp-for="Period" class="form-control form-control-sm" value="@(Model.Period == 0 ? "" : Model.Period.ToString())" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <div class="row">
+                        <!-- /.col-md-8 -->
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <div class="card card-outline card-default">
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-body my-custom-class">
+                                            <form asp-action="Index"  class="needs-validation" novalidate>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="col-sm-12">
+                                                            <div id="input-type" class="row">
+                                                                <div class="col-sm-4">
+                                                                    <label class="radio-inline" style="font-weight:normal;">
+
+                                                                        <input name="Levelo" class="Core" value="O" type="radio" onchange="populateDropdowno()">O-Level
+
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <label class="radio-inline" style="font-weight:normal;">
+                                                                        <input name="Levelo" class="finetype" value="A" type="radio" onchange="populateDropdowno()">A-Level
+                                                                    </label>
+                                                                </div>
+
+                                                            </div>
+                                                            
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label asp-for="ClassId" class="control-label" style="font-weight: normal !important;">Class</label><small class="req"> *</small>
+                                                            @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="ClassIdo",name="ClassIdo",required = "required"} )
+                                                            <div class="invalid-feedback">This Field is Required</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label asp-for="SubjectCode" class="control-label" style="font-weight: normal !important;">Subject</label>
+                                                            @Html.DropDownList("SubjectCode", (IEnumerable<SelectListItem>)ViewBag.Subjects, new { @class = "select",style = "width: 100%;",id="SubjectCodeo",name="SubjectCodeo",required="required"})
+                                                            <div class="invalid-feedback">This Field is Required</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="clearfix float-right"></div>
+                                                        <input type="submit" value="Search" class="btn btn-block btn-xs btn-sm mybtn" />
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp; Add Topic</a>
+                                    </p>
+                                    <table id="example1" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Topic Name
+                                                </th>
+                                                <th>
+                                                    Period
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.TopicName
+                                                        </td>
+                                                        <td>
+                                                            @item.Period
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="TComp" class="btn btn-xs btn-warning" asp-route-id="@item.TopicId">Topic Compitence</a>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.TopicId" data-code="@item.TopicName" data-name="@item.Period" data-location="@item.SubjectCode" data-headoffice="@item.Level" data-toggle="modal" data-target="#modal-default">Edit</a>
+
+                                                            <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.TopicId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.TopicId')" data-controller="TopicMaster">Delete</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="4" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-md-8 -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    function populateDropdown() {
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var values = JSON.parse(xhr.responseText);
+                    var dropdown1 = document.getElementById('ClassId');
+                    dropdown1.innerHTML = '';
+                    for (var i = 0; i < values.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = values[i].classcode;
+                        option.text = values[i].Name;
+                        dropdown1.appendChild(option);
+                    }
+                    var xhr2 = new XMLHttpRequest();
+                        xhr2.open('GET', fullUrl + '/SubjectByLevel?level=' + level);
+                    xhr2.onload = function () {
+                        if (xhr2.status === 200) {
+                            var subjects = JSON.parse(xhr2.responseText);
+                            var dropdown2 = document.getElementById('SubjectCode');
+                            dropdown2.innerHTML = '';
+                            for (var i = 0; i < subjects.length; i++) {
+                                var option = document.createElement('option');
+                                option.value = subjects[i].Subject_code;
+                                option.text = subjects[i].Subject_name;
+                                dropdown2.appendChild(option);
+                            }
+                        }
+                    };
+                    xhr2.send();
+                }
+            };
+        xhr.send();
+    }
+</script>
+<script>
+    function populateStreamDropdown() {
+        var selectedClass = document.getElementById('Class').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + 'StreamsByClass?classs=' + selectedClass);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var streamedClasses = JSON.parse(xhr.responseText);
+                    var hasStreamedClasses = streamedClasses.length > 0;
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '';
+                    if (hasStreamedClasses) {
+                        for (var i = 0; i < streamedClasses.length; i++) {
+                            var option = document.createElement('option');
+                            option.value = streamedClasses[i].StreamId;
+                            option.text = streamedClasses[i].Name;
+                            dropdown.appendChild(option);
+                        }
+                    } else {
+                        var option = document.createElement('option');
+                        option.text = 'Class Not Streamed';
+                        option.disabled = true;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                    dropdown.disabled = true;
+                }
+            };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown();
+        });
+    });
+</script>
+<script>
+    function populateDropdowno() {
+        var level = document.querySelector('input[name="Levelo"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var values = JSON.parse(xhr.responseText);
+                    var dropdown1 = document.getElementById('ClassIdo');
+                    dropdown1.innerHTML = '';
+                    for (var i = 0; i < values.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = values[i].classcode;
+                        option.text = values[i].Name;
+                        dropdown1.appendChild(option);
+                    }
+                    var xhr2 = new XMLHttpRequest();
+                        xhr2.open('GET', fullUrl + '/SubjectByLevel?level=' + level);
+                    xhr2.onload = function () {
+                        if (xhr2.status === 200) {
+                            var subjects = JSON.parse(xhr2.responseText);
+                            var dropdown2 = document.getElementById('SubjectCodeo');
+                            dropdown2.innerHTML = '';
+                            for (var i = 0; i < subjects.length; i++) {
+                                var option = document.createElement('option');
+                                option.value = subjects[i].Subject_code;
+                                option.text = subjects[i].Subject_name;
+                                dropdown2.appendChild(option);
+                            }
+                        }
+                    };
+                    xhr2.send();
+                }
+            };
+        xhr.send();
+    }
+</script>

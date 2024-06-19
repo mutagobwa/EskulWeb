@@ -1,0 +1,108 @@
+﻿@model Eskul.Models.ChangePass
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="login-box">
+                        <div class="box box-primary">
+                            <div class="card-body">
+                                <form asp-action="Index" class="needs-validation" novalidate>
+                                    <div class="input-group mb-3">
+                                        <input type="password" id="Old" name="Old" class="form-control" placeholder="Old Password" autocomplete="off" required>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input type="password" id="New" name="RawPassword" class="form-control" placeholder="New Password" autocomplete="off" required>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span id="password-match-icon"></span>
+                                                <span id="password-match-message"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input type="password" id="Confirm" name="Confirm" class="form-control" placeholder="Confirm Password" autocomplete="off" required>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span id="password-match-confirm"></span>
+                                                <span id="password-match-confirm-not"></span>
+                                                <span id="password-match-confirm-icon"></span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <span id="password-match-confirm-not"></span>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-block btn-sm mybtn">Change password</button>
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.login-card-body -->
+                        </div>
+                    </div>
+                    <!-- /.login-box -->
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+$(document).ready(function() {
+    $('#New').on('input', function() {
+        // Code to validate New Password field
+        var newPassword = $('#New').val();
+        var passwordMatchMessage = $('#password-match-message');
+        var passwordMatchIcon = $('#password-match-icon');
+
+        // Check for at least 8 characters
+        if (newPassword.length < 8) {
+            passwordMatchMessage.text('Password must be at least 8 characters long');
+            passwordMatchIcon.removeClass('fas fa-check').addClass('fas fa-times');
+        } else {
+            passwordMatchMessage.text('');
+            passwordMatchIcon.removeClass('fas fa-times').addClass('fas fa-check');
+        }
+
+        // Check for uppercase letter
+        if (!/[A-Z]/.test(newPassword)) {
+            passwordMatchMessage.text('Password must contain an uppercase letter');
+            passwordMatchIcon.removeClass('fas fa-check').addClass('fas fa-times');
+        }
+
+        // Check for special character
+        if (!/[!#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+            passwordMatchMessage.text('Password must contain a special character');
+            passwordMatchIcon.removeClass('fas fa-check').addClass('fas fa-times');
+        }
+    });
+
+    $('#Confirm').on('input', function() {
+        var newPassword = $('#New').val();
+        var confirmPassword = $('#Confirm').val();
+        var passwordMatchConfirm = $('#password-match-confirm');
+        var passwordMatchConfirmNot = $('#password-match-confirm-not');
+        var passwordMatchConfirmIcon = $('#password-match-confirm-icon');
+
+        // Check if Confirm Password matches New Password
+        if (newPassword === confirmPassword) {
+            passwordMatchConfirm.text('');
+            passwordMatchConfirmNot.text('');
+            passwordMatchConfirmIcon.removeClass('fas fa-times').addClass('fas fa-check');
+        } else {
+            passwordMatchConfirm.text('Confirm Password must match New Password');
+            passwordMatchConfirmNot.text('X');
+            passwordMatchConfirmIcon.removeClass('fas fa-check').addClass('fas fa-times');
+        }
+    });
+});
+</script>

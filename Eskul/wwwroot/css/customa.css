@@ -1,0 +1,602 @@
+.theme-light {
+    --color-bg-content: #ffffff;
+    --color-bg-container: #ffffff;
+    --color-text: #ffffff;
+    --color-h-tags: #222222;
+    --color-table-tx: #222222;
+    --color-ul-main-link: #707070;
+    --color-ul-active-link: #d70700;
+    /* Check for UBA Color */
+    --color-ul-sub-link: #222222;
+    --color-border-main: #e1e1e1;
+    --color-inactive-tx: #707070;
+    --color-inactive-border: #e1e1e1;
+    --color-inactive-bg: #f3f4f7;
+    --color-light-grey-txt: #e0e0e0;
+    --color-svg-icons: #707070;
+    --color-svg-active: #d70700;
+    /* Check for UBA Color */
+    --color-svg-inactive: #ababab;
+    --color-svg-plus-btn: white;
+}
+
+.theme-dark {
+    --color-text: #000000;
+    --color-bg-content: #2f2f2f;
+    --color-bg-container: #393939;
+    --color-h-tags: #fff;
+    --color-table-tx: #fff;
+    --color-ul-main-link: #989898;
+    --color-ul-active-link: #fc5040;
+    /* Check for UBA Color */
+    --color-ul-sub-link: #ababab;
+    --color-border-main: #4b4b4b;
+    --color-inactive-tx: #ababab;
+    --color-inactive-border: #393939;
+    --color-inactive-bg: #515151;
+    --color-light-grey-txt: #848484;
+    --color-svg-icons: #e8e8e8;
+    --color-svg-active: #fc5040;
+    /* Check for UBA Color */
+    --color-svg-inactive: #ababab;
+    --color-svg-plus-btn: white;
+}
+
+body {
+    background-color: var(--color-bg-content) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.breadcrumb-style1 .breadcrumb-item a,
+body,
+.nav-label,
+.tx-color-01,
+.tx-color-03 {
+    color: var(--color-h-tags) !important;
+}
+
+.table {
+    color: var(--color-table-tx) !important;
+}
+
+.nav-aside .nav-item ul a {
+    color: var(--color-ul-sub-link) !important;
+}
+
+.nav-aside .nav-link {
+    color: var(--color-ul-main-link) !important;
+}
+
+.nav-aside .nav-item.active .nav-link,
+.nav-aside .with-sub.show:not(.active) .nav-link {
+    color: var(--color-ul-active-link) !important;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_info,
+.nav-tabs .nav-link.active,
+.dataTables_length select {
+    color: var(--color-table-tx) !important;
+    border-color: var(--color-border-main) !important;
+    background-color: var(--color-bg-container);
+}
+
+.border,
+.bd-gray-300,
+.card,
+.card-header,
+table.dataTable.no-footer,
+.table td {
+    border-color: var(--color-border-main) !important;
+    background-color: var(--color-bg-container);
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+    background-color: var(--color-bg-container);
+    border-color: var(--color-border-main);
+    color: var(--color-inactive-tx);
+}
+
+.nav-tabs .nav-link {
+    padding: 0 10px !important;
+}
+
+    /* Table Inactive Tabs */
+    .nav-tabs .nav-link {
+    background-color: var(--color-inactive-bg);
+    border-color: var(--color-inactive-bg);
+    color: var(--color-inactive-tx);
+}
+
+/* Table Search Form */
+.dataTables_wrapper .dataTables_filter input {
+    border-color: var(--color-border-main) !important;
+    background-color: var(--color-bg-container);
+    color: var(--color-table-tx);
+}
+
+    .dataTables_wrapper .dataTables_filter input::placeholder {
+        color: var(--color-light-grey-txt);
+    }
+
+table.dataTable tbody td.sorting_1,
+table.dataTable thead .sorting_asc {
+    background-color: var(--color-inactive-bg);
+}
+
+.content-header,
+.aside-header,
+.aside-body {
+    border-color: var(--color-border-main) !important;
+    background-color: var(--color-bg-container) !important;
+}
+
+/* All SVG Colors */
+svg {
+    stroke: var(--color-svg-icons) !important;
+}
+
+.nav-aside .nav-item.active svg {
+    stroke: var(--color-svg-active) !important;
+}
+
+.nav-aside svg {
+    stroke: var(--color-svg-inactive) !important;
+}
+
+.plus-btn svg {
+    stroke: var(--color-svg-plus-btn) !important;
+}
+
+/* End All SVG colors */
+
+/* Custom Login Background design */
+.spmp-bg {
+    background: url('dark.jpg') no-repeat center center fixed !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    background-size: cover !important;
+    background-color: black;
+}
+
+.app-title {
+    line-height: 12px;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+@media (max-width: 576px) {
+    .mg-l-125 {
+        margin-left: 0px !important;
+    }
+
+    .navbar-header .navbar-right {
+        position: absolute;
+        right: 0;
+    }
+
+    .spmp-logo {
+        width: 25% !important;
+    }
+
+    .uba-logo {
+        float: right;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        width: 100% !important;
+    }
+
+    .nav-tabs .nav-item + .nav-item {
+        margin-left: 0px;
+        border-bottom: 1px solid #e2e5ed;
+    }
+
+    .progress-circle {
+        font-size: 30px !important;
+    }
+
+    .holder-pie,
+    .pie-container {
+        padding-bottom: 10px;
+    }
+
+
+    .dataTables_wrapper .dataTables_filter input {
+        width: 50vw;
+    }
+
+    input {
+        margin-right: 10vw;
+    }
+}
+
+/* Custom footer design */
+.footer {
+    background: none !important;
+    color: white !important;
+    border-top: none !important;
+}
+
+.navbar-header {
+    background-color: none !important;
+    border-bottom: none !important;
+}
+
+.spmp-logo
+{
+width:40%;
+margin-top:-15px;
+}
+
+.uba-logo {
+    width: 60%;
+}
+
+.df-logo {
+    color: white !important;
+}
+
+.btn-brand-uba-dark {
+    background-color: blue;
+    border-color: aliceblue;
+    color: #fff;
+}
+
+    .btn-brand-uba-back:hover,
+    .btn-brand-uba-dark:focus {
+        background-color: #ED1500;
+        border-color: #ED1500;
+        color: #fff;
+    }
+
+.signin-holder {
+    border-top: 5px solid #E0E0E0;
+    border-top-color: #faa21c;
+}
+
+.content-search {
+    width: auto;
+}
+
+.table {
+    width: 100% !important;
+    font-size: 12px;
+}
+
+table.dataTable thead .sorting_asc,
+.sorting,
+table.dataTable thead .sorting_desc {
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+}
+
+.dataTables_info,
+.dataTables_length {
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    width: 830px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    border-color: none;
+    box-shadow: none;
+    outline: 0 none;
+}
+
+.nav-tabs a {
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+}
+
+/* Siki Style */
+/* Before I scatter */
+.marine-icons {
+    width: 70%;
+}
+
+.marine-active-menu {
+    font-weight: bold;
+}
+
+.marine-tab-text {
+    font-size: 13px;
+}
+
+.marine-borders {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 8px 6px -6px #ddd;
+    -moz-box-shadow: 0 8px 6px -6px #ddd;
+    Submitbox-shadow: 0 8px 6px -6px #ddd;
+    Submitpadding-bottom: 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+.dataTables_wrapper .dataTables_paginate .paginate_button.next, .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:focus,
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    font-size: 10px;
+}
+
+table.dataTable tbody tr.odd {
+    border-left: 5px solid #000 !important;
+}
+
+
+/* New Style REVIEW */
+
+.marine-icons {
+    width: 70%;
+}
+
+.marine-active-menu {
+    font-weight: bold;
+}
+
+.marine-tab-text {
+    font-size: 13px;
+}
+
+.marine-borders {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 8px 6px -6px #ddd;
+    -moz-box-shadow: 0 8px 6px -6px #ddd;
+    Submitbox-shadow: 0 8px 6px -6px #ddd;
+    Submitpadding-bottom: 10px;
+}
+
+/* DropZone Style Starts here  */
+
+.dropzone,
+.dropzone * {
+    box-sizing: border-box;
+}
+
+.dropzone {
+    position: relative;
+}
+
+    .dropzone .dz-preview {
+        position: relative;
+        display: inline-block;
+        width: 120px;
+        margin: 0.5em;
+    }
+
+        .dropzone .dz-preview .dz-progress {
+            display: none;
+            height: 15px;
+            border: 1px solid #aaa;
+        }
+
+            .dropzone .dz-preview .dz-progress .dz-upload {
+                display: block;
+                height: 100%;
+                width: 0;
+                background: green;
+            }
+
+        .dropzone .dz-preview .dz-error-message {
+            color: red;
+            display: none;
+        }
+
+        .dropzone .dz-preview.dz-error .dz-error-message,
+        .dropzone .dz-preview.dz-error .dz-error-mark {
+            display: block;
+        }
+
+        .dropzone .dz-preview.dz-success .dz-success-mark {
+            display: block;
+        }
+
+        .dropzone .dz-preview .dz-error-mark,
+        .dropzone .dz-preview .dz-success-mark {
+            position: absolute;
+            display: none;
+            left: 30px;
+            top: 30px;
+            width: 54px;
+            height: 58px;
+            left: 50%;
+            margin-left: -27px;
+        }
+
+/* The upload box  */
+
+.dropzoneStyle {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+    padding: 20px 15px;
+    height: 350px;
+    overflow-y: scroll;
+}
+
+/* DropZone Style Ends here  */
+
+/* Approval Request Trail Style  starts here */
+.approval-request-trail {
+    background-color: white;
+    border: solid 2px #ddd;
+    border-radius: 5px;
+    margin-left: 20px;
+    padding: 20px;
+    color: #666;
+}
+
+.wizard > .actions a,
+.wizard > .actions a:hover,
+.wizard > .actions a:active {
+    display: block;
+    background-color: red;
+    padding: 9px 20px;
+    line-height: 1.539;
+    color: #fff;
+    border-radius: 0.25rem;
+}
+
+/* Approval Request Trail Style  ends here */
+
+.table-style {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 100%;
+    background-color: var(--color-h-tags) !important;
+    color: var(--color-text) !important;
+}
+
+/* Add request style  ends here */
+
+.plus-btn {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif;
+    color: #ffffff;
+    border: 2px solid #e91200;
+    background: #e91200;
+    border-radius: 100%;
+}
+
+    .plus-btn svg {
+        height: 44px;
+        width: 44px;
+    }
+
+.holder-pie,
+.pie-container {
+    padding-bottom: 38px;
+}
+
+/* Switch Button Styling */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    height: 20px;
+    width: 50px;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 30px;
+        width: 30px;
+        left: 0px;
+        bottom: 4px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+        box-shadow: 0 0px 15px #2020203d;
+        background: white url('../img/switch-moon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        padding: 0;
+    }
+
+input:checked + .slider {
+    background-color: #d70700;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #d70700;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
+    background: white url('../img/switch-sun.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 0px;
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+
+.sign-out {
+    position: absolute;
+    right: 15px;
+    margin-top: 45px;
+}
+
+.plus-btn {
+    position: fixed;
+    right: 10px;
+    bottom: 15px;
+    z-index: 100;
+}
+
+
+.logo-uba-white {
+    background: white url('../img/uba_logo_red.svg') no-repeat;
+    height: 40px;
+    width: 114px
+}
+
+.logo-uba-dark {
+    background: white url('../img/uba_logo_red.svg') no-repeat;
+    height: 40px;
+    width: 114px
+}
+.step-title, a{
+    color: var(--color-h-tags) !important;
+}

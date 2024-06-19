@@ -1,0 +1,134 @@
+﻿@model Eskul.Models.reportfil
+@using SmartPaperEdms.Web.App_Code;
+<style>
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 18px;
+        padding: 0px 12px;
+        font-size: 10pt;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+</style>
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    
+                                        <div class="form-group">
+                                        <fieldset>
+                                            <legend style="font-size:1.1rem;font-weight:bold;">
+                                                @ViewBag.Rep
+                                            </legend>
+                                        <select multiple class="custom-select" style="height:300px;width:100%;">
+                                            <option selected="selected" value="1109">SENIOR ONE END OF TERM</option>
+                                                <option value="1110">SENIOR ONE BEGINING OF TERM</option>
+                                                <option value="9">SENIOR TWO END OF TERM</option>
+                                                <option value="1085">SENIOR TWO BEGINING OF TERM</option>
+                                                <option value="1073">SENIOR THREE END OF TERM</option>
+                                                <option value="3">SENIOR THREE BEGINING OF TERM</option>
+                                                <option value="20">SENIOR FOUR END OF TERM</option>
+                                                <option value="1">SENIOR FOUR BEGINING OF TERM</option>
+                                            <option value="1077">SENIOR FIVE END OF TERM</option>
+                                                <option value="1077">SENIOR FIVE BEGINING OF TERM</option>
+                                                <option value="1077">SENIOR SIX END OF TERM</option>
+                                                <option value="1077">SENIOR SIX BEGINING OF TERM</option>
+                                            </select>
+                                       </fieldset>
+                                    </div>
+                               
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td>Database:</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" value="0" checked>
+                                                <label class="form-check-label">Live</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" value="1">
+                                                <label class="form-check-label">Archive</label>
+                                            </div>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="Branch" class="control-label" style="font-weight: normal !important;">Branch</label><small class="req"> *</small>
+                                                
+                                                @Html.DropDownList("BranchId", (IEnumerable<SelectListItem>)ViewBag.Branches, new { @class = "select",id="BranchId"})
+
+                                            </div>
+                                            </div>
+                                        <td>Session:</td>
+                                        <td>
+                                            <select @*asp-items="Model.SessionOptions"*@ class="Select" style="width: 160px;" onchange="this.form.submit();"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank:</td>
+                                        <td>
+                                            <select @*asp-items="Model.BankOptions" *@class="Select" style="width: 165px;" onchange="this.form.submit();"></select>
+                                        </td>
+                                        <td>Branch:</td>
+                                        <td>
+                                            <select @*asp-items="Model.BranchOptions"*@ class="Select" style="width: 165px;" onchange="this.form.submit();"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Currency:</td>
+                                        <td>
+                                            <select @*asp-items="Model.CurrencyOptions"*@ class="Select" style="width: 165px;"></select>
+                                        </td>
+                                        <td>Account No:</td>
+                                        <td>
+                                            <input class="form-control form-control-sm" type="text">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount:</td>
+                                        <td>
+                                            <input class="form-control form-control-sm" style="width: 100px;" type="text" value="0">
+                                            &nbsp;
+                                            <input class="form-control form-control-sm" style="width: 100px;" type="text" value="">
+                                        </td>
+                                    </tr>
+                                </table>
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-block btn-sm mybtn" name="" value="Search" id="" style="width:100px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+</div>

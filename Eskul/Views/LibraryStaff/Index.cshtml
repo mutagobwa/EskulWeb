@@ -1,0 +1,95 @@
+﻿@model Eskul.Models.StaffList
+@{
+     var AddLibstud = Model.libraryMember;
+     var staffs = Model.staffLists;
+}
+</br>
+
+<div class="col-md-12">
+        <div class="card card-outline card-default">
+            <partial name="_AddLibStaff" />
+        <div class="card-body">
+<div class="box box-primary">
+  <div class="card-body">
+       <p>
+    <a asp-action="AllLibMembers" class="btn btn-primary btn-sm">View Members</a>
+</p>
+ <table id="example2" class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+
+            <th>
+                FullName
+            </th>
+            <th>
+                Staff Number
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+               Contact
+            </th>
+            <th>
+               Gender
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (staffs != null)
+        {
+@foreach (var item in staffs) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Staffno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                 <a asp-action="AddLibStaff" asp-route-id="@item.Staffid" data-toggle="modal" data-target="#modal-default" id="BookReturn" data-id="@item.Staffid"><i class="fa fa-plus-circle"></i></a>
+            </td>
+        </tr>
+}
+        }
+        else
+        {
+                <tr>
+                    <td colspan="10" class="text-centere">
+                      No Staff Added 
+                    </td>
+                                       
+             </tr>
+        }
+    </tbody>
+</table>
+</div>
+ </div>
+</div>
+</div>
+</div>
+<script src="~/js/jquery-3.6.2.min.js"></script>
+<script type="text/javascript">
+    var delAccountId;
+
+    $(document).delegate('#BookReturn',
+    'click',
+    function (e) {
+      delAccountId = $(this).attr('data-id');
+      //console.log(delAccountId);
+      $('#bookid').val(delAccountId);
+    });
+
+    
+
+                </script>

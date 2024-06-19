@@ -1,0 +1,191 @@
+﻿@model Eskul.Models.ValueDefinitions
+@{
+
+    var listmodel = Model.valueDefinitions;
+}
+<div class="col-md-12">
+    <partial name="delete" />
+    <div class="card card-outline card-default">
+
+        <div class="card-body">
+            <section class="content">
+                <p>
+                    <a class="btn btn-sm mybtn" asp-action="Index">Back To List</a>
+                </p>
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-lg1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h4 class="modal-title">Add/Edit Definitions</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form id="myform" class="needs-validation" novalidate="" asp-action="Definitions" method="post">
+                                        <div class="card-body">
+                                            <input type="hidden" id="DefinitionId" asp-for="valueId" />
+                                            <input type="hidden" id="StatusId" asp-for="StatusId" />
+                                            <div class="form-group">
+                                                <label asp-for="CategoryId" class="control-label" style="font-weight: normal !important;">Value</label><small class="req"> *</small>
+                                                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.StudentCatValues, new { @class = "select",style = "width: 100%;",id="CategoryId",name="CategoryId",required = "required"} )
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label style="font-weight: normal !important;" for="SkillDefinition">Description</label>
+                                                <textarea id="valueDescription" asp-for="valueDescription" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="tableContainer">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg1"><i class="fa fa-plus"></i>&nbsp; Add Definition</a>
+                                    </p>
+                                    <table id="example1" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Value Definition
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.valueDescription
+                                                        </td>
+                                                        <td>
+                                                            <button id="editButton" class="btn btn-xs btn-primary" data-id="@item.valueId" onclick="loadEditModal(this)" asp-action="Definitions">Edit</button>
+                                                            <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.valueId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.valueId')">Del</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="3" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-md-8 -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0"></script>
+<script>
+    function populateModalFields(data) {
+        $('#valueDescription').val(data.valueDescription);
+        $('#CategoryId').val(data.categoryId);
+        $('#DefinitionId').val(data.definitionId);
+        $('#StatusId').val(data.statusId);
+        $('#CategoryId').val(data.categoryId).trigger('change');
+    }
+
+    function loadEditModal(button) {
+        var DefinitionId = $(button).data('id');
+        $.ajax({
+            url: '/StudentValues/_Edit/' + DefinitionId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('data', data);
+                populateModalFields(data);
+                $('#modal-lg1').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+    });
+</script>
+<script>
+    function del(id) {
+        $('#id').val(id);
+        $('#modal-warning').modal('show');
+    }
+    var form = document.getElementById('confirm');
+    document.getElementById("confirm").addEventListener('submit', function (e) {
+        e.preventDefault();
+        console.log($('# ').val())
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var controller = $('#confirm').data('controller');
+        console.log('Controller Is', controller);
+        fullUrl = fullUrl.replace('/undefined', '');
+        console.log(fullUrl);
+        var url = fullUrl + '/' + controller + '/_Delete';
+        var CUrl = url.replace('/undefined', '').replace('Details', '').replace('//Delete', '/Delete').replace(/\/ScoreRank\/.*\/Delete/, '/ScoreRank/Delete').replace('/Index', '');
+        console.log(CUrl);
+
+        var id = $('#id').val();
+        console.log(id);
+
+        $.ajax({
+            url: CUrl,
+            method: 'GET',
+            data: {
+                id: id
+            },
+            beforeSend: function (xhr) {
+                $('#loader').removeClass('d-none');
+                $('#confirm').addClass('d-none');
+            },
+            success: function (res) {
+                console.log(res);
+                $('#modal-info').modal('hide');
+                $('#confirm').removeClass('d-none');
+                $('#loader').addClass('d-none');
+                if (res.status == 200) {
+                    toastr.success(res.res);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    console.log(res.res)
+                    toastr.error(res.res);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                }
+            }
+        });
+    });
+</script>

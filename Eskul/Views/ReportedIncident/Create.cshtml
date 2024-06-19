@@ -1,0 +1,442 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.ReportedIncident
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <p>
+                    <a class="addbtn btn btn-sm mybtn" asp-action="Index">&nbsp; Back To List</a>
+                </p>
+                <div class="container-fluid">
+                    <form enctype="multipart/form-data" id="myform" class="needs-validation" novalidate="" asp-action="Create" method="post">
+                        <div class="col-12 col-sm-6 col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <div class="tab-content" id="custom-tabs-three-tabContent">
+                                        <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                                            <div class="row">
+                                                <input type="hidden" id="IncidentID" asp-for="IncidentID" name="IncidentID">
+                                                <input type="hidden" id="DateCaptured" asp-for="DateCaptured" name="DateCaptured">
+                                                <input type="hidden" id="DateReviewed" asp-for="DateReviewed" name="DateReviewed">
+                                                <input type="hidden" id="DateConfirmed" asp-for="DateConfirmed" name="DateConfirmed">
+                                                <input type="hidden" id="StatusId" asp-for="StatusId" name="StatusId">
+                                                <input type="hidden" id="CapturedBy" asp-for="CapturedBy" name="CapturedBy">
+                                                <input type="hidden" id="Reviewed" asp-for="Reviewed" name="Reviewed">
+                                                <input type="hidden" id="Confirmed" asp-for="Confirmed" name="Confirmed">
+                                                @* <input type="hidden" class="input-validation-error" data-val="true" data-val-required="The SchoolCode field is required." id="SchoolCode" name="SchoolCode" value="">
+                                                <input type="hidden" class="input-validation-error" data-val="true" data-val-required="The CapturedBy field is required." id="CapturedBy" name="CapturedBy" value="">
+                                                <input type="hidden" name="DateCaptured" class="input-validation-error" data-val="true" data-val-required="The DateCaptured field is required." id="DateCaptured" value="">
+                                                <input type="hidden" name="DateReviewed" id="DateReviewed" value="">
+                                                <input type="hidden" name="DateConfirmed" id="DateConfirmed" value="">
+                                                <input type="hidden" data-val="true" data-val-required="The StatusId field is required." id="StatusId" name="StatusId" value="0">
+                                                <input type="hidden" class="input-validation-error" data-val="true" data-val-required="The Year field is required." id="Year" name="Year" value="">
+                                                <input type="hidden" data-val="true" data-val-required="The Captured field is required." id="Captured" name="Captured" value="False">
+                                                <input type="hidden" data-val="true" data-val-required="The Reviewed field is required." id="Reviewed" name="Reviewed" value="False">
+                                                <input type="hidden" data-val="true" data-val-required="The Confirmed field is required." id="Confirmed" name="Confirmed" value="False">
+                                                <input type="hidden" id="StatusId" name="StatusId" value="0"> *@
+                                                <div class="col-md-3">
+                                                    <div class="col-sm-12">
+                                                        <div id="input-type" class="row">
+                                                            <div class="col-sm-4">
+                                                                <label class="radio-inline" style="font-weight:normal;">
+
+                                                                    <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <label class="radio-inline" style="font-weight:normal;">
+                                                                    <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                                </label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                                        @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"} )
+                                                        <span id="classSpinner" class="spinner-border text-warning spinner-border-sm" style="position: absolute; top: 50%; right: 28px; display: none;"></span>
+                                                            <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="Stream" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                                        <span id="streamSpinner" class="spinner-border text-warning spinner-border-sm" style="position: absolute; top: 50%; right: 28px; display: none;"></span>
+                                                        @Html.DropDownList("Stream", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="Stream",name="Stream"} )
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="StudentId" class="control-label" style="font-weight: normal !important;">Student</label><small class="req"> *</small>
+                                                        <span id="studentSpinner" class="spinner-border text-warning spinner-border-sm" style="position: absolute; top: 50%; right: 28px; display: none;"></span>
+                                                        @Html.DropDownList("StudentId", (IEnumerable<SelectListItem>)ViewBag.Students, new { @class = "select",style = "width: 100%;",id="StudentId",name="StudentId",required="required"} )
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="Termregistered" style="font-weight: normal !important;">Term</label><small class="req"> *</small>
+
+                                                        @Html.DropDownListFor(m => m.Term, new List<SelectListItem>
+                                                        {       new SelectListItem{Text="Select", Value=""},
+                                                        new SelectListItem{Text="Term One", Value="1"},
+                                                        new SelectListItem{Text="Term Two", Value="2"},
+                                                        new SelectListItem{Text="Term Three", Value="3"}},
+                                                        htmlAttributes:new { @class = "select",style = "width: 100%;",name="Term",id="Term",required = "required"})
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="BehaviorID" class="control-label" style="font-weight: normal !important;">Behavior</label><small class="req"> *</small>
+                                                        @Html.DropDownList("BehaviorID", (IEnumerable<SelectListItem>)ViewBag.BehaviorIncidents, new { @class = "select",style = "width: 100%;",id="BehaviorID",name="BehaviorID",required = "required"} )
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-weight: normal !important;" for="Remarks">Remarks</label>
+                                                        <textarea class="form-control form-control-sm input-validation-error" id="Remarks" data-val="true"  asp-for="Remarks"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-weight: normal !important;" for="IncidentDate">Incident Date</label><small class="req"> *</small>
+                                                        <input type="date" class="form-control form-control-sm" required="" id="incident-date-input" asp-for="IncidentDate">
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="bootstrap-timepicker">
+                                                        <div class="form-group">
+                                                            <label style="font-weight: normal !important;">Incident Time</label>
+
+                                                            <div class="input-group date" id="timepicker" data-target-input="nearest">
+                                                                <input type="time" class="form-control datetimepicker-input" data-target="#timepicker" id="timepicker-time" name="IncidentTime" value="">
+                                                                <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
+                                                                </div>
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                        <!-- /.form group -->
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-weight: normal !important;" for="Location">Location</label>
+                                                        <textarea class="form-control form-control-sm input-validation-error" id="Location" required asp-for="Location"></textarea>
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label style="font-weight: normal !important;" for="Witnesses">Enter Witness names</label>
+                                                        <textarea id="witnessList" class="form-control" placeholder="Add Witness" asp-for="Witnesses"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-sm-12">
+                                                        <label class="mb-1" style="font-weight: normal !important;">Case Category</label>
+                                                        <div id="input-type" class="row">
+                                                            <div class="col-sm-4">
+                                                                <label class="radio-inline" style="font-weight:normal;">
+                                                                    <input name="Category" class="Core" id="Core1" value="Minor" type="radio" checked="checked">Minor
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <label class="radio-inline" style="font-weight:normal;">
+                                                                    <input name="Category" class="finetype" id="Core2" value="Major" type="radio">Major
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <label class="radio-inline" style="font-weight:normal;">
+                                                                    <input name="Category" class="finetype" id="Core3" value="Critical" type="radio">Critical
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="Termregistered" style="font-weight: normal !important;">Term</label><small class="req"> *</small>
+
+                                                        @Html.DropDownListFor(m => m.IncidentStatus, new List<SelectListItem>
+                                                        {       new SelectListItem{Text="Select", Value=""},
+                                                        new SelectListItem{Text="Open", Value="Open"},
+                                                        new SelectListItem{Text="In Progress", Value="In Progress"},
+                                                        new SelectListItem{Text="On Hold", Value="On Hold"},
+                                                        new SelectListItem{Text="Closed", Value="Closed"}
+                                                        },
+                                                        htmlAttributes:new { @class = "select",style = "width: 100%;",name="IncidentStatus",id="IncidentStatus",required = "required"})
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="ReviewReferral" class="control-label" style="font-weight: normal !important;">Reviewer</label><small class="req"> *</small>
+                                                        @Html.DropDownList("ReviewReferral", (IEnumerable<SelectListItem>)ViewBag.Staffs, new { @class = "select",style = "width: 100%;",id="ReviewReferral",name="ReviewReferral",required = "required"} )
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="ConfirmReferral" class="control-label" style="font-weight: normal !important;">Checker</label><small class="req"> *</small>
+                                                        @Html.DropDownList("ConfirmReferral", (IEnumerable<SelectListItem>)ViewBag.Staffs, new { @class = "select",style = "width: 100%;",id="ConfirmReferral",name="ConfirmReferral",required = "required"} )
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="ActionID" class="control-label" style="font-weight: normal !important;">Action</label>
+                                                        @Html.DropDownList("ActionID", (IEnumerable<SelectListItem>)ViewBag.Actions, new { @class = "select",style ="width: 100%;",id="ActionID",name="ActionID"} )
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-weight: normal !important;" for="ReviewRemarks">Reviewer Remarks</label>
+                                                        <textarea class="form-control form-control-sm" id="ReviewRemarks" asp-for="ReviewRemarks"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-weight: normal !important;" for="ConfirmRemarks">Confirmation Remarks</label>
+                                                        <textarea class="form-control form-control-sm"  id="ConfirmRemarks" asp-for="ConfirmRemarks"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" style="font-weight: normal !important;" for="ResolutionRemarks">Resolution Remarks</label>
+                                                        <textarea class="form-control form-control-sm" id="ResolutionRemarks" asp-for="ResolutionRemarks"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-group">
+                                                    <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" style=" width:200px;" formaction="~/ReportedIncident/Create">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    function populateDropdown() {
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/Create', '').replace('/Index', '').replace('/CREATE', '');
+        console.log('full url', fullUrl);
+        $('#classSpinner').show();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+                var dropdown1 = document.getElementById('Class');
+                dropdown1.innerHTML = '';
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+            }
+        };
+        xhr.send();
+        $('#classSpinner').hide();
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        function populateStreamDropdown() {
+            var dropdown = document.getElementById('Stream');
+            dropdown.innerHTML = '';
+            var selectedClass = document.getElementById('Class').value;
+            var baseUrl = window.location.protocol + "//" + window.location.host;
+            var pathName = window.location.pathname;
+            if (pathName.charAt(0) === '/') {
+                pathName = pathName.slice(1);
+            }
+            var fullUrl = baseUrl + '/' + pathName.replace('Create', '').replace('Students', 'Students/').replace('Students//', 'Students/').replace('/Index', '').replace('/CREATE', '');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', fullUrl + 'StreamsByClass?classs=' + selectedClass);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var streamedClasses = JSON.parse(xhr.responseText);
+                    var hasStreamedClasses = streamedClasses.length > 0;
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '';
+                    if (hasStreamedClasses) {
+                        for (var i = 0; i < streamedClasses.length; i++) {
+                            var option = document.createElement('option');
+                            option.value = streamedClasses[i].StreamId;
+                            option.text = streamedClasses[i].Name;
+                            dropdown.appendChild(option);
+                        }
+                    } else {
+                        var option = document.createElement('option');
+                        option.text = 'Class Not Streamed';
+                        option.disabled = true;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                    dropdown.disabled = true;
+                }
+            };
+            xhr.send();
+        }
+
+        $(function () {
+            $('#Class').change(function () {
+                populateStreamDropdown();
+            });
+        });
+    });
+</script>
+<script>
+    function populateStudentDropdown() {
+        var dropdown = document.getElementById('StudentId');
+        dropdown.innerHTML = '';
+        var selectedClass = document.getElementById('Class').value;
+        var selectedStream = document.getElementById('Stream').value;
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        console.log('selectedClass', selectedClass);
+        console.log('selectedStream', selectedStream);
+        console.log('level', level);
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName.replace('Create', '').replace('Students', 'Students/').replace('Students//', 'Students/').replace('/Index', '').replace('/CREATE', '');
+        var queryString = '?level=' + level + '&classs=' + selectedClass + '&stream=' + selectedStream;
+        var mine = fullUrl + 'LoadStudentList' + queryString;
+        console.log('my url is ', mine);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + 'LoadStudentList' + queryString);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var studentList = JSON.parse(xhr.responseText);
+                console.log('studentList', studentList);
+                var hasStudents = studentList.length > 0;
+
+                var dropdown = document.getElementById('StudentId');
+                dropdown.innerHTML = '';
+                if (hasStudents) {
+                    for (var i = 0; i < studentList.length; i++) {
+                        var option = document.createElement('option');
+                        var student = studentList[i];
+                        option.value = student.StudentId;
+                        option.text = student.FullName;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'No Student';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('StudentId');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = true;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Stream').change(function () {
+            populateStudentDropdown();
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var currentDate = new Date();
+        var formattedDate = currentDate.toISOString().split('T')[0];
+        document.getElementById('incident-date-input').value = formattedDate;
+        var hours = currentDate.getHours().toString().padStart(2, '0');
+        var minutes = currentDate.getMinutes().toString().padStart(2, '0');
+        var formattedTime = hours + ':' + minutes;
+        document.getElementById('timepicker-time').value = formattedTime;
+    });
+</script>
+<script>
+    const textarea = document.getElementById('witnessList');
+
+    textarea.addEventListener('keydown', function (event) {
+        if (event.keyCode === 13 || event.keyCode === 108) {
+            event.preventDefault();
+
+            const cursorPosition = textarea.selectionStart;
+            const currentValue = textarea.value;
+            if (cursorPosition > 0) {
+                const lastCharacter = currentValue[cursorPosition - 1];
+                if (lastCharacter !== ',') {
+                    textarea.value = currentValue.slice(0, cursorPosition) + ',' + currentValue.slice(cursorPosition);
+                    textarea.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+                } else {
+                    textarea.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+                }
+            }
+        }
+    });
+</script>
+<script>
+    function handleReviewedAndConfirmReferralChange() {
+        var reviewed = false;
+        console.log('reviewed', reviewed);
+        var confirmReferral = $("#ConfirmReferral").val();
+        var isReviewing = (reviewed === true);
+
+        $("#class-term-student-container select").prop("readonly", isReviewing);
+        $("#Term").prop("readonly", isReviewing);
+        $("#StudentId").prop("readonly", isReviewing);
+        $("#Stream").prop("readonly", isReviewing);
+        $("#BehaviorID").prop("readonly", isReviewing);
+        $("#Remarks").prop("readonly", isReviewing);
+        $("#incident-date-input").prop("readonly", isReviewing);
+        $("#timepicker-time").prop("readonly", isReviewing);
+        $("#Location").prop("readonly", isReviewing);
+        //$("#IncidentStatus").prop("readonly", isReviewing);
+        $("#ReviewReferral").prop("readonly", isReviewing);
+        $("#ConfirmReferral").prop("readonly", isReviewing);
+        $("#ReviewRemarks").prop("readonly", isReviewing);
+        $("#Class").prop("readonly", isReviewing);
+        $("#witnessList").prop("readonly", isReviewing);
+        $("#Core1").prop("disabled", isReviewing);
+        $("#Core2").prop("disabled", isReviewing);
+        $("#Core3").prop("disabled", isReviewing);
+    }
+
+    $(document).ready(function () {
+        $("#Reviewed, #ConfirmReferral").on("change", function () {
+            handleReviewedAndConfirmReferralChange();
+        });
+        handleReviewedAndConfirmReferralChange();
+    });
+</script>

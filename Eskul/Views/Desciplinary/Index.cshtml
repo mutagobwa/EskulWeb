@@ -1,0 +1,108 @@
+﻿@model Eskul.Models.Disciplinary
+@{
+
+    var listmodel = Model.Disciplinaries;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Desciplinary Case</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+                            <input type="hidden" asp-for="Code"/>
+                            <div class="form-group">
+                                <label for="Code" style="font-weight:normal;">Disciplinary Code</label>
+                                <input asp-for="Code" class="form-control form-control-sm" disabled/>
+                            </div>
+                            <div class="form-group">
+                                <label for="Name" style="font-weight:normal;">Disciplinary Name</label>
+                                <input asp-for="Name" name="Name" class="form-control form-control-sm" autocomplete="off" required />
+                                <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                        </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                         <p>
+            <a asp-action="Create" class="btn btn-sm mybtnsm"><i class="fa fa-plus"></i>&nbsp; Add Disciplinary Case</a>
+        </p>
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Disciplinary Code
+                                </th>
+                                <th>
+                                    Disciplinary Name
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.CaseCode
+                                            </td>
+                                            <td>
+                                                    @item.CaseName
+                                            </td>
+                                            
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.CaseCode">Edit</a>
+                                              <button class="btn btn-xs btn-danger " id="delete" data-id="@item.CaseCode"data-toggle="modal" data-target="#modal-info" onclick="del('@item.CaseCode')" data-controller="Desciplinary" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+                                              @*<button class="btn btn-xs btn-danger " id="delete" data-id="@item.CaseCode"data-toggle="modal" data-target="#modal-info" onclick="del('@item.CaseCode')" data-action="Delete" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>*@
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+

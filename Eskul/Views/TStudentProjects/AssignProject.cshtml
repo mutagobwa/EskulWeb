@@ -1,0 +1,242 @@
+﻿@model Eskul.Models.MarksAddList
+@{
+
+    var listmodel = Model.StudentsList;
+    var assignmentdetails = Model.projs;
+}
+<style>
+    .small-textbox {
+        width: 50px;
+        height: 25px;
+        font-size: 14px;
+        padding: 2px;
+        border: 1px solid gray;
+    }
+
+    .big-textbox {
+        width: 100%;
+        height: 25px;
+        font-size: 14px;
+        padding: 2px;
+        border: 1px solid gray;
+    }
+
+    .round {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        background: gray;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    .error {
+        font-weight: bold;
+        color: red;
+        font-size: 24px;
+    }
+</style>
+
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="col-md-12">
+
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <input type="hidden" id="assignmentId" asp-for="@assignmentdetails.ProjectId" />
+                                <div class="form-group">
+                                    <span class="badge bg-success" style="font-size:16px;">Project Name: @assignmentdetails.ProjectName</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <span class="badge bg-success" style="font-size:16px;">Year: @assignmentdetails.Year</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <span class="badge bg-success" style="font-size:16px;">Term: @assignmentdetails.Term </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <span class="badge bg-success" style="font-size:16px;">Class: @assignmentdetails.Class</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-primary">
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Student No
+                                </th>
+                                <th>
+                                    Student Name
+                                </th>
+                                <th>
+                                    Score
+                                </th>
+                                <th>
+                                    Comment
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listmodel != null)
+                            {
+                                @foreach (var item in listmodel)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StudentId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StudentName)
+                                        </td>
+                                        <td style="width:30px;">
+                                            <input type="number" class="big-textbox" id="score-@item.StudentId" oninput="validateScore(this)" value="@item.Score" onchange="saveData(this.id)" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="big-textbox" id="comment-@item.StudentId" value="@item.Comment" onchange="saveData(this.id)" />
+                                        </td>
+                                        <td>
+                                            <span id="status-@item.StudentId" class="status round">
+                                                <div class="spinner-border spinner-border-sm" role="status" style="display: none;">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                <span id="tick-@item.StudentId" class="tick" style="display: none;">✔</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="10" class="text-centere">
+                                        No Record Found
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<form id="myForm"></form>
+<Script>
+    function saveData(id) {
+        // Extract the student ID from the textbox id
+        var assignmentId = $("#assignmentId").val();
+        var studentId = id.split("-")[1];
+        // Retrieve the values of the score and comment textboxes
+        var score = document.getElementById("score-" + studentId).value;
+        var comment = document.getElementById("comment-" + studentId).value;
+        // Log the student ID, score, and comment to the console
+        console.log("Saving data for student: " + studentId);
+        console.log("Score: " + score);
+        console.log("Comment: " + comment);
+        console.log("assignmentId:" + assignmentId);
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        pathName = pathName.replace(/\/\d+\.\d+$/, '');
+        // combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName;
+        console.log('url is', fullUrl)
+        // Send an AJAX request to the server to save the data
+        var fd = document.getElementById('myForm');
+        var formData = new FormData(fd);
+        formData.append('studentId', studentId);
+        formData.append('score', score);
+        formData.append('comment', comment);
+        formData.append('assignmentId', assignmentId);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ": " + pair[1]);
+        }
+        console.log($(fd).serialize());
+        $.ajax({
+            type: "POST",
+            url: fullUrl,
+            //contentType: "application/json",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                // Log the server response to the console
+                console.log("Server Response: " + res.res);
+                if (res.res === "Student Project Score Successfully updated") {
+                    // Update the UI with a tick mark to indicate success
+                    document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+                    console.log("Data saved successfully for student: " + studentId);
+                } else {
+                    // Display a red "X" symbol to indicate failure
+                    var statusElement = document.getElementById("status-" + studentId);
+                    statusElement.innerHTML = "X";
+                    statusElement.classList.add("error");
+                    console.log("Error" + res.res + " " + " while saving data for student: " + studentId);
+                }
+            }
+        });
+    }
+</Script>
+<script>
+    function validateScore(input) {
+        var value = parseInt(input.value);
+        if (isNaN(value) || value < 0 || value > 10) {
+            input.value = "";  // Clear the input field
+        }
+    }
+</script>

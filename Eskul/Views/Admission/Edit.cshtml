@@ -1,0 +1,1596 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.StudentViewDTO
+@{
+    var House = Model.HouseInfo;
+    var StudentImage = Model.Image;
+    var PreviousSchool = Model.FormerSchool;
+    var uploadedDocument = Model?.Documents;
+    var docs = Model.Documents?.DocumentFiles;
+    var Scores = Model.FormerSchool?.Scores;
+    var parent = Model.Parents;
+    var stdhealthdtls = Model.HealthInfo;
+    var regdate = Model.DateRegistered == null ? DateTime.Now.ToString("yyyy-MM-dd") : Model.DateRegistered.Value.ToString("yyyy-MM-dd");
+    var dob = Model.DoB == null ? DateTime.Now.ToString("yyyy-MM-dd") : Model.DoB.Value.ToString("yyyy-MM-dd");
+}
+<br />
+<style>
+    .circle-btn {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 0;
+        font-size: 18px;
+        line-height: 1;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .pagetitleh2 {
+        background: #f2f2f2;
+        margin: 0;
+        font-size: 16px;
+        padding: 8px 14px;
+        color: #000;
+        border-bottom: 1px solid #d7dfe3;
+    }
+</style>
+<partial name="_ParentAdd" />
+
+<div class="col-12 col-sm-6 col-md-12">
+
+    <div class="box box-primary">
+        <form asp-action="Create" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div class="card-body p-0">
+                <div class="bs-stepper linear">
+                    <div class="bs-stepper-header" role="tablist">
+
+                        <div class="step active" data-target="#Basic_Info">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger" aria-selected="true">
+                                <span class="bs-stepper-circle">1</span>
+                                <span class="bs-stepper-label">Basic Info</span>
+                            </button>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step" data-target="#Parent_info">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger" aria-selected="false" disabled="disabled">
+                                <span class="bs-stepper-circle">2</span>
+                                <span class="bs-stepper-label">Parent Info</span>
+                            </button>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step" data-target="#Prev_info">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger" aria-selected="false" disabled="disabled">
+                                <span class="bs-stepper-circle">3</span>
+                                <span class="bs-stepper-label">Previous School Info</span>
+                            </button>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step" data-target="#Health_Info">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger" aria-selected="false" disabled="disabled">
+                                <span class="bs-stepper-circle">4</span>
+                                <span class="bs-stepper-label">Health Info</span>
+                            </button>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step" data-target="#Documents">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger" aria-selected="false" disabled="disabled">
+                                <span class="bs-stepper-circle">5</span>
+                                <span class="bs-stepper-label">Documents</span>
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="bs-stepper-content">
+                        <div id="Basic_Info" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+                            <div class="row">
+                                <input type="hidden" asp-for="DateRegistered" />
+                                <input type="hidden" asp-for="StudentId" name="StudentId" value="@Model.StudentId" />
+                                <input type="hidden" asp-for="StudentNo" />
+                                <input type="hidden" asp-for="Level" />
+                                @* 
+                                <input type="hidden" asp-for="parentno" /> *@
+                                @* <input type="hidden" asp-for="Statusid" /> *@
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Termregistered" style="font-weight: normal !important;">Term Registered</label><small class="req"> *</small>
+
+                                        @Html.DropDownListFor(m => m.TermRegistered, new List<SelectListItem>
+                                        {       new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="Term One", Value="1"},
+                                        new SelectListItem{Text="Term Two", Value="2"},
+                                        new SelectListItem{Text="Term Three", Value="3"}},
+                                        htmlAttributes:new { @class = "select",style = "width: 100%;",name="Termregistered",id="Termregistered",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="DateRegistered" class="control-label" style="font-weight: normal !important;">Date Registered</label><small class="req"> *</small>
+                                        <div class="input-group date">
+                                            <input type="date" asp-for="DateRegistered" value="@regdate" class="form-control form-control-sm" required />
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="FirstName" class="control-label" style="font-weight: normal !important;">First Name</label><small class="req"> *</small>
+                                        <input asp-for="FirstName" name="FirstName" class="form-control form-control-sm" required autocomplete="off" />
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="MiddleName" class="control-label" style="font-weight: normal !important;">Middle Name</label>
+                                        <input asp-for="MiddleName" class="form-control form-control-sm" autocomplete="off" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="LastName" class="control-label" style="font-weight: normal !important;">Last Name</label><small class="req"> *</small>
+                                        <input asp-for="LastName" name="LastName" class="form-control form-control-sm" required autocomplete="off" />
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="DoB" class="control-label" style="font-weight: normal !important;">Date Of Birth</label><small class="req"> *</small>
+                                        <input type="date" asp-for="DoB" value="@dob" id="Dob" class="form-control form-control-sm" required />
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Gender" style="font-weight: normal !important;">Gender</label><small class="req"> *</small>
+                                        @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                        {       new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="Male", Value="M"},
+                                        new SelectListItem{Text="Female", Value="F"}},htmlAttributes:new { @class = "select",style = "width: 100%;font-weight: normal !important;",id="Gender",name="Gender",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Level" style="font-weight: normal !important;">Academic Level</label><small class="req"> *</small>
+                                        @Html.DropDownListFor(m => m.Level, new List<SelectListItem>
+                                        {       new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="O LEVEL", Value="O"},
+                                        new SelectListItem{Text="A LEVEL", Value="A"}},htmlAttributes:new { @class = "select",style = "width: 100%;",id="Level",name="Level",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                        @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"} )
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="StreamCode" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                        @Html.DropDownList("StreamCode", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="StreamCode",name="StreamCode"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Section" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                        @Html.DropDownListFor(m => m.Section, new List<SelectListItem>
+                                        {       new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="DAY", Value="D"},
+                                        new SelectListItem{Text="BOARDING", Value="B"}},htmlAttributes:new { @class = "select",style = "width: 100%;",id="Section",name="Section",required = "required"})                                                    <div class="invalid-feedback">This Field is Required</div>
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="CategoryId" class="control-label" style="font-weight: normal !important;">Student Category</label>
+                                        @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.Cats,new { @class = "select",style = "width: 100%;"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="NiN" class="control-label" style="font-weight: normal !important;">National ID No</label>
+                                        <input asp-for="NiN" class="form-control form-control-sm" autocomplete="off" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="PassportNo" class="control-label" style="font-weight: normal !important;">Passport No</label>
+                                        <input asp-for="PassportNo" class="form-control form-control-sm" autocomplete="off" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Funding" class="control-label" style="font-weight: normal !important;"></label>
+                                        @Html.DropDownListFor(m => m.Funding, new List<SelectListItem>
+                                        {      new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="NON-USE", Value="NU"},
+                                        new SelectListItem{Text="USE", Value="U"},
+                                        new SelectListItem{Text="UPOLET", Value="UP"},
+                                        new SelectListItem{Text="NON-UPOLET", Value="NUP"}
+                                        },htmlAttributes:new { @class = "select",style = "width: 100%;"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Type" class="control-label" style="font-weight: normal !important;">Student Type</label>
+                                        @Html.DropDownListFor(m => m.Type, new List<SelectListItem>
+                                        {
+                                        new SelectListItem{Text="FOREIGN", Value="F"},
+                                        new SelectListItem{Text="LOCAL", Value="L"}},"LOCAL",htmlAttributes:new { @class = "select",style = "width: 100%;"})
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Religion" class="control-label" style="font-weight: normal !important;" id="religioncode">Relgion</label>
+                                        @Html.DropDownListFor(m => m.Religion, new List<SelectListItem>
+                                        {
+                                        new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="Catholic", Value="1"},
+                                        new SelectListItem{Text="Anglican", Value="2"},
+                                        new SelectListItem{Text="Muslim", Value="3"},
+                                        new SelectListItem{Text="Pentecostal", Value="4"},
+                                        new SelectListItem{Text="Adventists", Value="5"},
+                                        new SelectListItem{Text="Baptist", Value="6"},
+                                        new SelectListItem{Text="Other", Value="7"}
+                                        }, htmlAttributes: new { @class = "select", style = "width: 100%;", id = "Religion", name = "Religion"})
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Residence" class="control-label" style="font-weight: normal !important;"></label>
+                                        <input asp-for="Residence" class="form-control form-control-sm" autocomplete="off" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Tribe" class="control-label" style="font-weight: normal !important;"></label>
+                                        <input asp-for="Tribe" class="form-control form-control-sm" autocomplete="off" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.HouseInfo.HouseId" class="control-label" style="font-weight: normal !important;">House</label>
+                                        @Html.DropDownList("HouseId", (IEnumerable<SelectListItem>)ViewBag.Houses, new { @class = "select",style = "width: 100%;"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="termcode" style="font-weight: normal !important;">Student Photo</label>
+
+                                    <div class="box-body text-center" id="image_upload_preview">
+                                        <img id="image_preview" src="@ViewBag.StudImg" alt="Select Image" class="img-thumbnail" width="280" height="200" />
+                                        <input type="file" class="btn btn-primary col start" name="files" onchange="readfile(this);" value="Browse" />
+                                    </div>
+
+                                </div>
+                            </div>
+                            <button class="btn btn-sm mybtnsm" onclick="stepper.next();return false;">Next</button>
+                        </div>
+
+                        <div id="Parent_info" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtn" data-toggle="modal" data-target="#modal-lg">
+                                            <i class="fa fa-plus"></i>&nbsp; New Parent
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                            @if (parent != null && Model.Parents.Parents != null && Model.Parents.Parents.Any())
+                            {
+                                <div class="row">
+                                    @for (int j = 0; j < 4; j++)
+                                    {
+                                        @if (j < Model.Parents.Parents.Count)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label" style="font-weight: normal !important;">Select Subject #@(j + 1)</label>
+                                                    <select name="prt@(j)" class="select" style="width:100%" asp-items="ViewBag.Parent" id="prt@(j)">
+                                                        @foreach (var item in ViewBag.Parent)
+                                                        {
+                                                            var isSelected = Model.Parents.Parents[j].Parent.ParentId == item.Value;
+                                                            <option value="@item.Value" selected="@isSelected">
+                                                                @Html.Raw(item.Text)
+                                                            </option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                    <select name="r@(j)" class="select" style="width:100%" asp-items="ViewBag.Relations">
+                                                        @foreach (var item in ViewBag.Relations)
+                                                        {
+                                                            var isSelected = Model.Parents.Parents[j].RelationShip == item.Value;
+                                                            <option value="@item.Value" selected="@isSelected">
+                                                                @Html.Raw(item.Text)
+                                                            </option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.ParentInfo.FirstOrDefault().ParentId" class="control-label" style="font-weight: normal !important;">Select Parent #@(j + 1)</label>
+                                                    <select name="prt@(j)" class="select" style="width:100%" asp-items="ViewBag.Parent" id="parentid@(j)">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.ParentInfo.FirstOrDefault().RelationShip" class="control-label" style="font-weight: normal !important;">Select Relationship</label>
+                                                    <select name="r@(j)" class="select" style="width:100%" asp-items="ViewBag.Relations" id="relation@(j)">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    @for (int j = 0; j < 4; j++)
+                                    {
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="@Model.ParentInfo.FirstOrDefault().ParentId" class="control-label" style="font-weight: normal !important;">Select Parent #@(j + 1)</label>
+                                                <select name="prt@(j)" class="select" style="width:100%" asp-items="ViewBag.Parent" id="parentid@(j)">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="@Model.ParentInfo.FirstOrDefault().RelationShip" class="control-label" style="font-weight: normal !important;">Select Relationship</label>
+                                                <select name="r@(j)" class="select" style="width:100%" asp-items="ViewBag.Relations" id="relation@(j)">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+
+                            <button class="btn btn-sm mybtnsm" onclick="stepper.previous();return false;">Prev</button>
+                            <button class="btn btn-sm mybtnsm" onclick="stepper.next();return false;">Next</button>
+                        </div>
+                        <div id="Prev_info" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.FormerSchool.SchoolName" class="control-label" style="font-weight: normal !important;">School Name</label>
+                                        <input asp-for="@Model.FormerSchool.SchoolName" class="form-control form-control-sm" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="@PreviousSchool.AcademicAward" class="control-label" style="font-weight: normal !important;">Academic Award</label>
+                                        @Html.DropDownListFor(m => m.FormerSchool.AcademicAward, new List<SelectListItem>
+                                        {
+                                        new SelectListItem{Text="Select", Value=""}, new SelectListItem{Text="Primary Leaving Examination", Value="PLE"},
+                                        new SelectListItem{Text="Uganda Certificate of Education ", Value="UCE"}, }, htmlAttributes: new { @class = "select", style = "width: 100%;",id="awardcode"})
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="@PreviousSchool.ResultCode" class="control-label" style="font-weight: normal !important;">Result Code</label>
+                                        @Html.DropDownListFor(m => m.FormerSchool.ResultCode, new List<SelectListItem>
+                                        {
+                                        new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="DIVISION 1", Value="1"},
+                                        new SelectListItem{Text="DIVISION 2", Value="2"},
+                                        new SelectListItem{Text="DIVISION 3", Value="3"},
+                                        new SelectListItem{Text="DIVISION 4", Value="4"},
+                                        new SelectListItem{Text="UNGRADED ", Value="U"},
+                                        new SelectListItem{Text="FAILED", Value="X"}
+                                        }, htmlAttributes: new { @class = "select", style = "width: 100%;"})
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.FormerSchool.ChangeReason" class="control-label" style="font-weight: normal !important;">Reason For Change</label>
+                                        <textarea asp-for="@Model.FormerSchool.ChangeReason" class="form-control form-control-sm"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card-header p-0 pt-1 border-bottom-0">
+                                        <h4 class="pagetitleh2"><b>Previous School Results</b></h4>
+                                    </div>
+                                </div>
+                                @if (PreviousSchool != null){
+                                <div id="subjectFormSectionl" class="col-md-12">
+                                    <div id="staticRows">
+                                        <!-- Static rows (four initial rows) -->
+                                       @if (PreviousSchool != null && PreviousSchool.AcademicAward == "PLE" && Scores != null && Scores.Any())
+  {
+    <div id="subjectFormOSectionl" class="col-md-12">
+        <div id="staticRows1">
+            @for (int i = 0; i < Model.FormerSchool.Scores.Count; i += 4)
+            {
+               
+                    @for (int j = i; j < Math.Min(i + 4, Model.FormerSchool.Scores.Count); j++)
+                    {
+                                                                <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label" style="font-weight: normal !important;">Select Subject #@(j + 1)</label>
+                                <select name="sbs@(j)" class="select" style="width:100%" asp-items="ViewBag.Primary" id="sb@(j)">
+                                    @foreach (var item in ViewBag.Primary)
+                                    {
+                                        var isSelected = Model.FormerSchool.Scores[j].Subject == item.Value;
+                                        <option value="@item.Value" selected="@isSelected">
+                                            @Html.Raw(item.Text)
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                <select name="scs@(j)" class="select" style="width:100%" asp-items="ViewBag.aggs" id="sc@(j)">
+                                    @foreach (var item in ViewBag.aggs)
+                                    {
+                                        var isSelected = Model.FormerSchool.Scores[j].Score == item.Value;
+                                        <option value="@item.Value" selected="@isSelected">
+                                            @Html.Raw(item.Text)
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                    }
+               
+            }
+        </div>
+
+        <!-- Additional fields for adding new subjects and scores -->
+        @for (int k = Model.FormerSchool.Scores.Count; k < Model.FormerSchool.Scores.Count + Math.Max(0, 4 - Model.FormerSchool.Scores.Count); k++)
+        {
+           <div  class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" style="font-weight: normal !important;">Select Subject #@(k + 1)</label>
+                        <select name="sbs@(k)" class="select" style="width:100%" asp-items="ViewBag.Primary" id="sb@(k)">
+                            @foreach (var item in ViewBag.Primary)
+                            {
+                                <option value="@item.Value">
+                                    @Html.Raw(item.Text)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                        <select name="scs@(k)" class="select" style="width:100%" asp-items="ViewBag.aggs" id="sc@(k)">
+                            @foreach (var item in ViewBag.aggs)
+                            {
+                                <option value="@item.Value">
+                                    @Html.Raw(item.Text)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                                                        </div>
+            
+        }
+    </div>
+}
+                                        else if (PreviousSchool == null && PreviousSchool.AcademicAward==null)
+                                        {
+                                            <div id="subjectFormSection" class="col-md-12">
+                                                <div id="staticRows">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Subject #1</label>
+                                                                <select name="sbs0" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs0" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Subject #2</label>
+                                                                <select name="sbs1" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs1" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #3</label>
+                                                                <select name="sbs2" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs2" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Subject #4</label>
+                                                                <select name="sbs3" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs3" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            }
+                                           
+                                    </div>
+                                </div>
+
+
+                                <div id="subjectFormOSectionl" class="col-md-12">
+                                    <div id="staticRows1">
+                                            @if (PreviousSchool != null && PreviousSchool.AcademicAward == "UCE" && Scores != null && Scores.Any())
+                                            {
+                                                <div id="subjectFormOSectionl" class="col-md-12">
+                                                    <div id="staticRows1">
+                                                        <div class="row">
+                                                        @for (int i = 0; i < Scores.Count; i++)
+                                                        {
+                                                            
+                                                          
+                                                              
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label" style="font-weight: normal !important;">Select Subject #@(i + 1)</label>
+                                                                        <select name="sbs@(i)" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="sbs@(i)">
+                                                                            @foreach (var item in ViewBag.Subjects)
+                                                                            {
+                                                                                var isSelected = Scores[i].Subject == item.Value;
+                                                                                <option value="@item.Value" selected="@isSelected">
+                                                                                    @Html.Raw(item.Text)
+                                                                                </option>
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                        <select name="scs@(i)" class="select" style="width:100%" asp-items="ViewBag.aggs" id="scs@(i)">
+                                                                            @foreach (var item in ViewBag.aggs)
+                                                                            {
+                                                                                var isSelected = Scores[i].Score == item.Value;
+                                                                                <option value="@item.Value" selected="@isSelected">
+                                                                                    @Html.Raw(item.Text)
+                                                                                </option>
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                          
+                                                        }
+                                                    </div>
+                                                    </div>
+
+                                                    <!-- Additional fields for adding new subjects and scores -->
+                                                    @for (int j = Scores.Count; j < Scores.Count + Math.Max(0, 10 - Scores.Count); j++)
+                                                    {
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label class="control-label" style="font-weight: normal !important;">Select Subject #@(j + 1)</label>
+                                                                    <select name="sbs@(j)" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="sbs@(j)">
+                                                                        @foreach (var item in ViewBag.Subjects)
+                                                                        {
+                                                                            <option value="@item.Value">
+                                                                                @Html.Raw(item.Text)
+                                                                            </option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                    <select name="scs@(j)" class="select" style="width:100%" asp-items="ViewBag.aggs" id="scs@(j)">
+                                                                        @foreach (var item in ViewBag.aggs)
+                                                                        {
+                                                                            <option value="@item.Value">
+                                                                                @Html.Raw(item.Text)
+                                                                            </option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        else
+                                        {
+                                            <div id="subjectFormOSection" class="col-md-12">
+                                                <div id="staticRows1">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #1</label>
+                                                                <select name="sbs" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #2</label>
+                                                                <select name="sbs1" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs1" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #3</label>
+                                                                <select name="sbs2" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs2" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #4</label>
+                                                                <select name="sbs3" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs3" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #5</label>
+                                                                <select name="sbs4" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs4" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #6</label>
+                                                                <select name="sbs5" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs5" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #7</label>
+                                                                <select name="sbs6" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs6" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #8</label>
+                                                                <select name="sbs7" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs7" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #9</label>
+                                                                <select name="sbs8" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs8" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="font-weight: normal !important;">Select Subject #10</label>
+                                                                <select name="sbs9" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label  class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                                <select name="scs9" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                }
+                                else
+                                {
+                                    <div id="subjectFormSection" class="col-md-12" style="display: none;">
+                                        <div id="staticRows">
+                                            <!-- Static rows (four initial rows) -->
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #1</label>
+                                                        <select name="sbs0" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs0" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #2</label>
+                                                        <select name="sbs1" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs1" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #3</label>
+                                                        <select name="sbs2" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs2" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #4</label>
+                                                        <select name="sbs3" class="select" style="width:100%" asp-items="ViewBag.Primary" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs3" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div id="subjectFormOSection" class="col-md-12" style="display: none;">
+                                        <div id="staticRows1">
+                                            <!-- Static rows (four initial rows) -->
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #1</label>
+                                                        <select name="sb4" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="sc4" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #2</label>
+                                                        <select name="sbs5" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs5" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #3</label>
+                                                        <select name="sbs6" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs6" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #4</label>
+                                                        <select name="sbs7" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs7" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #5</label>
+                                                        <select name="sbs8" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs8" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #6</label>
+                                                        <select name="sbs9" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs9" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #7</label>
+                                                        <select name="sbs10" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs10" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #8</label>
+                                                        <select name="sbs11" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs11" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #9</label>
+                                                        <select name="sbs12" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs12" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Subject" class="control-label" style="font-weight: normal !important;">Select Subject #10</label>
+                                                        <select name="sbs13" class="select" style="width:100%" asp-items="ViewBag.Subjects" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.FormerSchool.Scores.FirstOrDefault().Score" class="control-label" style="font-weight: normal !important;">Select Score</label>
+                                                        <select name="scs13" class="select" style="width:100%" asp-items="ViewBag.aggs" id="0" ,"Select"></select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+                            </div>
+                            <button class="btn btn-sm mybtnsm" onclick="stepper.previous();return false;">Prev</button>
+                            <button class="btn btn-sm mybtnsm" onclick="stepper.next();return false;">Next</button>
+
+                        </div>
+
+                        <div id="Health_Info" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.HealthInfo.Height" class="control-label" style="font-weight: normal !important;">Height</label>
+                                        <input asp-for="@Model.HealthInfo.Height" class="form-control form-control-sm" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.HealthInfo.Weight" class="control-label" style="font-weight: normal !important;">Weight</label>
+                                        <input asp-for="@Model.HealthInfo.Weight" class="form-control form-control-sm" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" asp-for="@Model.HealthInfo.Disabled" id="Disabled" />
+                                            Is Disabled
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" id="Disabilitycode" style="display:none;">
+                                        <label asp-for="@Model.HealthInfo.Disabilitycode" class="control-label" style="font-weight: normal !important;">Disability Type</label>
+                                        @Html.DropDownListFor(m => m.HealthInfo.Disabilitycode, new List<SelectListItem>
+                                        {
+                                        new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="Blind", Value="A"},
+                                        new SelectListItem{Text="Physical Handic", Value="D"},
+                                        new SelectListItem{Text="Deaf", Value="C"},
+                                        new SelectListItem{Text="Low Vision", Value="B"},
+                                        new SelectListItem{Text="Dyslexia Handic", Value="E"},
+                                        new SelectListItem{Text="Other", Value="F"},
+                                        new SelectListItem{Text="None", Value="G"}
+                                        }, htmlAttributes: new { @class = "select", style = "width: 100%;"})
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.HealthInfo.BloodGroup" class="control-label" style="font-weight: normal !important;">Blood Group</label>
+                                        @Html.DropDownListFor(m => m.HealthInfo.BloodGroup, new List<SelectListItem>
+                                        {
+                                        new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="A RhD positive", Value="A"},
+                                        new SelectListItem{Text="AB RhD negative", Value="AB-"},
+                                        new SelectListItem{Text="AB RhD positive", Value="AB+"},
+                                        new SelectListItem{Text="A RhD negative", Value="A-"},
+                                        new SelectListItem{Text="B RhD positive", Value="B+"},
+                                        new SelectListItem{Text="B RhD negative", Value="B-"},
+                                        new SelectListItem{Text="O RhD positive", Value="O+"},
+                                        new SelectListItem{Text="O RhD negative", Value="O-"}
+                                        }, htmlAttributes: new { @class = "select", style = "width: 100%;"})
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" asp-for="@Model.HealthInfo.Chronic" id="Disabled" />
+                                            Is Chronic
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.HealthInfo.MedHistory" class="control-label" style="font-weight: normal !important;">Medical History</label>
+                                        <textarea asp-for="@Model.HealthInfo.MedHistory" type="textarea" class="form-control form-control-sm" autocomplete="off"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm mybtnsm" onclick="stepper.previous();return false;">Prev</button>
+                            <button class="btn btn-sm mybtnsm" onclick="stepper.next();return false;">Next</button>
+                        </div>
+                        <div id="Documents" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
+                            <div class="row">
+                                @if (docs != null && docs.Any())
+                                {
+                                    @for (int i = 0; i < uploadedDocument.DocumentFiles.Count; i += 2)
+                                    {
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Type #@(i / 2 + 1)</label>
+                                                <select name="ddl@(i / 2)" class="select" style="width:100%" asp-items="ViewBag.DocTypes">Select Document Type</select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label" style="font-weight: normal !important;">Document Stream</label>
+                                                <input type="file" class="btn btn-primary col start" name="docs@(i)" value="Browse" />
+                                            </div>
+                                        </div>
+
+                                        @if (i + 1 < uploadedDocument.DocumentFiles.Count)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label  class="control-label" style="font-weight: normal !important;">Document Type #@(i / 2 + 2)</label>
+                                                    <select name="ddl@(i / 2 + 1)" class="select" style="width:100%" asp-items="ViewBag.DocTypes">Select Document Type</select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label  class="control-label" style="font-weight: normal !important;">Document Stream</label>
+                                                    <input type="file" class="btn btn-primary col start" name="docs@(i + 1)" value="Browse" />
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Type #2</label>
+                                                <select name="ddl1" class="select" style="width:100%" asp-items="ViewBag.DocTypes">Select Document Type</select>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Stream</label>
+                                                <input type="file" class="btn btn-primary col start" name="docs" value="Browse" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Type #2</label>
+                                                <select name="ddl2" class="select" style="width:100%" asp-items="ViewBag.DocTypes">Select Document Type</select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Stream</label>
+                                                <input type="file" class="btn btn-primary col start" name="docs1" value="Browse" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Type #3</label>
+                                                <select name="ddl3" class="select" style="width:100%" asp-items="ViewBag.DocTypes" ,"Select Reason For Disable"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label class="control-label" style="font-weight: normal !important;">Document Stream</label>
+                                                <input type="file" class="btn btn-primary col start" name="docs2" value="Browse" />
+
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Type #4</label>
+                                                <select name="ddl4" class="select" style="width:100%" asp-items="ViewBag.DocTypes"></select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label  class="control-label" style="font-weight: normal !important;">Document Stream</label>
+                                                <input type="file" class="btn btn-primary col start" name="docs3" value="Browse" />
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                }
+                            </div>
+                            <button class="btn btn-primary" onclick="stepper.previous();return false;">Previous</button>
+                        </div>
+                        <div>
+                            <button class="btn btn-block btn-sm mybtn float-right" style="width:100px; margin-top: -35px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.card -->
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script type="text/javascript">
+    function readfile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#SubjectCode').change(function () {
+            var selectedSubject = $(this).val();
+
+            var numElements = $('#subjectFormOSection > div').length;
+            if (numElements >= 8) {
+                var dynamicFields = '<div class="col-md-3">' +
+                    '<div class="form-group">' +
+                    '<label for="score" style="font-weight: normal !important;">Score</label>' +
+                    '<input type="text" class="form-control form-control-sm" autocomplete="off" />' +
+                    '</div>' +
+                    '</div>';
+                $('#subjectFormOSection > div:nth-child(8)').after(dynamicFields);
+            }
+        });
+    });
+</script>
+<script>
+    function populateDropdown() {
+        var level = document.getElementById('Level').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === "/") {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/QuickAdmission', '');
+        console.log('fullurl', fullUrl);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", fullUrl + "/ClassByLevel?level=" + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+                var dropdown1 = document.getElementById("Class");
+                dropdown1.innerHTML = "";
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+                var defaultOption = document.createElement("option");
+                defaultOption.value = "0";
+                defaultOption.text = "Select";
+                defaultOption.selected = true;
+                defaultOption.disabled = true;
+                dropdown1.insertBefore(defaultOption, dropdown1.firstChild);
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Level').change(function () {
+            populateDropdown();
+        });
+    });
+</script>
+<script>
+    function populateStreamCodeDropdown() {
+        var selectedClass = document.getElementById('Class').value;
+        console.log('selectedClass', selectedClass);
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/QuickAdmission', '');
+        console.log('fullurl', fullUrl);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/StreamCodesByClass?classs=' + selectedClass);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var StreamCodeedClasses = JSON.parse(xhr.responseText);
+                var hasStreamCodeedClasses = StreamCodeedClasses.length > 0;
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '';
+                if (hasStreamCodeedClasses) {
+                    for (var i = 0; i < StreamCodeedClasses.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = StreamCodeedClasses[i].StreamCodeId;
+                        option.text = StreamCodeedClasses[i].Name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'Class Not StreamCodeed';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = false;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamCodeDropdown();
+        });
+    });
+</script>
+
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#Disabled').change(function () {
+            if ($(this).is(':checked')) {
+                $('#Disabilitycode').show();
+                $('#Disabilitycode').attr('required', 'required');
+            } else {
+                $('#Disabilitycode').hide();
+                $('#Disabilitycode').removeAttr('required');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#newParentButton').click(function () {
+            var model = {
+                StudentAdd: {
+                    property1: 'value1',
+                    property2: 'value2',
+                },
+                ParentAdd: {
+
+                    property1: 'value1',
+                    property2: 'value2',
+
+                }
+            };
+
+            $.ajax({
+                url: 'Admission/Delete',
+                method: 'GET',
+                data: JSON.stringify({ model: model }),
+                contentType: 'application/json',
+                success: function (response) {
+                    var response1 = response.response1;
+                    var response2 = response.response2;
+                    $('#ParentIdInput').val(response1);
+                    $('#ParentNoInput').val(response2);
+                    console.log(response1);
+                    console.log(response2);
+                    $('#modal-lg').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function updateDropdownList() {
+        $.ajax({
+            url: '/Admission/GetDropdownOptions',
+            type: 'GET',
+            success: function (response) {
+                console.log(response);
+                var dropdownIds = ['parentid', 'parentid1', 'parentid2', 'parentid3'];
+                for (var i = 0; i < dropdownIds.length; i++) {
+                    var dropdown = document.getElementById(dropdownIds[i]);
+                    dropdown.innerHTML = '';
+                    for (var j = 0; j < response.length; j++) {
+                        var option = document.createElement('option');
+                        option.value = response[j].value;
+                        option.text = response[j].text;
+                        dropdown.appendChild(option);
+                    }
+                }
+
+                toastr.success("Parent Added Successfully");
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function sendPostRequest() {
+        var form = $('#modal-lg').find('.needs-validation');
+
+        if (form[0].checkValidity() === false) {
+            form.addClass('was-validated');
+            return;
+        }
+
+        var formData = form.serialize();
+
+        $.ajax({
+            url: '/Admission/ParentAdd',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    $('#modal-lg').modal('hide');
+
+                    // Clear the form fields and dropdowns
+                    form[0].reset();
+                    form.find('select').val('').trigger('change');
+                    form.removeClass('was-validated');
+                    setTimeout(function () {
+                        updateDropdownList();
+                    }, 1000);
+                } else {
+                    toastr.error('Error Occurred: ' + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                alert('Error Occurred: ' + error);
+            }
+        });
+
+        event.preventDefault();
+    }
+</script>
+<script type="text/javascript">
+    function readfile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#addRowBtn').click(function () {
+            var newRow = $(this).closest('.row').clone();
+            $('#dynamicRows').append(newRow);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#subjectFormSection, #subjectFormOSection').hide();
+        $('#awardcode').change(function () {
+            var selectedAward = $(this).val();
+            console.log('selectedAward', selectedAward);
+            if (selectedAward === 'PLE') {
+                $('#subjectFormSection').show();
+                $('#subjectFormOSection').hide();
+            } else if (selectedAward === 'UCE') {
+                $('#subjectFormSection').hide();
+                $('#subjectFormOSection').show();
+            }
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#SubjectCode').change(function () {
+            var selectedSubject = $(this).val();
+
+            var numElements = $('#subjectFormOSection > div').length;
+            if (numElements >= 7) {
+                var dynamicFields = '<div class="col-md-3">' +
+                    '<div class="form-group">' +
+                    '<label for="score" style="font-weight: normal !important;">Score</label>' +
+                    '<input type="text" class="form-control form-control-sm" autocomplete="off" />' +
+                    '</div>' +
+                    '</div>';
+
+                $('#subjectFormOSection > div:nth-child(8)').after(dynamicFields);
+            }
+        });
+    });
+</script>
+<script>
+    function populateDropdown() {
+        var level = document.getElementById('Level').value;
+        console.log(level);
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === "/") {
+            pathName = pathName.slice(1);
+        }
+
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl1 = fullUrl1.replace('/Create', '');
+        var fullUrl = fullUrl1;
+        console.log('fullurl', fullUrl);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", fullUrl + "/ClassByLevel?level=" + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+
+                var dropdown1 = document.getElementById("Class");
+                dropdown1.innerHTML = "";
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+
+                var defaultOption = document.createElement("option");
+                defaultOption.value = "0";
+                defaultOption.text = "Select";
+                defaultOption.selected = true;
+                defaultOption.disabled = true;
+                dropdown1.insertBefore(defaultOption, dropdown1.firstChild);
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Level').change(function () {
+            populateDropdown();
+        });
+    });
+</script>
+<script>
+    function populateStreamDropdown() {
+        var selectedClass = document.getElementById('Class').value;
+        console.log('selectedClass', selectedClass);
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        var pathName = window.location.pathname;
+
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/Create', '');
+        console.log('fullurl', fullUrl);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/StreamsByClass?classs=' + selectedClass);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var StreamedClasses = JSON.parse(xhr.responseText);
+
+                var hasStreamedClasses = StreamedClasses.length > 0;
+
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '';
+                if (hasStreamedClasses) {
+                    for (var i = 0; i < StreamedClasses.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = StreamedClasses[i].StreamId;
+                        option.text = StreamedClasses[i].Name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'Class Not Streamed';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = false;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown();
+        });
+    });
+</script>
+
+
+

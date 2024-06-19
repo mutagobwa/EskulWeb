@@ -1,0 +1,144 @@
+﻿@model Eskul.Models.SysParamVm
+@{
+
+    var listmodel = Model.ParamLists;
+}
+
+<br />
+<style>
+
+    .modal-dialog {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        border-radius: 8px;
+    }
+
+</style>
+<div class="col-md-12">
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Edit System Parameter</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="sysparam">
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="SysParamId" name="Id" id="SysParamId" />
+                                            <div class="form-group">
+                                                <label for="Name" style="font-weight:normal;">Name</label>
+                                                <input asp-for="Name" name="Name" id="Name" class="form-control form-control-sm" autocomplete="off" readonly required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Value" style="font-weight:normal;">Value</label>
+                                                <input asp-for="Value" name="Value" id="Values" required class="form-control form-control-sm" autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Description" style="font-weight:normal;">Description</label>
+                                                <textarea asp-for="Description" name="Description" id="Description" class="form-control form-control-sm" autocomplete="off" required></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group" style="margin-top:30px;">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" formaction="~/Sysparam/Create" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+        <div class="row">
+                        
+            <!-- /.col-md-8 -->
+                        <div class="col-md-12" id="tableContainer">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                Name
+                                </th>
+                                <th>
+                                Value
+                                </th>
+                                <th>
+                                Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                    @item.Value
+                                            </td>
+                                            <td>
+                                                    @item.Description
+                                            </td>
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.Id" data-name="@item.Name" data-values="@item.Value" data-description="@item.Description" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                          </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var Id = $(this).data('id');
+            var name = $(this).data('name');
+            var values = $(this).data('values');
+            console.log('value',values);
+            var description = $(this).data('description');
+            $('#modal-default #SysParamId').val(Id);
+            $('#modal-default #Name').val(name);
+            $('#modal-default #Values').val(values);
+            $('#modal-default #Description').val(description);
+        });
+</script>

@@ -1,0 +1,62 @@
+﻿body {
+   
+}
+.nav-link .fa-bars, .nav-link .fa-search {
+    color: orange;
+}
+.fas, .fa, .far {
+    color: orangered;
+}
+.os-viewport, .os-viewport-native-scrollbars-invisible {
+    background-color: #000055;
+        color: orange;
+}
+.navbar-dark {
+    background-color: darkblue  ;
+    }
+.main-footer {
+    background-color: #000055;
+        border-top: 1px solid #1d4064;
+    color: orange;
+    padding: 0.5rem;
+    text-align: center;
+}
+.form-control, .form-control-navbar{
+    background:white;
+}
+/*.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}*/
+/*.custom-file-upload {
+    position: relative;
+    
+    font-family: calibri;
+    width: 150px;
+    padding: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px #BBB;
+    text-align: center;
+    background-color: #DDD;
+    cursor: pointer;
+}*/
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }

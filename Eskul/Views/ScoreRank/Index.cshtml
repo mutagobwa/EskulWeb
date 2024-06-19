@@ -1,0 +1,328 @@
+﻿@model Eskul.Models.ScoreRank
+@{
+
+    var listmodel = Model.ScoreRanks;
+}
+<style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        display: none;
+      }
+      .btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    box-shadow: none;
+}
+    </style>
+    <style>
+  #example1_filter {
+    display: none;
+  }
+</style>
+<br />
+<div class="col-md-12">
+    <partial name="_ScoreComment" />
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-lg">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h4 class="modal-title">Add/Edit Score Rank</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="Steacher" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="ScoreRankId" />
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <div id="input-type" class="row">
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" onchange="populateDropdown()">O-Level
+
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="ClassCode" class="control-label" style="font-weight: normal !important;">Class</label>
+                                                @Html.DropDownList("ClassCode", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="ClassId",name="ClassId",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="LowerLimit" style="font-weight: normal !important;">Lower Limit</label>
+                                                <input asp-for="LowerLimit" type="number" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="UpperLimit" style="font-weight: normal !important;">Upper Limit</label>
+                                                <input asp-for="UpperLimit" type="number" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="RankCode" style="font-weight: normal !important;">Rank Code</label>
+                                                <input asp-for="RankCode" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Points" style="font-weight: normal !important;">Points</label>
+                                                <input asp-for="Points" type="number" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-xs btn-sm mybtn" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+
+
+                                    </form>
+                                    <!-- /.card-body -->
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="card-body">
+                        <div class="card card-outline card-default">
+                            <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+        <div class="card-body my-custom-class">
+           <form asp-action="Index" id="Steacher" class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-md-4">
+                                <div class="col-sm-12">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                <input name="Levelo" class="Core" value="O" type="radio" onchange="populateDropdowno()">O-Level
+                                                
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+                                           <input name="Levelo" class="finetype" value="A" type="radio" onchange="populateDropdowno()">A-Level
+                                            </label>
+                                        </div>
+                              
+                                    </div>
+                                </div>
+                                 
+                                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                      <label asp-for="ClassCode" class="control-label" style="font-weight: normal !important;">Class</label><small class="req"> *</small>
+                      @Html.DropDownList("ClassCode", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="ClassIdo",name="ClassIdo",required = "required"} )
+                 <div class="invalid-feedback">This Field is Required</div>
+                  </div>
+                  </div>
+                  <div class="col-md-4">
+              <div class="form-group">
+                   <div class="clearfix"></div>
+                                                            <input type="submit" value="Search" class="btn btn-block btn-xs btn-sm mybtn" style="margin-top:30px;" />
+                        </div>
+                        </div>
+                      
+                                </div>
+                                </form>
+                                 </div>
+                                  </div>
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg"><i class="fa fa-plus"></i>&nbsp; Add Score Rank</a>
+                                    </p>
+                                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Class
+                                </th>
+                                <th>
+                                  Lower Limit
+                                </th>
+                                <th>
+                                   Upper Limit
+                                </th>
+                                <th>
+                                   Rank
+                                </th>
+                                <th>
+                                   Points
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                             @item.ClassCode
+                                            </td>
+                                            <td>
+                                                    @item.LowerLimit
+                                            </td>
+                                            <td>
+                                                    @item.UpperLimit
+                                            </td>
+                                            <td>
+                                                    @item.RankCode
+                                            </td>
+                                            <td>
+                                                    @item.Points
+                                            </td>
+                                            <td>
+                                                <a asp-action="" asp-route-id="@item.ScoreRankId" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-default" data-id="@item.ScoreRankId" id="BookReturn" action="ReturnBook/@item.ScoreRankId">Add Comment</a>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.ScoreRankId">Edit</a>
+                                                 <a asp-action="Details" class="btn btn-xs btn-success" asp-route-id="@item.ScoreRankId">Details</a>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script type="text/javascript">
+    var delAccountId;
+
+    $(document).delegate('#BookReturn',
+    'click',
+    function (e) {
+      delAccountId = $(this).attr('data-id');
+      console.log(delAccountId);
+      $('#ScoreRankId').val(delAccountId);
+    });
+ </script>
+<script>
+    function populateDropdown() {
+    var level = document.querySelector('input[name="Level"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+    var xhr = new XMLHttpRequest();
+     xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var values = JSON.parse(xhr.responseText);
+            var dropdown1 = document.getElementById('ClassId');
+            dropdown1.innerHTML = '';
+            for (var i = 0; i < values.length; i++) {
+                var option = document.createElement('option');
+                option.value = values[i].classcode;
+                option.text = values[i].Name;
+                dropdown1.appendChild(option);
+            }
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open('GET', fullUrl + '/SubjectByLevel?level=' + level);
+            xhr2.onload = function() {
+                if (xhr2.status === 200) {
+                    var subjects = JSON.parse(xhr2.responseText);
+                    var dropdown2 = document.getElementById('SubCode');
+                    dropdown2.innerHTML = '';
+                    for (var i = 0; i < subjects.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = subjects[i].Subject_code;
+                        option.text = subjects[i].Subject_name;
+                        dropdown2.appendChild(option);
+                    }
+                }
+            };
+            xhr2.send();
+        }
+    };
+    xhr.send();
+}
+</script>
+<script>
+    function populateDropdowno() {
+    var level = document.querySelector('input[name="Levelo"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+    var xhr = new XMLHttpRequest();
+     xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var values = JSON.parse(xhr.responseText);
+            var dropdown1 = document.getElementById('ClassIdo');
+            dropdown1.innerHTML = '';
+            for (var i = 0; i < values.length; i++) {
+                var option = document.createElement('option');
+                option.value = values[i].classcode;
+                option.text = values[i].Name;
+                dropdown1.appendChild(option);
+            }
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open('GET', fullUrl + '/SubjectByLevel?level=' + level);
+            xhr2.onload = function() {
+                if (xhr2.status === 200) {
+                    var subjects = JSON.parse(xhr2.responseText);
+                    var dropdown2 = document.getElementById('SubCodeo');
+                    dropdown2.innerHTML = '';
+                    for (var i = 0; i < subjects.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = subjects[i].Subject_code;
+                        option.text = subjects[i].Subject_name;
+                        dropdown2.appendChild(option);
+                    }
+                }
+            };
+            xhr2.send();
+        }
+    };
+    xhr.send();
+}
+</script>

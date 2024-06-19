@@ -1,0 +1,186 @@
+﻿@model Eskul.Models.HostelRoom
+@{
+
+    var listmodel = Model.HostelRooms;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-default">
+                        <div class="modal-dialog">
+                            <div class="modal-content box box-primary" style="width:350px;">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Add/Edit Hostel Room</h4>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="Add" id="myform" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="BlockId" id="BlockId" />
+                                            <div class="form-group">
+                                                <label asp-for="BlockName" style="font-weight: normal !important;">Name</label>
+                                                <input asp-for="BlockName" id="BlockName" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="RoomCode" style="font-weight: normal !important;">Room Code</label>
+                                                <input asp-for="RoomCode" name="RoomCode" id="RoomCode" class="form-control form-control-sm" required autocomplete="off" />
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="RoomName" style="font-weight: normal !important;">Room Name</label>
+                                                <input asp-for="RoomName" name="RoomName" id="RoomName" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="input-type" class="row">
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                                <input name="Type" class="Core" id="input-type-student" value="B" type="radio">Boys
+
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Type" class="finetype" id="input-type-student" value="G" type="radio">Girls
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label asp-for="Capacity" style="font-weight: normal !important;">Capacity</label>
+                                                            <input asp-for="Capacity" name="Capacity" id="Capacity" class="form-control form-control-sm" required autocomplete="off" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" formaction="~/Hostel/Create" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+
+
+                                    </form>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- /.col-md-8 -->
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default">Add Hostel Room</a>
+                                    <table id="example1" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Block Name
+                                                </th>
+                                                 <th>
+                                               Room Code
+                                                </th>
+                                                <th>
+                                                Room Name
+                                                </th>
+                                                <th>
+                                                Gender
+                                                </th>
+                                                <th>
+                                                    Capacity
+                                                </th>
+                                                <th>
+                                                    Available Space
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.BlockName
+                                                        </td>
+                                                         <td>
+                                                @item.RoomCode
+                                                </td>
+                                                <td>
+                                                @item.RoomName
+                                                </td>
+                                                <td>
+                                                @item.Gender
+                                                </td> 
+                                                        <td>
+                                                            @item.Capacity
+                                                        </td>
+                                                        <td>
+                                                            @item.AvailableSpace
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.RoomID" data-blockid="@item.BlockId" data-rcode="@item.RoomCode" data-rname="@item.RoomName" data-gender="@item.Gender" data-capacity="@item.Capacity" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.RoomID" data-toggle="modal" data-target="#modal-info" onclick="del('@item.RoomID')" data-controller="Hostel">Del</button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="5" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-md-8 -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var roomid = $(this).data('id');
+            var blockId = $(this).data('blockid');
+            var roomcode = $(this).data('rcode');
+            var roomname = $(this).data('rname');
+            var gender = $(this).data('gender');
+            var capacity = $(this).data('capacity');
+
+
+            // Populate the modal with the data
+            $('#modal-default #RoomId').val(roomid);
+            $('#modal-default #BlockId').val(blockId);
+            $('#modal-default #RoomCode').val(roomcode);
+            $('#modal-default #RoomName').val(roomname);
+            $('#modal-default #Gender').val(gender);
+            $('#modal-default #Capacity').val(capacity);
+
+        });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>

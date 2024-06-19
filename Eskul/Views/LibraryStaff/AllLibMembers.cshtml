@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Eskul.Models.LibraryMembers>
+
+@{
+    ViewData["Title"] = "AllLibMembers";
+}
+
+</br>
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="card-body">
+           @* <p>
+                <a asp-action="Index" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp; Add New Member</a>
+            </p>*@
+            <table id="example2" class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            Membership No
+                        </th>
+                        <th>
+                            Admission No
+                        </th>
+                       
+                        <th>
+                            Card No
+                        </th>
+                        <th>
+                            School No
+                        </th>
+           
+                        <th>
+                           Names
+                        </th>
+                        <th>
+                         Type
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MembershipNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AdmissionNo)
+                            </td>
+                           
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LibraryCardNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SchoolNumber)
+                            </td>
+                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MemberType1)
+                            </td>
+                            <td>
+                                            <a asp-action="Revock" asp-route-id="@item.MembershipNo" title="Revock Membership"><i class="fa fa-minus-circle" style="color:red;"></i></a>&nbsp;&nbsp;
+                                            <a asp-action="IssueReturn" asp-route-id="@item.MembershipNo" title="Issue Or Return Book">
+                                                <i class="fa fa-sign-out" aria-hidden="true" style="color:blue;"></i>
+
+                                    </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

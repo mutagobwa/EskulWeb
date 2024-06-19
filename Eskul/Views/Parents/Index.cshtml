@@ -1,0 +1,110 @@
+﻿@model Eskul.Models.ParentViewDTO
+
+@{
+    var listmodel = Model.parents;
+}
+</br>
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<div class="col-md-12">
+<div class="box box-primary">
+                     <div class="card-body">
+<p>
+                            <a asp-action="Create" class="btn btn-sm mybtnsm"><i class="fa fa-plus"></i>&nbsp; Add Parent</a>
+</p>
+ <table id="example1" class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+            
+            <th>
+                Names
+            </th>
+           
+            <th>
+               Gender
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.nati)
+            </th> *@
+            <th>
+               Residence
+            </th>
+            <th>
+               Contact
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+                                @if (listmodel != null && listmodel.Count > 0)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Residence)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact1)
+            </td>
+            <td>
+                    <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.ParentId">Edit</a>
+                                                <button class="btn btn-xs btn-danger " id="delete" data-id="@item.ParentId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.ParentId')" data-controller="Parents">Delete</button>
+
+                                                <a asp-action="Details" class="btn btn-xs btn-warning" asp-route-id="@item.ParentId">Details</a>
+            </td>
+        </tr>
+        }
+
+        }
+        else
+        {
+                <tr>
+                    <td colspan="10" class="text-centere">
+                      No Record Found 
+                    </td>
+                                       
+             </tr>
+        }
+
+    </tbody>
+</table>
+</div>
+ </div>
+</div>
+</div>
+</div>
+</div>
+<script src="~/js/signalr.js"></script>
+<script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/StudentCountHub")
+            .build();
+
+        connection.on("UserCountChanged", function (userCount) {
+            $("#userCount").text(userCount+' '+'Users Online');
+            
+        });
+        connection.on("StudentCountChanged", function (StudentCount) {
+            $("#StudentCount").text(StudentCount);
+            });
+            connection.on("TeacherCountChanged", function (TeacherCount) {
+            $("#TeacherCount").text(TeacherCount);
+            });
+            connection.on("ParentCountChanged", function (ParentCount) {
+            $("#ParentCount").text(ParentCount);
+            });
+        connection.start().then(function () {
+            console.log("SignalR connection established.");
+        });
+    </script>

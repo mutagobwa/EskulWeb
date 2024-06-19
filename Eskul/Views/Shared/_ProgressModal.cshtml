@@ -1,0 +1,37 @@
+﻿
+<style>
+    .custom-modal {
+        border-radius: 15px;
+    }
+
+    .custom-modal-header {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .custom-modal-footer {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    .custom-progress {
+        height: 20px;
+        border-radius: 10px;
+    }
+</style>
+
+<!-- Overlay Modal -->
+<div class="modal fade" id="processingModal" tabindex="-1" role="dialog" aria-labelledby="processingModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content custom-modal">
+            <div class="modal-header bg-primary text-white custom-modal-header">
+                <h6 class="modal-title" id="processingModalLabel">Processing Please Wait</h6>
+            </div>
+            <div class="modal-body text-center">
+                <div class="progress custom-progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

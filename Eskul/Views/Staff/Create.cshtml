@@ -1,0 +1,345 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.StaffModel
+<br/>
+<style>
+    .pagetitleh2 {
+        background: #f2f2f2;
+        margin: 0;
+        font-size: 16px;
+        padding: 8px 14px;
+        color: #000;
+        border-bottom: 1px solid #d7dfe3;
+    }
+</style>
+@using (Html.BeginForm("Create", "Staff", FormMethod.Post, new { @enctype = "multipart/form-data", id = "Staff", @class = "needs-validation", novalidate = "true" }))
+
+{
+    <div class="col-md-12">
+        <div class="card card-outline card-default">
+            <br />
+            <div class="col-12 col-sm-6 col-md-12">
+                <a asp-action="BulkStaff" class="btn btn-sm mybtnsm"><i class="fa fa-plus"></i>&nbsp; Bulk Staff Import</a>
+
+            </div>
+            <div class="card-body">
+                <section class="content">
+                    <div class="container-fluid">
+                        <form asp-action="Create" id="Staff">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-12 col-sm-6 col-md-12">
+                                <div class="box box-primary">
+                                    <div class="card-header p-0 pt-1 border-bottom-0">
+                                        <h4 class="pagetitleh2"><b>General Information</b></h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="custom-tabs-three-tabContent">
+                                            <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <input type="hidden" asp-for="StaffId" />
+                                                        <input type="hidden" asp-for="StaffNo" />
+                                                         <input type="hidden" asp-for="Initial" />
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="BranchId" class="control-label" style="font-weight: normal !important;">Branch</label><small class="req"> *</small>
+
+                                                                @Html.DropDownList("BranchId", (IEnumerable<SelectListItem>)ViewBag.Branches, new { @class = "select",style = "width: 100%;",id="BranchId",name="BranchId"})
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label for="Termofentry" style="font-weight: normal !important;">Term Of Entry</label><small class="req"> *</small>
+                                                                @Html.DropDownListFor(m => m.TermofEntry, new List<SelectListItem>
+                                                            {       new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="Term One", Value="1"},
+                                                            new SelectListItem{Text="Term Two", Value="2"},
+                                                            new SelectListItem{Text="Term Three", Value="3"}},
+                                                            "Select",htmlAttributes:new { @class = "select",style = "width: 100%;",name="Termofentry"})
+                                                            </div>
+                                                            <div class="invalid-feedback">This Field is Required</div>
+                                                        </div>
+
+
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Prefix" class="control-label" style="font-weight: normal !important;">Prefix</label><small class="req"> *</small>
+                                                                @Html.DropDownListFor(m => m.Prefix, new List<SelectListItem>
+                                                            {
+                                                            new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="Brother", Value="Br"},
+                                                            new SelectListItem{Text="Chancellor", Value="Chan"},
+                                                            new SelectListItem{Text="Chaplain", Value="Chapln"},
+                                                            new SelectListItem{Text="Doctor", Value="Dr"},
+                                                            new SelectListItem{Text="Father", Value="Fr"},
+                                                            new SelectListItem{Text="Governor", Value="Gov"},
+                                                            new SelectListItem{Text="Honorable", Value="Hon"},
+                                                            new SelectListItem{Text="Miss", Value="Miss"},
+                                                            new SelectListItem{Text="Mister", Value="Mr"},
+                                                            new SelectListItem{Text="Madam", Value="Mrs"},
+                                                            new SelectListItem{Text="Ms", Value="Ms"},
+                                                            new SelectListItem{Text="Professor", Value="Prof"},
+                                                            new SelectListItem{Text="Reverend", Value="Rev"},
+                                                            new SelectListItem{Text="Reverends", Value="Revs"},
+                                                            new SelectListItem{Text="Sister", Value="Sr"}
+                                                            }, htmlAttributes: new { @class = "select", style = "width: 100%;", required = "required" })
+                                                            <div class="invalid-feedback">This Field is Required</div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        
+                                                        <div class="col-md-3">
+                                                           
+                                                            <div class="form-group">
+                                                                <label asp-for="FirstName" class="control-label" style="font-weight: normal !important;">First Name</label><small class="req"> *</small>
+                                                                <input asp-for="FirstName" class="form-control form-control-sm" required autocomplete="off" />
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="MiddleName" class="control-label" style="font-weight: normal !important;">Middle Name</label>
+                                                                <input asp-for="MiddleName" class="form-control form-control-sm" autocomplete="off" />
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="LastName" class="control-label" style="font-weight: normal !important;">Last Name</label><small class="req"> *</small>
+                                                                <input asp-for="LastName" class="form-control form-control-sm" required autocomplete="off" />
+                                                            </div>
+                                                            <div class="invalid-feedback">This Field is Required</div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label for="Gender" style="font-weight: normal !important;">Gender</label><small class="req"> *</small>
+                                                                @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                                                    {
+                                                            new SelectListItem{Text="Select", Value=""},
+                                                                        new SelectListItem{Text="Male", Value="M"},
+                                                                        new SelectListItem{Text="Female", Value="F"}
+                                                            },
+                                                            htmlAttributes:new { @class ="select", id = "Gender",name="Gender", style = "width: 100%;font-weight: normal !important;",required = "required"})
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                        </div>
+                                                     
+                                                        </div>
+                                      <div class="col-md-3">
+                                         <div class="form-group">
+                                            <label asp-for="Religion" class="control-label" style="font-weight: normal !important;" id="religioncode">Religion</label><small class="req"> *</small>
+                                                                @Html.DropDownListFor(m => m.Religion, new List<SelectListItem>
+                                                            {
+                                                            new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="Catholic", Value="1"},
+                                                            new SelectListItem{Text="Anglican", Value="2"},
+                                                            new SelectListItem{Text="Muslim", Value="3"},
+                                                            new SelectListItem{Text="Pentecostal", Value="4"},
+                                                            new SelectListItem{Text="Adventists", Value="5"},
+                                                            new SelectListItem{Text="Baptist", Value="6"},
+                                                            new SelectListItem{Text="Other", Value="7"}
+                                                            }, htmlAttributes: new { @class = "select", style = "width: 100%;", id = "Religion", name = "Religion", required = "required" })
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                             </div>
+                                   </div>
+                                   <div class="col-md-3">
+                                        <div class="form-group">
+                                                                <label asp-for="Nationality" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+
+                                                                @Html.DropDownListFor(m => m.Nationality, new List<SelectListItem>
+                                                            {
+                                                            new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="Ugandan", Value="UG"}}, htmlAttributes: new { @class = "select", style = "width: 100%;" ,required = "required" })
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                                <label asp-for="Citizentype" class="control-label" style="font-weight: normal !important;">Citizen Type</label><small class="req"> *</small>
+
+                                                                @Html.DropDownListFor(m => m.Citizentype, new List<SelectListItem>
+                                                            {
+                                                            new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="By Birth", Value="1"},
+                                                            new SelectListItem{Text="By Registration", Value="2"},
+                                                            new SelectListItem{Text="By Presumption", Value="3"},
+                                                            new SelectListItem{Text="By Naturalization", Value="4"},
+                                                            new SelectListItem{Text="Dual Citizenship", Value="5"}
+                                                            }, htmlAttributes: new { @class = "select", style = "width: 100%;", id = "Citizentype", name = "Citizentype", required = "required" })
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Category" class="control-label" style="font-weight: normal !important;" id="Staffcategory">Staff Category</label><small class="req"> *</small>
+                                                                @Html.DropDownListFor(m => m.Category, new List<SelectListItem>
+                                                            {       new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="Teaching", Value="T"},
+                                                            new SelectListItem{Text="Non Teaching", Value="NT"}},htmlAttributes:new { @class = "select",style = "width: 100%;",id="Staffcategory",name="Staffcategory",required = "required"})
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="AcLevel" class="control-label" style="font-weight: normal !important;" id="religioncode">Academic Level</label><small class="req"> *</small>
+                                                                @Html.DropDownListFor(m => m.AcLevel, new List<SelectListItem>
+                                                            {
+                                                            new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="Degree", Value="DEG"},
+                                                            new SelectListItem{Text="Diploma", Value="DIP"},
+                                                            new SelectListItem{Text="Master", Value="MAS"},
+                                                            new SelectListItem{Text="Others", Value="OTH"},
+                                                            new SelectListItem{Text="P.L.E", Value="PLE"},
+                                                            new SelectListItem{Text="U.A.C.E", Value="UACE"},
+                                                            new SelectListItem{Text="U.C.E", Value="UCE"}
+                                                            }, htmlAttributes: new { @class = "select", style = "width: 100%;", id = "Aclevel", name = "Aclevel", required = "required" })
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="PositionTitle" class="control-label" style="font-weight: normal !important;">Position Title</label>
+                                                                <input asp-for="PositionTitle" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Contact1" class="control-label" style="font-weight: normal !important;">Primary Contact</label><small class="req"> *</small>
+                                                                <input type="tel" asp-for="Contact1" id="Contact1" name="Contact1" class="form-control form-control-sm" required autocomplete="off" />
+                                                                <div class="invalid-feedback">This Field is Required Or Invalid Sequence(07)</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Contact2" class="control-label" style="font-weight: normal !important;">Other Contact</label>
+                                                                <input asp-for="Contact2" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                <label asp-for="PassPortNo" class="control-label" style="font-weight: normal !important;">PassPortNo</label>
+                                                                <input asp-for="PassPortNo" class="form-control form-control-sm" autocomplete="off" />
+                                                                </div>
+                                                            </div>
+                                       
+                            <div class="col-md-3">
+                                        <div class="form-group">
+                                                                <label asp-for="NiN" class="control-label" style="font-weight: normal !important;">NIN</label>
+                                            <input asp-for="NiN" class="form-control form-control-sm"  autocomplete="off"  />
+                                        </div>
+                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Residence" class="control-label" style="font-weight: normal !important;"></label>
+                                                                <input asp-for="Residence" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Email" class="control-label" style="font-weight: normal !important;"></label>
+                                                                <input asp-for="Email" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                        <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="Tribe" class="control-label" style="font-weight: normal !important;"></label>
+                                            <input asp-for="Tribe" class="form-control form-control-sm" autocomplete="off"  />
+                                        </div>
+                                        </div>
+                                                    <div class="col-md-3">
+                                        <div class="form-group form-check">
+                                            <label class="form-check-label">
+                                                                    <input class="form-check-input" asp-for="IsRegistered" /> @Html.DisplayNameFor(model => model.IsRegistered)
+                                            </label>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                        <div class="form-group">
+                                        <label asp-for="RegistrationNo" class="control-label" style="font-weight: normal !important;">RegistrationNo</label>
+                                            <input asp-for="RegistrationNo" class="form-control form-control-sm" autocomplete="off"  />
+                                        </div>
+                                        </div>
+                                                        <div class="col-12 col-sm-12 col-md-3">
+                                                            <label for="termcode" style="font-weight: normal !important;">Staff Photo</label>
+
+                                                            <div class="box-body text-center" id="image_upload_preview">
+                                                                <input type="file" class="btn btn-primary col start" name="files" onchange="readfile(this);" value="Browse">
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="PayType" class="control-label" style="font-weight: normal !important;" id="religioncode">Pay Type</label><small class="req"> *</small>
+                                                                @Html.DropDownListFor(m => m.PayType, new List<SelectListItem>
+                                                            {       new SelectListItem{Text="Select", Value=""},
+                                                            new SelectListItem{Text="Contract", Value="C"},
+                                                            new SelectListItem{Text="Full Time", Value="F"},
+                                                            new SelectListItem{Text="Part Time", Value="P"}},
+                                                            "Select",htmlAttributes:new { @class = "select",style = "width: 100%;",name="PayType"})
+                  
+                                                            </div>
+                                                        </div>
+                                         
+                                                        @* <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Departmentcode" class="control-label" style="font-weight: normal !important;" id="religioncode">Department</label><small class="req"> *</small>
+                                                                @Html.DropDownList("Departmentcode", (IEnumerable<SelectListItem>)ViewBag.Departments, new { @class = "select",style = "width: 100%;",id="Departmentcode",name="Departmentcode",required = "required"})
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                        </div>     
+                                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                                                <label asp-for="Paytypecode" class="control-label" style="font-weight: normal !important;" id="religioncode">Pay Type</label><small class="req"> *</small>
+                                                                @Html.DropDownList("Paytypecode", (IEnumerable<SelectListItem>)ViewBag.PayTypes, new { @class = "select",style = "width: 100%;",id="Paytypecode",name="Paytypecode",required = "required"})
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                        </div>
+                                        
+                                       
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                                <label asp-for="Salaryscale" class="control-label" style="font-weight: normal !important;">Salary Scale</label><small class="req"> *</small>
+                                                                @Html.DropDownList("Salaryscale", (IEnumerable<SelectListItem>)ViewBag.SalaryScales, new { @class = "select",style = "width: 100%;",id="Salaryscale",name="Salaryscale",required = "required"})
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                       </div> *@
+                                                    </div>
+                                                </div>
+                                                        
+                                                <br />
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="form-group">
+                                                        <input type="submit" class="btn btn-block btn-sm mybtn" style=" width:200px;"/>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+                                </div>
+                        </form>
+                        
+                        <script type="text/javascript">
+                            function readfile(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+
+                                    reader.onload = function (e) {
+                                        $('#image_preview').attr('src', e.target.result);
+                                    }
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                       
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+}

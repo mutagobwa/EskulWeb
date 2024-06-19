@@ -1,0 +1,150 @@
+﻿@* @model Eskul.Models.HostelRoom
+@{
+
+    var listmodel = Model.HostelRooms;
+}
+<br />
+<div class="col-md-12">
+    <partial name="_AddBed" />
+    <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                                <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Hostel Room</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Add" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+                             <input type="hidden" asp-for="RoomId"/>
+                            <div class="form-group">
+                <label asp-for="RoomNo" style="font-weight: normal !important;">Room Number</label>
+                <input asp-for="RoomNo" class="form-control form-control-sm" required autocomplete="off" />
+                                            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+                            <div class="form-group">
+                <label asp-for="RoomName" style="font-weight: normal !important;" >RoomName</label>
+                <input asp-for="RoomName" name="Address" class="form-control form-control-sm" required autocomplete="off"/>
+                                            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Limit" style="font-weight: normal !important;">Limit</label>
+                <input asp-for="Limit" name="Intake" class="form-control form-control-sm" required autocomplete="off" />
+                                            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                <input name="Gender" class="Core" id="input-type-student" value="B" type="radio">Boys
+                                                
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+                                           <input name="Gender" class="finetype" id="input-type-student" value="G" type="radio">Girls
+                                            </label>
+                                        </div>
+                                </div>
+                                </div>
+                                </div>
+                            <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" style="" />
+                        </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                  Name
+                                </th>
+                                <th>
+                                    Dormitory
+                                </th>
+                                <th>
+                                   Type
+                                </th>
+                                <th>
+                                    Limit
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.RoomNo
+                                                </td>
+                                            <td>
+                                                    @item.RoomName
+                                            </td>
+                                            <td>
+                                                    @item.HostelId
+                                            </td>
+                                            <td>
+                                                    @item.Gender
+                                            </td>
+                                            <td>
+                                                    @item.Limit
+                                            </td>
+                                            <td>
+                                                    @item.StatusId
+                                            </td>
+                                            <td>
+                                                <a asp-action="" asp-route-id="@item.HostelId" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-default" data-id="@item.HostelId" id="BookReturn" action="ReturnBook/@item.HostelId">Add Bed</a>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.RoomId">Edit</a>
+                                               <button class="btn btn-xs btn-danger " id="delete" data-id="@item.RoomId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.RoomId')" data-controller="Rooms">Del</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found  
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+ </div>
+        </div>
+    </div> *@

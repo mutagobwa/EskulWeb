@@ -1,0 +1,121 @@
+﻿@model Eskul.Models.PositionTittle
+@{
+
+    var listmodel = Model.positionTittles;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                                <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Position Title</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+                             <input type="hidden" asp-for="titleCode"/>
+                            <div class="form-group">
+                                <label for="titleCode" style="font-weight:normal;">Tittle Code</label>
+                                <input asp-for="titleCode" class="form-control form-control-sm" required disabled/>
+                            <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="titleName" style="font-weight:normal;">Tittle Name</label>
+                                <input asp-for="titleName" class="form-control form-control-sm" required/>
+                            <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="levelcode" style="font-weight:normal;">Owner</label>
+                                @Html.DropDownListFor(m => m.owner, new List<SelectListItem>
+                                {  new SelectListItem{Text="Select Owner", Value=""},     
+                                    new SelectListItem{Text="Student", Value="STD"},
+                                new SelectListItem{Text="Staff", Value="STF"}},htmlAttributes:new {@class="select",id="owner",name="owner",required = "required"})
+                            <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                           
+                            <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" />
+                        </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                         <p>
+            <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp; Add Position Tittle</a>
+        </p>
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Tittle Code
+                                </th>
+                                <th>
+                                    Tittle Name
+                                </th>
+                                <th>
+                                    Owner
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.titleCode
+                                                </td>
+                                            <td>
+                                                    @item.titleName
+                                            </td>
+                                            <td>
+                                                    @item.owner
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.titleCode">Edit</a>
+                                                 <button class="btn btn-xs btn-danger " id="delete" data-id="@item.titleCode"data-toggle="modal" data-target="#modal-info" onclick="del('@item.titleCode')" data-controller="PositionTittle" data-body-message="Are You Sure You Want To Delete This Stream">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

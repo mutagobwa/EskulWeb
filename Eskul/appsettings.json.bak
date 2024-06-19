@@ -1,0 +1,14 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "name": "AK",
+  "Appsettings": {
+    "Base_Url": "https://localhost:7266/api/EskulSec/"
+  }
+}
+

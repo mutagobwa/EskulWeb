@@ -1,0 +1,129 @@
+﻿@model Eskul.Models.StudentCategory
+@{
+
+    var listmodel = Model.studentCategories;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary" style="width:380px; border-radius: 8px;">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit Category</h6>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="" id="Cat" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="categoryId" name="categoryId" id="categoryId" />
+                                            <div class="form-group">
+                                                <label asp-for="categoryName" style="font-weight:normal;">Category Name</label>
+                                                <input asp-for="categoryName" name="categoryName" id="categoryName" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="categoryDesc" style="font-weight:normal;">Category Desc</label>
+                                                <textarea asp-for="categoryDesc" name="categoryDesc" id="categoryDesc" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" formaction="~/StudentCategory/Create" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+        <div class="row">
+
+            <!-- /.col-md-8 -->
+            <div class="col-md-12">
+                         
+                <div class="box box-primary">
+                     <div class="card-body">
+                                    <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default">Add Student Category</a>
+
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Student Category
+                                </th>
+                                <th>
+                                    Category Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.categoryName
+                                                </td>
+                                            <td>
+                                                    @item.categoryDesc
+                                            </td>
+                                            
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.categoryId" data-name="@item.categoryName" data-desc="@item.categoryDesc" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.categoryId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.categoryId')" data-controller="StudentCategory" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var CatId = $(this).data('id');
+            var CatName = $(this).data('name');
+            var CatDesc = $(this).data('desc');
+            // Populate the modal with the data
+            $('#modal-default #categoryId').val(CatId);
+            $('#modal-default #categoryName').val(CatName);
+            $('#modal-default #categoryDesc').val(CatDesc);
+
+        });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>

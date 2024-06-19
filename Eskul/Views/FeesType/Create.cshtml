@@ -1,0 +1,51 @@
+﻿@model Eskul.Models.FeesType
+<div class="col-md-3">
+    <!-- general form elements -->
+    <div class="box box-primary">
+        <div class="card-header mycard">
+            <h3 class="card-title" style="font-weight: bold;">Add/Edit Fee Type</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+            <div class="card-body">
+                <input type="hidden" asp-for="TypeCode" />
+                <div class="form-group">
+                    <label asp-for="TypeCode" style="font-weight:normal;">Type Code</label>
+                    <input asp-for="TypeCode" class="form-control form-control-sm" required disabled />
+                </div>
+                <div class="form-group">
+                    <label asp-for="TypeName" style="font-weight:normal;">Type Name</label>
+                    <input asp-for="TypeName" name="TypeName" class="form-control form-control-sm" required autocomplete="off" />
+                    <div class="invalid-feedback">This Field is Required</div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GroupCode" class="control-label" style="font-weight: normal !important;" id="Disabilitycode">Fees Group</label>
+                    @Html.DropDownList("GroupCode", (IEnumerable<SelectListItem>)ViewBag.FeesGroups, new { @class = "select",style = "width: 100%;",id="GroupCode",name="GroupCode",required = "required"})
+                    <div class="invalid-feedback">This Field is Required</div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GlAccount" style="font-weight:normal;">Gl Account</label>
+                    <input asp-for="GlAccount" class="form-control form-control-sm" required autocomplete="off" />
+                    <div class="invalid-feedback">This Field is Required</div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TypeDescription" style="font-weight:normal;">Type Description</label>
+                    <textarea asp-for="TypeDescription" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                    <div class="invalid-feedback">This Field is Required</div>
+                </div>
+
+                <div class="form-group form-check">
+                    <label class="form-check-label" style="font-weight:normal;">
+                        <input class="form-check-input" asp-for="ApplyBursary" /> @Html.DisplayNameFor(model => model.ApplyBursary)
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" style="" />
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </form>
+    </div>
+</div>

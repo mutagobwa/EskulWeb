@@ -1,0 +1,242 @@
+﻿@model Eskul.Models.subjectpaper
+@{
+    var listmodel = Model.subjectPaperLists;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <p>
+                <a asp-controller="Subject" asp-action="Index" class="btn btn-sm mybtnsm">Go To Subjects</a>
+            </p>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                                <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Subject Paper</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                                <form asp-action="Create" id="Subp" class="needs-validation" novalidate>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+                                                
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+                                           <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                            </label>
+                                        </div>
+                              
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                            <label asp-for="SubjectCode" class="control-label" style="font-weight: normal !important;">Subject</label>
+                                            @Html.DropDownList("SubjectCode", (IEnumerable<SelectListItem>)ViewBag.Subjects, new { @class = "select",style = "width: 100%;",id="SubjectCode",name="SubjectCode",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                            <div class="form-group">
+                                            <label for="PaperCode" style="font-weight:normal;">Paper Code</label>
+                                <input asp-for="PaperCode" class="form-control form-control-sm" required autocomplete="off" />
+                                            <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="form-group">
+                                            <label for="PaperName" style="font-weight:normal;">Paper Name</label>
+                                            <input asp-for="PaperName" name="PaperName" class="form-control form-control-sm" required autocomplete="off" />
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+
+                                                <div id="input-type" class="row">
+                                                    <div class="col-sm-6">
+                                                         <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input custom-control-input-primary custom-control-input-outline" type="checkbox" id="customCheckbox5" asp-for="Compulsory">
+                                  <label for="customCheckbox5" class="custom-control-label" style="font-weight:normal;" />Compulsory </label>
+                            </div>
+                            </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group form-check">
+                                                            <label class="form-check-label" style="font-weight:normal;">
+                                                                <input class="form-check-input" asp-for="Offered" /> @Html.DisplayNameFor(model => model.Offered)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                                        </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+            
+           <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="card-body">
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Paper 
+                                </th>
+                                <th>
+                                    Subject 
+                                </th>
+                                <th>
+                                    Paper
+                                </th>
+                                <th>
+                                    Compulsory
+                                </th>
+                                 <th>
+                                  Offered
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listmodel)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Paper_Code
+                                    <td>
+                                            @item.Subject_Code
+                                    </td>
+                                    <td>
+                                            @item.Paper_Name
+                                    </td>
+                                    <td>
+                                            @item.Compulsory
+                                    </td>
+                                    <td>
+                                            @item.Offered
+                                    </td>
+                                    <td>
+                                            <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.Paper_Code">Edit</a>
+                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.Paper_Code" data-toggle="modal" data-target="#modal-info" onclick="del('@item.Paper_Code')" data-controller="SubjectPaper">Del</button>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    function populateDropdown() {
+        // get selected radio button value
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName;
+
+        // make AJAX call to retrieve subjects for selected level
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/SubjectByLevel?level=' + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var subjects = JSON.parse(xhr.responseText);
+
+                // populate dropdown with retrieved subjects
+                var dropdown = document.getElementById('SubjectCode');
+                dropdown.innerHTML = '';
+                for (var i = 0; i < subjects.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = subjects[i].Subject_code;
+                    option.text = subjects[i].Subject_name;
+                    dropdown.appendChild(option);
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+<script>
+    $(function () {
+        $.validator.addMethod("dropdownSelection", function (value, element) {
+            var selectedValue = $("#SubjectCode").val();
+            console.log(selectedValue);
+            return selectedValue !== "0";
+        }, "Please select an option");
+        $('#Subp').validate({
+            ignore: [],
+            rules: {
+                SubjectCode: {
+                    dropdownSelection: true,
+                    required: true
+
+                },
+                
+            },
+            messages: {
+                Subjectcode: {
+                    required:"Please select Subject",
+                    dropdownSelection: "Please select an option"
+
+                },
+                
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+                //$(element).next(".select").find(".select2-choice").css("border-color", "red");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                console.log('Element is: ' + element)
+                $(element).removeClass('is-invalid');
+                //$(element).next(".select").find(".select2-choice").css("border-color", "");
+            }
+        });
+    });
+
+
+</script>

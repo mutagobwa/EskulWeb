@@ -1,0 +1,177 @@
+﻿@model Eskul.Models.ExamSettingAdd
+@{
+
+    var listmodel = Model.examSettings;
+}
+
+<br />
+
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-default">
+                        <div class="modal-dialog">
+                            <div class="modal-content box box-primary" style="width:350px;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add/Edit Exam Setting</h5>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input hidden asp-for="ExamsettingId" id="ExamsettingId" />
+                                            <div class="form-group">
+                                                <label asp-for="Year" class="control-label" style="font-weight: normal !important;"></label>
+                                                <input asp-for="Year" class="form-control form-control-sm" required autocomplete="off" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Term" style="font-weight: normal !important;">Academic Term</label>
+                                                @Html.DropDownListFor(m => m.Term, new List<SelectListItem>
+                                                {       new SelectListItem{Text="Term One", Value="1"},
+                                                new SelectListItem{Text="Term Two", Value="2"},new SelectListItem{Text="Term Three", Value="3"}},"Select",htmlAttributes:new { @class = "select",style = "width: 100%;",id="Term",name="Term",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label>
+                                                @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label asp-for="ExamCode" class="control-label" style="font-weight: normal !important;">Exam</label>
+                                                @Html.DropDownList("ExamCode", (IEnumerable<SelectListItem>) ViewBag.ExamType, new { @class = "select",style = "width: 100%;",id="Exam",name="Exam",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="PassMark" class="control-label" style="font-weight: normal !important;"></label>
+                                                <input asp-for="PassMark" type="text" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="ApplyToAllClasses" id="ApplyToAllClasses" />
+                                                    All Classes
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <div class="row">
+                        <!-- /.col-md-8 -->
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <p>
+                                        <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp; Add Exam Setting</a>
+                                    </p>
+                                    <table id="example2" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Class
+                                                </th>
+                                                <th>
+                                                    Term
+                                                </th>
+                                                <th>
+                                                    Year
+                                                </th>
+                                                <th>
+                                                    Exam
+                                                </th>
+                                                <th>
+                                                    Pass Mark
+                                                </th>
+
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Class)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Term)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Year)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.ExamCode)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.PassMark)
+                                                        </td>
+
+                                                        <td>
+                                                            <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.ExamsettingId">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.Term" data-toggle="modal" data-target="#modal-info" onclick="del('@item.ExamsettingId')" data-action="Delete">Del</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="6" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-md-8 -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var ExSeId = $(this).data('id');
+            var Year = $(this).data('year');
+            var Term = $(this).data('term');
+            var Class = $(this).data('myclass');
+            var ExamCode = $(this).data('excode');
+            var PassMark = $(this).data('passmark');
+            $('#modal-default #ExamsettingId').val(id);
+            $('#modal-default #Year').val(name);
+            $('#Class').val(myclass).change();
+            $('#ExamCode').val(excode).change();
+            $('#Term').val(term).change();
+            $('#modal-default #PassMark').val(Limit);
+        });
+</script>
+<script src="~/js/ModalRest.js"></script>

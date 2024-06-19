@@ -1,0 +1,275 @@
+﻿@using System.Web;
+@using Microsoft.AspNetCore.Mvc;
+@using Newtonsoft.Json;
+@using SmartPaperEdms.Web.App_Code;
+@using Microsoft.AspNetCore.Mvc.Rendering;
+@using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.DependencyInjection
+@{
+    var SessionDataDet = ViewData["sd"] as SessionDetail;
+}
+@if (!SessionData.IsSignedIn)
+{
+    Context.Response.Redirect("~/Login");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Eskul</title>
+    <link rel="stylesheet" href="~/css/fontawesome.css" />
+    <link rel="stylesheet" href="~/css/brands.css" />
+    <link rel="stylesheet" href="~/css/solid.css" />
+    <link rel="stylesheet" href="~/css/fontss.css" />
+    <link rel="stylesheet" href="~/css/toastr.min.css" />
+    <link rel="stylesheet" href="~/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/css/buttons.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/OverlayScrollbars.min.css" />
+    <link rel="stylesheet" href="~/css/adminlte.min.css" />
+    <link rel="stylesheet" href="~/css/Mine.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/select2.css" />
+    <link rel="stylesheet" href="~/css/select2-bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+    <link rel="stylesheet" href="~/css/bs-stepper.min.css" />
+   @*  <script>
+        $(document).ready(function () {
+            var canEdit = @Html.Raw(Json.Serialize(SessionData.CanUpdate));
+            var canDelete = @Html.Raw(Json.Serialize(SessionData.CanDelete));
+            var canAdd = @Html.Raw(Json.Serialize(SessionData.CanAdd));
+            if (!canEdit && !canDelete) {
+                // Hide the entire column
+                $('table').each(function () {
+                    var columnIndex = $(this).find('th:contains("Action")').index() + 1;
+                    $(this).find('th:nth-child(' + columnIndex + '), td:nth-child(' + columnIndex + ')').hide();
+                });
+            } else {
+                // Show the column if any of the buttons are visible
+                $('th:contains("Action")').show();
+                $('td:contains("Action")').show();
+            }
+            if (!canEdit) {
+                $('.edit-button').hide();
+            }
+
+            if (!canDelete) {
+                $('.delete-button').hide();
+            }
+
+            if (!canAdd) {
+                $('#addClassFormContainer').hide();
+                $('#tableContainer').removeClass('col-md-9 col-md-8 col-md-12').addClass('col-md-12');
+                $('.addbtn').hide();
+            }
+        });
+
+
+    </script> *@
+    @*<link rel="stylesheet" href="~/css/myfonts.css" />*@
+    <style>
+        .btn-primary {
+            color: #fff;
+            background-color: #007bff !important;
+            border-color: #007bff !important;
+            box-shadow: none;
+        }
+
+            .btn-primary:hover {
+                background-color: #007bff !important;
+                border-color: #007bff !important;
+            }
+            
+        .form-group .req {
+            color: #fc2d42;
+            font-size: 1.1rem !important;
+        }
+       
+    .mybtn {
+        border: 2px solid #faa21c;
+        color: #fff;
+        background-color: #007bff !important;border-radius:8px;
+    }
+    .mybtnsm{
+border: 2px solid #faa21c;
+            color: #fff;
+            background-color: #007bff !important;
+            border-radius: 8px;
+    }
+    .mybtnlg {
+            border: 2px solid #faa21c;
+            color: #fff;
+            background-color: #007bff !important;
+            border-radius: 8px;
+            margin-top: 30px;
+    }
+        .text-centere{
+            background:#d3dde7 !important;
+        }
+        .mycard{
+            background:#dee2e6;
+        }
+    </style>
+    <style>
+
+        .modal-dialog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            border-radius: 8px;
+        }
+
+    </style>
+     <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" style="background-color:#f3faff;">
+    <div class="wrapper">
+        
+        <!-- Navbar -->
+        @Html.Partial("TopNav")
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+             <a href="#" class="brand-link" style="background:#000055;">
+                <img src="data:image/png;base64,@SessionData.SchoolLogo" alt="Image" class="brand-image img-circle elevation-3" style="opacity: .8">
+<span class="brand-text font-weight-light" style="background:#000055;color:darkorange;"><b>Eskul V2.1</b></span>
+            </a>
+          @{
+    var httpContextAccessor = Context.RequestServices.GetService<IHttpContextAccessor>();
+    var menusJson = SessionHelper.GetMenus();
+    var menus = JsonConvert.DeserializeObject<List<Menu>>(menusJson);
+}
+            @if (menus != null)
+            {
+                @Html.Partial("Menu", menus)
+            }
+        </aside>
+        <!-- /.navbar -->
+        <div class="content-wrapper">
+            <partial name="_Notifications" />
+            @* <partial name="_ProgressModal" /> *@
+           
+            @RenderBody()
+        </div>
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2020-@DateTime.Now.Year <a href="#">Eskul</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 2.1
+            </div>
+        </footer>
+    </div>
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/plugs/jquery.dataTables.min.js"></script>
+    <script src="~/plugs/jquery-ui.min.js"></script>
+    <script src="~/plugs/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugs/dataTables.buttons.min.js"></script>
+    <script src="~/plugs/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugs/pdfmake.min.js"></script>
+    <script src="~/plugs/vfs_fonts.js"></script>
+    <script src="~/lib/jquery/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/lib/jquery/adminlte.js"></script>
+    <script src="~/lib/jquery/dashboard2.js"></script>
+    <script src="~/plugs/Chart.min.js"></script>
+    <script src="~/plugs/moment.min.js"></script>
+    <script src="~/plugs/main.js"></script>
+    <script src="~/js/select2.js"></script>
+    <script src="~/js/bs-stepper.min.js"></script>
+    <script src="~/plugs/select2.full.min.js"></script>
+    <script src="~/plugs/bs-custom-file-input.min.js"></script>
+    <script src="~/plugs/sweetalert2.min.js"></script>
+    <script src="~/plugs/toastr.min.js"></script>
+    <script src="~/js/delete.js" asp-append-version="true"></script>
+    <script src="~/js/Valid.js"></script>
+     @await RenderSectionAsync("Scripts", required: false)
+   @*  <script>
+        $(document).ready(function () {
+            var canEdit = @Html.Raw(Json.Serialize(SessionData.CanUpdate));
+            var canDelete = @Html.Raw(Json.Serialize(SessionData.CanDelete));
+            var canAdd = @Html.Raw(Json.Serialize(SessionData.CanAdd));
+            if (!canEdit && !canDelete) {
+            // Hide the entire column
+            $('table').each(function() {
+                var columnIndex = $(this).find('th:contains("Action")').index() + 1;
+                $(this).find('th:nth-child(' + columnIndex + '), td:nth-child(' + columnIndex + ')').hide();
+            });
+        } else {
+            // Show the column if any of the buttons are visible
+            $('th:contains("Action")').show();
+            $('td:contains("Action")').show();
+        }
+            if (!canEdit) {
+                $('.edit-button').hide();
+            }
+
+            if (!canDelete) {
+                $('.delete-button').hide();
+            }
+
+            if (!canAdd) {
+                $('#addClassFormContainer').hide();
+                $('#tableContainer').removeClass('col-md-9 col-md-8 col-md-12').addClass('col-md-12');
+                $('.addbtn').hide();
+            }
+        });
+
+
+    </script> *@
+    <script type="text/javascript">
+        $(function () {
+            $(".select").select2();
+            $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+        });
+    </script>
+    
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,"searching": false
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+            });
+            $("#menuTable").DataTable({
+                "responsive": true,
+                "pageLength": 4
+            });
+        });
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+        })
+    </script>
+   @*  <script>
+        $(document).ready(function () {
+            showProgressModal();
+        });
+    </script> *@
+</body>
+</html>

@@ -1,0 +1,130 @@
+﻿@model Eskul.Models.ProfileVm
+@{
+
+    var listmodel = Model.Profiles;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit User Profile</h6>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="Code" name="Code" id="Code" />
+                                            <div class="form-group">
+                                                <label for="profilename" style="font-weight:normal;">Profile Name</label>
+                                                <input asp-for="Name" formnovalidate class="form-control form-control-sm" id="Name" name="Name" autocomplete="off" required />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Description" style="font-weight:normal;">Description</label>
+                                                <textarea asp-for="Description" id="Description" class="form-control form-control-sm" name="Description" autocomplete="off" required></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtnsm" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+        <div class="row">
+            <!-- /.col-md-8 -->
+                        <div class="col-md-12" id="tableContainer">
+                <div class="box box-primary">
+                     <div class="card-body">
+                          <p>
+                                        <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp; Add Profile</a>
+                                    </p>
+                          
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Profile Code
+                                </th>
+                                <th>
+                                    Profile Name
+                                </th>
+                                <th>
+                                   Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Code
+                                            </td>
+                                            <td>
+                                                    @item.Name
+                                            </td>
+                                            <td>
+                                                    @item.Description
+                                            </td>
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.Code" data-name="@item.Name" data-name="@item.Name" data-desc="@item.Description" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <a asp-action="Rights" class="btn btn-xs btn-warning" asp-route-id="@item.Code">Access Rights</a>
+                                                <button class="btn btn-xs btn-danger " id="delete" data-id="@item.Code"data-toggle="modal" data-target="#modal-info" onclick="del('@item.Code')" data-action="Delete">Del</button>
+
+                                           </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+ </div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var code = $(this).data('id');
+            var name = $(this).data('name');
+            var desc = $(this).data('desc');
+            $('#modal-default #Code').val(code);
+            $('#modal-default #Name').val(name);
+            $('#modal-default #Description').val(desc);
+        });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>

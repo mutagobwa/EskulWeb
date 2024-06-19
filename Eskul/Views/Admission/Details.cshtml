@@ -1,0 +1,575 @@
+﻿@model Eskul.Models.StudentViewDTO
+
+@{
+    // // var House = Model.HouseInfo;
+    // var StudentImage = Model.Image;
+    var PreviousSchool = Model.FormerSchool;
+    var uploadedDocument = Model.UploadedDocuments;
+    //var Scores = Model.previousSchool.Scores;
+    var parent = Model.Parents;
+    var stdhealthdtls = Model.HealthInfo;
+}
+<link rel="stylesheet" href="~/css/custom.css" />
+<style>
+    .nav-tabs-custom > .nav-tabs {
+        margin: 0;
+        border-bottom-color: #f4f4f4;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+    }
+
+    .nav-tabs {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+
+    :after, :before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+    }
+
+    .nav-tabs > li > a {
+        margin-right: 2px;
+        line-height: 1.42857143;
+        border: 1px solid transparent;
+        border-radius: 4px 4px 4px 4px;
+    }
+
+    .nav > li > a {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+    }
+
+    .pull-right {
+        float: right !important;
+    }
+
+    .pagetitleh {
+        background: #424242;
+    }
+
+    .pagetitleh {
+        background: #424242;
+        margin: 0;
+        font-size: 16px;
+        padding: 8px 14px;
+        color: #fff;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+    }
+
+    .userPic {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <p>
+                    <a asp-action="Index" asp-route-Level="@Model.Level" asp-route-Class="@Model.Class" asp-route-StreamCode="@Model.StreamCode" class="btn btn-sm mybtn">Back To List</a>
+                </p>
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <div class="card card-outline card-default box box-primary">
+                            <div class="card-body">
+                               
+                                    <div class="box-body box-profile">
+                                        <div class="userPic">
+                                            <img class="profile-user-img img-responsive img-circle" src="@ViewBag.StudImg " alt="User profile picture" height="100" width="100" onerror="this.src='../../Files/noimage.png'" />
+                                        </div>
+                                        <h3 class="profile-username text-center" style="text-align:center;font-weight:bold;">@Model.FullName</h3>
+
+                                        <ul class="list-group list-group-unbordered">
+
+                                            <li class="list-group-item listnoback">
+                                                <b>Admission No</b> <a class="pull-right text-aqua">@Model.StudentNo</a>
+                                            </li>
+                                            <li class="list-group-item listnoback">
+                                                <b>Level</b> <a class="pull-right text-aqua">@Model.Level</a>
+                                            </li>
+                                            <li class="list-group-item listnoback">
+                                                <b>Class</b> <a class="pull-right text-aqua">@Model.Class</a>
+                                            </li>
+                                            <li class="list-group-item listnoback">
+                                                <b>Sream</b> <a class="pull-right text-aqua">@Model.StreamName</a>
+                                            </li>
+                                            <li class="list-group-item listnoback">
+                                                <b>Section</b> <a class="pull-right text-aqua">@Model.Section</a>
+                                            </li>
+                                            <li class="list-group-item listnoback">
+                                                <b>Gender</b> <a class="pull-right text-aqua">@Model.Gender</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="box box-primary">
+                            <div class="card-body">
+                               
+                                    <div class="box-body box-profile">
+                                        <br />
+                                        <div class="nav-tabs-custom theme-shadow">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true" data-original-title="" title="">Basic Info</a></li>
+
+                                                <li class=""><a href="#Parent" data-toggle="tab" aria-expanded="false" data-original-title="" title="">Parent Details</a></li>
+                                                <li class=""><a href="#PreviousSchool" data-toggle="tab" aria-expanded="false" data-original-title="" title="">Previous School Info</a></li>
+                                                <li class=""><a href="#HealthInfo" data-toggle="tab" aria-expanded="false" data-original-title="" title="">Health Info</a></li>
+                                                <li class=""><a href="#documents" data-toggle="tab" aria-expanded="false" data-original-title="" title="">Documents</a></li>
+
+                                                <li class="pull-right">
+                                                    <a style="cursor: pointer;" onclick="disable_student('12')" class="text-red" data-toggle="tooltip" data-placement="bottom" title="Disable">
+                                                        <i class="fa fa-thumbs-o-down"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="activity">
+                                                    <div class="tshadow mb25 bozero">
+                                                        <div class="table-responsive around10 pt0">
+                                                            <table class="table  table-sm tmb0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="col-md-4">Admission Date</td>
+                                                                        <td class="col-md-5">
+                                                                            @Model?.DateRegistered.Value.ToString("yyyy-MM-dd")
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Date of Birth</td>
+                                                                        <td>@Model.DoB.Value.ToString("yyyy-MM-dd")</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Category</td>
+                                                                        <td>
+                                                                            @Model?.CategoryName
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>National Identification Number</td>
+                                                                        <td>
+                                                                           @Model?.NiN
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Passport Number</td>
+                                                                        <td>
+                                                                            @Model?.PassportNo
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Religion</td>
+                                                                        <td>
+                                                                            @Model?.Religion
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="Parent">
+                                                    <div class="table-responsive">
+                                                        <div class="table-responsive around10 pt0">
+                                                            <table class="table  table-sm tmb0">
+                                                                <tbody>
+                                                                    @if (parent != null)
+                                                                    {
+                                                                        @foreach (var item in parent.Parents)
+                                                                        {
+                                                                            <tr>
+                                                                                <td class="col-md-4">Name</td>
+                                                                                <td class="col-md-5">@item?.Parent?.FullName</td>
+                                                                                <td rowspan="3">
+                                                                                    <img class="profile-user-img img-responsive img-circle" src="@ViewBag.PrtImg " alt="User profile picture" height="100" width="100" onerror="this.src='/Files/noimage.png'" />
+                                                                                </td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>RelationShip</td>
+                                                                                <td>@item?.RelationShipName</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Primary Contact</td>
+                                                                                <td>@item?.Parent?.Contact1</td> 
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Other Contact</td>
+                                                                                <td>@item?.Parent?.Contact2</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Residence</td>
+                                                                                <td>@item?.Parent?.Residence</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Occupation</td>
+                                                                                <td>@item?.Parent?.Occupation</td>
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <tr>
+                                                                            <td colspan="5" class="text-centere">
+                                                                                No Record Found
+                                                                            </td>
+
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                 <div class="tab-pane" id="PreviousSchool">
+                                                    <div class="tshadow mb25 bozero">
+                                                        <div class="table-responsive around10 pt0">
+                                                            <table class="table  table-sm tmb0">
+                                                                <tbody>
+                                                                    @if (PreviousSchool != null)
+                                                                    {
+                                                                        <tr>
+                                                                            <td class="col-md-4">School Name</td>
+                                                                            <td class="col-md-5">@PreviousSchool.SchoolName</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="col-md-4">Reason For Change</td>
+                                                                            <td class="col-md-5">@PreviousSchool.ChangeReason</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="col-md-4">Academic  Award</td>
+                                                                            <td class="col-md-5">@PreviousSchool.AcademicAward</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="col-md-4">Result</td>
+                                                                            <td class="col-md-5">DIV @PreviousSchool.ResultCode</td>
+
+                                                                        </tr>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <tr>
+                                                                            <td colspan="3" class="text-centere">
+                                                                                No Previous School Info
+                                                                            </td>
+
+                                                                        </tr>
+                                                                    }
+
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="card card-default card-outline">
+                                                                <div class="card-header">
+                                                                    <h5 class="card-title" style="text-align:center:">Former School Scores</h5>
+                                                                </div>
+                                                                <div class="card-body">
+                                                            @if (PreviousSchool != null && PreviousSchool.Scores != null && PreviousSchool.Scores.Count > 0)
+                                                            {
+                                                                var subjects = PreviousSchool.Scores.Select(s => new { SubjectName = s.Subject, Score = s.Score }).ToList();
+
+                                                                for (int i = 0; i < subjects.Count; i += 4)
+                                                                {
+                                                                    <div class="row">
+                                                                        @for (int j = i; j < i + 4 && j < subjects.Count; j++)
+                                                                        {
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group">
+                                                                                    
+                                                                                    <input value="@subjects[j].SubjectName" class="form-control form-control-sm" readonly />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group">
+                                                                                    
+                                                                                    <input value="@subjects[j].Score" class="form-control form-control-sm" readonly />
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="HealthInfo">
+                                                    <div class="tshadow mb bozero">
+                                                        <div class="table-responsive around10 pt0">
+                                                            
+                                                          <table class="table table-sm tmb0">
+                                                                    <tbody>
+                                                                    @if (stdhealthdtls != null)
+                                                                    {
+                                                                    <tr>
+                                                                        <td class="col-md-2">Height &nbsp; &nbsp; <span>@stdhealthdtls.Height</span></td>
+
+
+
+                                                                        <td class="col-md-2">Weight &nbsp; &nbsp; <span>@stdhealthdtls.Weight</span></td>
+
+
+
+                                                                        <td class="col-md-2">Blood Group &nbsp; &nbsp;  <span>@stdhealthdtls.BloodGroup</span></td>
+                                                                        <td>
+                                                                           
+                                                                        </td>
+                                                                    </tr>
+                                                                    
+                                                        <tr>
+                                                            <td class="col-md-4">Is Disabled</td>
+                                                                            <td class="col-md-5">@stdhealthdtls.Disabled</td>
+                                                        <td class="col-md-4">Disability Type</td>
+                                                                            <td class="col-md-5">@stdhealthdtls.Disabilitycode</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-md-4">Medical History</td>
+                                                     <td colspan="3" class="col-md-8">@stdhealthdtls.MedHistory</td>
+                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+                                                        <tr>
+                                                            <td colspan="3" class="text-center">
+                                                                No Medical Info
+                                                            </td>
+                                                        </tr>
+                                                            }
+                                                    </tbody>
+                                                </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="documents">
+                                                    <div class="timeline-header no-border">
+                                                        <div class="table-responsive" style="clear: both;">
+                                                            <div class="row">
+                                                            </div>
+                                                           <table class="table table-bordered table-sm">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Title
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @if (uploadedDocument != null && uploadedDocument.DocumentFiles.Count>0)
+                                                                    {
+                                                                        @foreach (var item in uploadedDocument.DocumentFiles.ToList())
+                                                                        {
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <span style="display: inline-block;">@item.DocumentTypeDesc</span>
+                                                                                    <a class="btn btn-default btn-xs view-button" data-toggle="tooltip" title="Download" data-pdf="@((item.DocumentStream != null) ? item.DocumentStream : string.Empty)"><i class="fa fa-download"></i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <tr>
+                                                                            <td colspan="5" class="text-centere">
+                                                                                No Record Found
+                                                                            </td>
+
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table> 
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="tab-pane" id="timelineh">
+                                                    <div>
+                                                        <button type="button" id="myTimelineButton" class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus"></i> Add</button>
+
+                                                    </div>
+
+
+                                                    <br>
+                                                    <div class="timeline-header no-border">
+                                                        <div id="timeline_list">
+
+                                                            <ul class="timeline timeline-inverse">
+                                                                <li class="time-label">
+                                                                    <span class="bg-blue">    08/01/2022</span>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-list-alt bg-blue"></i>
+                                                                    <div class="timeline-item">
+                                                                        <span class="time"><a class="defaults-c text-right" data-toggle="tooltip" title="" onclick="delete_timeline('44')" data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
+                                                                        <h3 class="timeline-header text-aqua"> Previous Fees Details </h3>
+                                                                        <div class="timeline-body">
+                                                                            A fee is the price one pays as remuneration for rights or services. Fees usually allow for overhead, wages, costs, and markup.
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+
+                                                                <li class="time-label">
+                                                                    <span class="bg-blue">    09/01/2022</span>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-list-alt bg-blue"></i>
+                                                                    <div class="timeline-item">
+                                                                        <span class="time"><a class="defaults-c text-right" data-toggle="tooltip" title="" onclick="delete_timeline('46')" data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
+                                                                        <h3 class="timeline-header text-aqua"> Fees Updates </h3>
+                                                                        <div class="timeline-body">
+                                                                            A fee is the price one pays as remuneration for rights or services. Fees usually allow for overhead, wages, costs, and markup
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+
+                                                                <li class="time-label">
+                                                                    <span class="bg-blue">    09/01/2022</span>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-list-alt bg-blue"></i>
+                                                                    <div class="timeline-item">
+                                                                        <span class="time"><a class="defaults-c text-right" data-toggle="tooltip" title="" onclick="delete_timeline('49')" data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
+                                                                        <h3 class="timeline-header text-aqua"> Fees Updates </h3>
+                                                                        <div class="timeline-body">
+                                                                            A fee is the price one pays as remuneration for rights or services. Fees usually allow for overhead, wages, costs, and markup.
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+
+                                                                <li class="time-label">
+                                                                    <span class="bg-blue">    10/01/2022</span>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-list-alt bg-blue"></i>
+                                                                    <div class="timeline-item">
+                                                                        <span class="time"><a class="defaults-c text-right" data-toggle="tooltip" title="" onclick="delete_timeline('53')" data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
+                                                                        <h3 class="timeline-header text-aqua"> Updated Contact </h3>
+                                                                        <div class="timeline-body">
+                                                                            Please submit your updated contact parent number
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+
+                                                                <li class="time-label">
+                                                                    <span class="bg-blue">    11/05/2022</span>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-list-alt bg-blue"></i>
+                                                                    <div class="timeline-item">
+                                                                        <span class="time"><a class="defaults-c text-right" data-toggle="tooltip" title="" onclick="delete_timeline('75')" data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
+                                                                        <h3 class="timeline-header text-aqua"> Fees Details </h3>
+                                                                        <div class="timeline-body">
+                                                                            A fee is the price one pays as remuneration for rights or services. Fees usually allow for overhead, wages, costs, and markup.
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+
+                                                                <li class="time-label">
+                                                                    <span class="bg-blue">    12/12/2022</span>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-list-alt bg-blue"></i>
+                                                                    <div class="timeline-item">
+                                                                        <span class="time"><a class="defaults-c text-right" data-toggle="tooltip" title="" onclick="delete_timeline('87')" data-original-title="Delete"><i class="fa fa-trash"></i></a></span>
+                                                                        <h3 class="timeline-header text-aqua"> Half yearly exams </h3>
+                                                                        <div class="timeline-body">
+                                                                            Half yearly exams will be a cumulative exam that includes material from the entire 1st marking period.
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+
+                                                                <li><i class="fa fa-clock-o bg-gray"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttons = document.querySelectorAll('.view-button');
+
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var pdfData = button.getAttribute('data-pdf');
+                console.log('pdfData', pdfData);
+                if (pdfData) {
+                    var blob = base64ToBlob(pdfData, 'application/pdf');
+                    var blobUrl = URL.createObjectURL(blob);
+
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = blobUrl;
+                    downloadLink.download = 'document.pdf';
+                    downloadLink.style.display = 'none';
+
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+
+                    document.body.removeChild(downloadLink);
+                } else {
+                    alert('No PDF available');
+                }
+            });
+        });
+
+        function base64ToBlob(base64, contentType) {
+            var binary = atob(base64);
+            var array = [];
+            for (var i = 0; i < binary.length; i++) {
+                array.push(binary.charCodeAt(i));
+            }
+            return new Blob([new Uint8Array(array)], { type: contentType });
+        }
+    });
+</script>

@@ -1,0 +1,131 @@
+﻿@model Eskul.Models.ScoreRank
+@{
+
+    var listmodel = Model;
+    var commentdetails = Model.Comments;
+}
+  
+<br/>
+  <div class="col-md-12">
+    <div class="card card-outline card-default">
+              <partial name="_EditComment" />
+              <partial name="_delete" />
+        <div class="card-body">
+<div class="col-md-12">
+    
+   <div class="card card-outline card-default box box-primary">
+       <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+        <div class="card-body">
+            <div class="row">
+
+             <div class="col-md-2">
+                 <input type="hidden" id="commentId" asp-for="@commentdetails.FirstOrDefault().CmId" />
+                  <div class="form-group">
+                   <span class="badge bg-success" style="font-size:16px;color:white;">Class:@listmodel.ClassCode</span>
+                      </div>
+              </div>
+              <div class="col-md-2">
+              <div class="form-group">
+              <span class="badge bg-success" style="font-size:16px;color:white;">Lower Limit:@listmodel.LowerLimit</span>
+                      </div>
+                      </div>
+             <div class="col-md-2">
+                 <div class="form-group">
+                                        <span class="badge bg-success" style="font-size:16px;color:white;">Upper Limit:@listmodel.UpperLimit</span>
+                      </div>      
+              </div>
+              <div class="col-md-2">
+              <div class="form-group">
+                  <span class="badge bg-success" style="font-size:16px;color:white;">Rank:@listmodel.RankCode</span>
+                       </div>
+                       </div>
+              <div class="col-md-4">
+                         <div class="form-group">
+                          <span class="badge bg-success" style="font-size:16px;color:white;">Points:@listmodel.Points</span>
+                  </div>
+              </div>
+            </div>
+           </div>
+           </div>
+<div class="card card-outline card-default box box-primary">
+  <div class="card-body">
+      <div>
+                                <a class="btn btn-sm mybtn" style="width:100px;" asp-action="Index">Back to List</a>
+
+      </div>
+      <br/>
+ 
+ <table id="example2" class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+            Comment
+            </th>
+            <th>
+                Status
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (commentdetails != null)
+        {
+            @foreach (var item in commentdetails)
+            {
+                <tr>
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem =>item.ScoreRankId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                     <td>
+                        @Html.DisplayFor(modelItem => item.StatusId)
+                    </td>
+                    <td>
+                         <a asp-action="" asp-route-id="@item.CmId" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#modal-default" data-id="@item.CmId" data-comment="@item.Comment" data-scorerankid="@item.ScoreRankId" id="BookReturn" action="EditComment/@item.CmId">Edit</a>
+                         <button class="btn btn-xs btn-danger " id="delete" data-id="@item.CmId"data-toggle="modal" data-target="#modal-info" onclick="del('@item.CmId')" data-controller="ScoreRank">Del</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+                <tr>
+                    <td colspan="10" class="text-centere">
+                      No Record Found 
+                    </td>
+             </tr>
+        }
+    </tbody>
+</table>
+</div>
+ </div>
+</div>
+</div>
+</div>
+    </div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script src="~/js/jquery.min.js"></script>
+<script>
+    $(document).on("click", "#BookReturn", function () {
+        var cmid = $(this).data("id");
+        var comment = $(this).data("comment");
+        var scorerankid = $(this).data("scorerankid");
+        console.log(cmid);
+        console.log(comment);
+        console.log(scorerankid);
+
+        $("#modal-default #CmId").val(cmid);
+        $("#modal-default #ScoreRankId").val(scorerankid);
+        $("#modal-default textarea[name=Comment]").val(comment);
+    });
+</script>

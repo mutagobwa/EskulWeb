@@ -1,0 +1,377 @@
+﻿@model Eskul.Models.MarksList
+@{
+
+    var listmodel = Model.StudentMarks;
+    var offreredpapers = Model.OfferedPapers;
+}
+<br />
+<div class="col-md-12">
+
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <div class="col-md-12">
+
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        
+                           
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Index" id="myform" class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="col-sm-12">
+                                        <div id="input-type" class="row">
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline" style="font-weight:normal;">
+
+                                                    <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline" style="font-weight:normal;">
+                                                    <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Year" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                        <input asp-for="Year" type="text" class="form-control form-control-sm" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Branch" class="control-label" style="font-weight: normal !important;">Branch</label><small class="req"> *</small>
+
+                                        @Html.DropDownList("Branch", (IEnumerable<SelectListItem>)ViewBag.Branches, new { @class = "select",style = "width: 100%;",id="BranchId",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Term" style="font-weight: normal !important;">Academic Term</label><small class="req"> *</small>
+                                        @Html.DropDownListFor(m => m.TermCode, new List<SelectListItem>
+                                        {       new SelectListItem{Text="Select", Value=""},
+                                        new SelectListItem{Text="Term One", Value="1"},
+                                        new SelectListItem{Text="Term Two", Value="2"},
+                                        new SelectListItem{Text="Term Three", Value="3"}},htmlAttributes:new { @class = "select",style = "width: 100%;",id="Term",name="Term",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                        @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"} )
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Stream" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                        @Html.DropDownList("Stream", (IEnumerable<SelectListItem>) ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="Stream",name="Stream"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="ExamCode" class="control-label" style="font-weight: normal !important;">Exam</label>
+                                        @Html.DropDownList("ExamCode", (IEnumerable<SelectListItem>) ViewBag.ExamType, new { @class = "select",style = "width: 100%;",id="ExamCode",name="ExamCode",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="submit" value="Search" class="btn btn-block btn-sm mybtn" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-outline card-default box box-primary">
+                    <div class="card-body">
+                        @if (listmodel != null)
+                        {
+                            <div class="dt-buttons btn-group btn-group2 float-lg-right">
+                                @* <a href="javascript:void(0)" target="_blank" class="btn btn-xs btn-primary" onclick="editFormValues()">Edit</a>*@
+                                <a href="javascript:void(0)" @*target="_blank"*@ class="btn btn-xs btn-primary" onclick="openReport()">View Report</a>
+
+                            </div>
+
+                            <br />
+                            <div class="table-responsive">
+
+                                <table id="example2" class="table table-bordered table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            @foreach (var subject in ViewBag.Subjects)
+                                            {
+                                                var marksList = listmodel.FirstOrDefault(m => m.MarksLists.Any(ml => ml.SubjectCode == subject));
+                                                var paperCode = marksList != null ? marksList.MarksLists.FirstOrDefault(ml => ml.SubjectCode == subject)?.PaperCode : "";
+                                                <th @*colspan="2"*@>@subject</th>
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            @foreach (var subject in ViewBag.Subjects)
+                                            {
+                                                var marksList = listmodel.FirstOrDefault(m => m.MarksLists.Any(ml => ml.SubjectCode == subject));
+                                                var paperCode = marksList != null ? marksList.MarksLists.FirstOrDefault(ml => ml.SubjectCode == subject)?.PaperCode : "";
+                                                <th @*colspan="2"*@>@paperCode</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var student in listmodel)
+                                        {
+                                            <tr>
+                                                <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                                    @student.StudentName
+                                                </td>
+                                                @foreach (var subject in ViewBag.Subjects)
+                                                {
+                                                    var marksList = student.MarksLists.FirstOrDefault(m => m.SubjectCode == subject);
+                                                    var score = marksList != null ? marksList.Score : "";
+                                                    @* var paperCode = marksList != null ? marksList.PaperCode : "";*@
+                                                    <td>@score</td>
+                                                    @*<td>@paperCode</td>*@
+                                                }
+                                            </tr>
+                                            @*<tr>
+                                    <td></td>
+                                    @foreach (var subject in ViewBag.Subjects)
+                                    {
+                                    var marksList = listmodel.FirstOrDefault(m => m.MarksLists.Any(ml => ml.SubjectCode == subject));
+                                    var paperCode = marksList != null ? marksList.MarksLists.FirstOrDefault(ml => ml.SubjectCode == subject)?.PaperCode : "";
+                                    <th colspan="2">@paperCode</th>
+                                    }
+                                    </tr>*@
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>No data available.</p>
+                        }
+
+                    </div>
+
+                    <!-- /.col-md-12 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    function saveData(studentId, score, comment) {
+        // Get the base URL
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // Get the path to the application files
+        var pathName = window.location.pathname;
+
+        // Remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // Combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName + '/AssignMarks';
+        console.log(fullUrl);
+        // Send an AJAX request to the server to save the data
+        $.ajax({
+            type: "POST",
+            url: fullUrl,
+            headers: { "Access-Control-Allow-Origin": "*" },
+            data: {
+                scoreId: $('#score-' + studentId).closest('tr').find('td:first-child').text(),
+                studentId: studentId,
+                score: score,
+                comment: comment
+            },
+            success: function (res) {
+                // Log the server response to the console
+                document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+                console.log("Server Response: " + res.res);
+                if (res.res === "Student Assignment Score successfully updated") {
+                    // Update the UI with a tick mark to indicate success
+                    document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+                    console.log("Data saved successfully for student: " + studentId);
+                } else {
+                    console.log("Error" + res.res + " while saving data for student: " + studentId);
+                }
+            }
+        });
+    }
+
+</script>
+
+<script>
+    function populateDropdown() {
+        // get selected radio button value
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName;
+        // make first AJAX call to retrieve dropdown values based on selected level
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+    @*xhr.open('GET', '/ReportTemplate/ClassByLevel?level=' + level);*@
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // parse retrieved values as JSON
+                    var values = JSON.parse(xhr.responseText);
+
+                    // populate first dropdown with retrieved values
+                    var dropdown1 = document.getElementById('Class');
+                    dropdown1.innerHTML = '';
+                    for (var i = 0; i < values.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = values[i].classcode;
+                        option.text = values[i].Name;
+                        dropdown1.appendChild(option);
+                    }
+                }
+            };
+        xhr.send();
+    }
+</script>
+<script>
+    function populateStreamDropdown() {
+        // get selected Class value
+        var selectedClass = document.getElementById('Class').value;
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName;
+        // make AJAX call to retrieve streamed classes based on selected Class
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/StreamsByClass?classs=' + selectedClass);
+    @*xhr.open('GET', '/ClassTeacher/StreamsByClass?classs=' + selectedClass);*@
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // parse retrieved values as JSON
+                    var streamedClasses = JSON.parse(xhr.responseText);
+
+                    // check if there are any streamed classes
+                    var hasStreamedClasses = streamedClasses.length > 0;
+
+                    // populate Stream dropdown with retrieved values
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '';
+                    if (hasStreamedClasses) {
+                        for (var i = 0; i < streamedClasses.length; i++) {
+                            var option = document.createElement('option');
+                            option.value = streamedClasses[i].StreamId;
+                            option.text = streamedClasses[i].Name;
+                            dropdown.appendChild(option);
+                        }
+                    } else {
+                        var option = document.createElement('option');
+                        option.text = 'Class Not Streamed';
+                        option.disabled = true;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var dropdown = document.getElementById('Stream');
+                    dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                    dropdown.disabled = true;
+                }
+            };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown();
+        });
+    });
+</script>
+<script>
+    function openReport() {
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName + '/PrintMarkSheet';
+
+        var yearValue = $('#Year').val();
+        var branchValue = $('#BranchId').val();
+        var termValue = $('#Term').val();
+        var classValue = $('#Class').val();
+        var streamValue = $('#Stream').val();
+        var examCodeValue = $('#ExamCode').val();
+        const model = {
+            Year: yearValue,
+            Branch: branchValue,
+            TermCode: termValue,
+            Class: classValue,
+            Stream: streamValue,
+            ExamCode: examCodeValue
+        };
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = fullUrl;
+
+        for (const key in model) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = model[key];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        document.body.removeChild(form);
+
+        const newWindow = window.open('', '_blank');
+        fetch(fullUrl, { method: 'POST', body: new FormData(form) })
+            .then(response => response.blob())
+            .then(blob => {
+                const blobUrl = URL.createObjectURL(blob);
+                newWindow.location.href = blobUrl;
+            });
+    }
+</script>

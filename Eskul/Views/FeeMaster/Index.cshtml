@@ -1,0 +1,160 @@
+﻿@model Eskul.Models.Feemaster
+@{
+
+    var listmodel = Model.Feemasters;
+}
+
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                                <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Fee Master</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" class="needs-validation" novalidate>
+                        <div class="card-body">
+                             <input type="hidden" asp-for="FeeMasterId"/>
+                 <div class="form-group">
+             <label asp-for="BranchId" class="control-label" style="font-weight: normal !important;">Branch</label>
+                                            @Html.DropDownList("BranchId", (IEnumerable<SelectListItem>)ViewBag.Branches, new { @class = "select",style = "width: 100%;",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                </div>
+             <div class="form-group">
+                                   <label asp-for="ClassCode" class="control-label" style="font-weight: normal !important;">Class</label>
+                                            @Html.DropDownList("ClassCode", (IEnumerable<SelectListItem>) ViewBag.Classes, new { @class = "select",style = "width: 100%;",required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                </div>
+                                    <div class="form-group">
+                                   <label asp-for="Amount" >Amount</label>
+                                     <input asp-for="Amount" type="text" class="form-control form-control-sm" required autocomplete="off"/>
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                 </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label for="input-type">Fine Type</label>
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline">
+
+                                                <input name="account_type" class="finetype" id="input-type-student" value="none" type="radio">None
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline">
+                                                <input name="account_type" class="finetype" id="input-type-student" value="percentage" type="radio" checked="checked">Percentage
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline">
+                                                <input name="account_type" class="finetype" id="input-type-tutor" value="fix" type="radio">Fix Amount
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                                 
+             <div class="col-sm-6">
+            <div class="form-group">
+                                <label asp-for="FineAmount">Fine Amount</label>
+                                <input asp-for="FineAmount" type="text" class="form-control form-control-sm" required autocomplete="off" />
+                                                    <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+            </div>
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label asp-for="Percentage" >Percentage</label>
+                <input asp-for="Percentage" type="text" class="form-control form-control-sm" required autocomplete="off" max="100" />
+                                                    <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            </div>
+            
+            </div>
+            <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" style="" />
+            </div>
+        </div>
+                        <!-- /.card-body -->   
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+           <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Group Code
+                                </th>
+                                <th>
+                                    Group Name
+                                </th>
+                                <th>
+                                    Gl Account
+                                </th>
+                                <th>
+                                    Group Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.
+                                                </td>
+                                            <td>
+                                                    @item.BranchId
+                                            </td>
+                                            <td>
+                                                    @item.ClassCode
+                                            </td>
+                                            <td>
+                                                    @item.TypeCode
+                                            </td>
+                                            <td>
+                                                    @item.Amount
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.FeeMasterId">Edit</a>
+                                                <a asp-action="Delete" class="btn btn-xs btn-danger" asp-route-id="@item.FeeMasterId">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

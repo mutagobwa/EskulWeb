@@ -1,0 +1,39 @@
+﻿@model Eskul.Models.TopicsCompetencies
+@{
+
+    var editmodel = Model._compitence;
+}
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- Centered modal dialog -->
+        <div class="modal-content box box-primary" style="width:380px;">
+            <div class="modal-header">
+                <h6 class="modal-title" style="font-weight:bold;">Add Competency</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form asp-action="AddTopiComp" id="ReturnBook" class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <input type="hidden" id="TopicId" name="TopicId" asp-for="@editmodel.TopicId" />
+                        <input type="hidden" id="TopicName" name="TopicName" asp-for="@editmodel.TopicName" />
+                        <input type="hidden" id="Year" name="Year" asp-for="@editmodel.Year" />
+                        <input type="hidden" id="CompetencyId" name="CompetencyId" asp-for="@editmodel.CompetencyId" />
+                        <input type="hidden" id="StatusId" name="StatusId" asp-for="@editmodel.StatusId" />
+                        <label asp-for="@editmodel.Competency" style="font-weight: normal !important;">Competence</label>
+                        <textarea asp-for="@editmodel.Competency" name="Competency" id="Competency" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                        <div class="invalid-feedback">This Field is Required</div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" value="Save" class="btn btn-sm btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

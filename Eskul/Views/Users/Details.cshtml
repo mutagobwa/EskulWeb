@@ -1,0 +1,194 @@
+﻿@model Eskul.Models.UserS
+
+@{
+    ViewData["Title"] = "Details";
+}
+<link rel="stylesheet" href="~/css/custom.css" />
+<style>
+    .nav-tabs-custom > .nav-tabs > li.active {
+        border-top-color: #faa21c;
+    }
+
+    .nav-tabs-custom > .nav-tabs > li.active {
+        border-bottom-color: #faa21c;
+    }
+
+    .nav-tabs-custom > .nav-tabs > li {
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        margin-right: 5px;
+    }
+
+    .nav-tabs > li {
+        float: left;
+        margin-bottom: -1px;
+    }
+
+    .nav > li {
+        position: relative;
+        display: block;
+    }
+
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    user agent stylesheet
+    li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+    }
+
+    .nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+    .pull-right {
+        float: right !important;
+    }
+
+    .pagetitleh {
+        background: #424242;
+    }
+
+    .pagetitleh {
+        background: #424242;
+        margin: 0;
+        font-size: 16px;
+        padding: 8px 14px;
+        color: #fff;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+    }
+    .nav-tabs-custom>.nav-tabs>li {
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    margin-right: 5px;
+}
+.nav-tabs>li {
+    float: left;
+    margin-bottom: -1px;
+}
+.nav>li {
+    position: relative;
+    display: block;
+}
+
+    .profile-user-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <p>
+                    <a asp-action="Index" asp-route-UserType="@Model.UserType" asp-route-ProfileCode="@Model.ProfileCode" class="btn btn-sm mybtn">Back To List</a>
+                </p>
+                <div class="row">
+                    <div class="col-md-3">
+
+                        <div class="box box-primary">
+                            <div class="box-body box-profile">
+                                <img class="profile-user-img img-responsive img-circle" src="@ViewBag.StudImg " alt="User profile picture" height="100" width="100" onerror="this.src='../../Files/noimage.png'" />
+                                <h3 class="profile-username text-center" style="text-align:center;font-weight:bold;">@Model.UserName</h3>
+
+                                <ul class="list-group list-group-unbordered">
+
+                                    <li class="list-group-item listnoback">
+                                        <b>Reference No</b> <a class="pull-right text-aqua">@Model.ReferenceNo</a>
+                                    </li>
+                                    <li class="list-group-item listnoback">
+                                        <b>User Type</b> <a class="pull-right text-aqua">@Model.UserType</a>
+                                    </li>
+                                    <li class="list-group-item listnoback">
+                                        <b>User Profile</b> <a class="pull-right text-aqua">@Model.ProfileCode</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="box box-primary">
+                            <br/>
+                            <div class="nav-tabs-custom theme-shadow">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true" data-original-title="" title="">Profile Details</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="activity">
+                                        <div class="tshadow mb25 bozero">
+                                            <div class="table-responsive around10 pt0">
+                                                <table class="table  table-sm tmb0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="col-md-4">Last Login</td>
+                                                            <td class="col-md-5">
+                                                                @Model.LastLogin.ToString("yyyy-MM-dd")
+                                                            </td>
+                                                        </tr>
+                                                       @*  <tr>
+                                                            <td>Date </td>
+                                                            <td>@Model.LoggedinSession</td>
+                                                        </tr> *@
+                                                        <tr>
+                                                            <td>Last Password Change</td>
+                                                            <td>
+                                                                @Model.LastPasswordChange.ToString("yyyy-MM-dd")
+                                                            </td>
+                                                        </tr>
+                                                       <tr>
+                                                            <td>Change Password</td>
+                                                            <td>
+                                                                @Model.ChangePassword
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Can Add</td>
+                                                            <td>
+                                                                @Model.CanAdd
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Can Delete</td>
+                                                            <td>
+                                                                @Model.CanDelete
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Can Update</td>
+                                                            <td>@Model.CanUpdate</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Is Admin</td>
+                                                            <td>
+                                                                @Model.IsAdmin
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

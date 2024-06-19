@@ -1,0 +1,133 @@
+﻿@model Eskul.Models.Definitions
+@{
+
+    var listmodel = Model.definitions;
+}
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+
+        <div class="card-body">
+            <section class="content">
+                <p>
+                    <a class="btn btn-sm mybtn" asp-action="Index">Back To List</a>
+                </p>
+                <div class="container-fluid">
+                    <div class="modal fade" id="modal-lg1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h5 class="modal-title" style="font-weight:bold;">Add/Edit Definitions</h5>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form id="myform" class="needs-validation" novalidate="" asp-action="Definitions" method="post">
+                                        <div class="card-body">
+                                            <input type="hidden" id="DefinitionId" asp-for="DefinitionId"/>
+                                            <input type="hidden" id="StatusId" asp-for="StatusId"/>
+                                            <div class="form-group">
+                                                <label asp-for="CategoryId" class="control-label" style="font-weight: normal !important;">Value</label><small class="req"> *</small>
+                                                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.GSCategories, new { @class = "select",style = "width: 100%;",id="valueId",name="valueId",required = "required"} )
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label style="font-weight: normal !important;" for="SkillDefinition">SkillDefinition</label>
+                                                <textarea id="SkillDefinition" asp-for="SkillDefinition" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="tableContainer">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg1"><i class="fa fa-plus"></i>&nbsp; Add Definition</a>
+                                    </p>
+                                    <table id="example1" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Skill Definition
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.SkillDefinition
+                                                        </td>
+                                                        <td>
+                                                            <button id="editButton" class="btn btn-xs btn-primary" data-id="@item.DefinitionId" onclick="loadEditModal(this)" asp-action="Definitions">Edit</button>
+                                                            <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.DefinitionId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.DefinitionId')">Del</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="3" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-md-8 -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    function populateModalFields(data) {
+        $('#SkillDefinition').val(data.skillDefinition);
+        $('#CategoryId').val(data.categoryId);
+        $('#DefinitionId').val(data.definitionId);
+        $('#StatusId').val(data.statusId);
+        $('#CategoryId').val(data.categoryId).trigger('change');
+    }
+
+    function loadEditModal(button) {
+        var DefinitionId = $(button).data('id');
+        $.ajax({
+            url: '/GSCat/_Edit/' + DefinitionId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('data', data);
+                populateModalFields(data);
+                $('#modal-lg1').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+    });
+</script>

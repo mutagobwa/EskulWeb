@@ -1,0 +1,36 @@
+﻿@model Eskul.Models.FeesGroup
+<br />
+<div class="col-md-12">
+    <!-- general form elements -->
+    <div class="box box-primary">
+        <div class="card-header mycard">
+            <h3 class="card-title" style="font-weight: bold;">Add/Edit Fees Group</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+            <div class="card-body">
+                <input type="hidden" asp-for="GroupCode" name="GroupCode"/>
+                @* <div class="form-group">
+                    <label asp-for="GroupCode" style="font-weight:normal;">Group Code</label>
+                    <input asp-for="GroupCode" name="GroupCode" class="form-control form-control-sm" required autocomplete="off" />
+                    <div class="invalid-feedback">This Field is Required</div>
+                </div> *@
+                <div class="form-group">
+                    <label asp-for="GroupName" style="font-weight:normal;">Group Name</label>
+                    <input asp-for="GroupName" name="GroupName" class="form-control form-control-sm" required autocomplete="off" />
+                    <div class="invalid-feedback">This Field is Required</div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GroupDescription" style="font-weight:normal;">Group Description</label>
+                    <textarea asp-for="GroupDescription" name="GroupDescription" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                    <div class="invalid-feedback">This Field is Required</div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" style="" />
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </form>
+    </div>
+</div>

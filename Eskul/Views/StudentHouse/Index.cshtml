@@ -1,0 +1,121 @@
+﻿@model Eskul.Models.HouseVm
+@{
+
+    var listmodel = Model.Houses;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit Student House</h6>
+                                    <button type="button" id="closeModalBtn" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="Code" name="Code" id="code" />
+                                            <div class="form-group">
+                                                <label for="Name" style="font-weight:normal;">House Name</label>
+                                                <input asp-for="Name" name="Name" id="name" required class="form-control form-control-sm" autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" formaction="~/StudentHouse/Create" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+        <div class="row">
+            <!-- /.col-md-8 -->
+            <div class="col-md-12">
+                <div class="box box-primary">
+                     <div class="card-body">
+                         <p>
+                                    <p>
+                                        <a asp-action="Create" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp; Add House</a>
+                                    </p>
+        </p>
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                  House Code
+                                </th>
+                                <th>
+                                    House Name
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Code
+                                            </td>
+                                            <td>
+                                                    @item.Name
+                                            </td>
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.Code" data-name="@item.Name" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.Code" data-toggle="modal" data-target="#modal-info" onclick="del('@item.Code')">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var code = $(this).data('id');
+            var name = $(this).data('name');
+            // Populate the modal with the data
+            $('#modal-default #code').val(code);
+            $('#modal-default #name').val(name);
+        });
+</script>
+
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>

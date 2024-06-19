@@ -1,0 +1,164 @@
+﻿@model Eskul.Models.TopicsCompetencies
+@{
+
+
+    var listmodel = Model.Competencies;
+    var Addmodel = Model.Topic;
+    var Subjectdetails = Model.Subject;
+}
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        display: none;
+    }
+</style>
+<br />
+<div class="col-md-12">
+<partial name="_Compitence" />
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <p>
+                <a class="btn btn-sm mybtn" asp-action="Index" asp-route-Year=@Addmodel.Year asp-route-ClassId=@Addmodel.ClassId asp-route-SubjectCode=@Subjectdetails.SubjectCode>Back To List</a>
+            </p>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <div class="card card-outline card-default">
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                           
+                                        </div>
+                                        <div class="card-body my-custom-class">
+                                            
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                    <span class="badge bg-success" style="font-size:1.1rem;">Class: @Addmodel.ClassId</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                    <span class="badge bg-success" style="font-size:1.1rem;">Topic: @Addmodel.TopicName</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                    <span class="badge bg-success" style="font-size:16px;"> Subject: @Subjectdetails.SubjectName</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                    <span class="badge bg-success" style="font-size:1.1rem;"> Year: @Addmodel.Year</span>
+                                                    </div>  
+                                                </div>
+                                            
+                                          
+                                                    
+                                                </div>
+
+                                        </div>
+                                    <p>
+                                        <a asp-action="AddTopiComp" asp-route-id="@Addmodel.TopicId" data-toggle="modal" data-target="#modal-default" id="TopicAdd"
+                                           data-topicidd="@(listmodel != null && listmodel.Count > 0 ? (listmodel.FirstOrDefault().TopicId == 0 ? Addmodel.TopicId : listmodel.FirstOrDefault().TopicId) : Addmodel.TopicId)"
+                                           data-id="@(listmodel != null && listmodel.Count > 0 ? (listmodel.FirstOrDefault().TopicId == 0 ? Addmodel.TopicId : listmodel.FirstOrDefault().TopicId) : Addmodel.TopicId)"
+   class="btn btn-sm btn-xs mybtn" style="width:150px;">
+   Add Competency
+</a>
+
+
+                                    </p>
+                                    <table id="example1" class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Competency
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (listmodel != null)
+                                            {
+                                                @foreach (var item in listmodel)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.Competency
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.CompetencyId" data-comp="@item.Competency" data-Tcompid="@item.TopicId" data-toggle="modal" data-target="#modal-default">Edit</a>
+
+                                                            <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.CompetencyId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.CompetencyId')" data-controller="TopicMaster">Delete</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="4" class="text-centere">
+                                                        No Record Found
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                   
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                            </div>
+                        </div>
+                    </div>
+                   
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script src="~/js/jquery.min.js"></script>
+<script>
+    $(document).on("click", "#BookReturn", function () {
+        var cmid = $(this).data("id");
+        var comment = $(this).data("comment");
+        var year = $(this).data("year");
+        var topic = $(this).data("topic");
+        var topicname = $(this).data("topicname");
+        var StatusId = $(this).data("StatusId");
+        console.log('id',cmid);
+        console.log('comment',comment);
+        console.log('year',year);
+        console.log('topic',topic);
+        console.log('topicname',topicname);
+
+        $("#modal-default #CompetencyId").val(cmid);
+        $("#modal-default #TopicId").val(topic);
+        $("#modal-default #TopicName").val(topicname);
+        $("#modal-default #Year").val(year);
+        $("#modal-default #StatusId").val(StatusId);
+        $("#modal-default textarea[name=Competency]").val(comment);
+    });
+</script>
+<script>
+    $(document).on("click", "#TopicAdd", function () {
+        var topicidd = $(this).data("topicidd");
+        console.log(topicidd);
+        $("#modal-default #TopicId").val(topicidd);
+    });
+</script>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var CompId = $(this).data('id');
+            var Comp = $(this).data('comp');
+            var TopicId = $(this).data('Tcompid');
+            $('#modal-default #CompetencyId').val(CompId);
+            $('#modal-default #Competency').val(Comp);
+            $('#modal-default #TopicId').val(TopicId);
+        });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>
+

@@ -1,0 +1,111 @@
+﻿@model Eskul.Models.PaymentMode
+@{
+
+    var listmodel = Model.paymentModes;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Pay Mode</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+            <div class="form-group">
+                <label asp-for="ModeCode" style="font-weight:normal;">Code</label>
+                <input asp-for="ModeCode" name="ModeCode" class="form-control form-control-sm" required autocomplete="off" />
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModeName" style="font-weight:normal;" >Name</label>
+                <input asp-for="ModeName" class="form-control form-control-sm" required autocomplete="off"/>
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModeDesc" style="font-weight:normal;">Description</label>
+                <textarea asp-for="ModeDesc" class="form-control form-control-sm" required autocomplete="off"></textarea>
+           <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" />
+            </div>
+        </div>
+                        <!-- /.card-body -->   
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                  Code
+                                </th>
+                                <th>
+                                   Name
+                                </th>
+                                <th>
+                                  Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.ModeCode
+                                                </td>
+                                            <td>
+                                                    @item.ModeName
+                                            </td>
+                                            <td>
+                                                    @item.ModeDesc
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.ModeCode">Edit</a>
+                                                 <button class="btn btn-xs btn-danger " id="delete" data-id="@item.ModeCode"data-toggle="modal" data-target="#modal-info" onclick="del('@item.ModeCode')" data-controller="PayMode" data-body-message="Are You Sure You Want To Delete This Stream">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

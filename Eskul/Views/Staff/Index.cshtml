@@ -1,0 +1,116 @@
+﻿@model Eskul.Models.StaffModel
+@{
+
+    var listmodel = Model.Staffs;
+    
+}
+<br/>
+<div class="col-md-12">
+    
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+    <div class="container-fluid">
+        <partial name="_delete" />
+@*<div class="col-md-12">
+<div class="box box-primary">
+     <div class="card-body">*@
+          <div class="row">
+             <div class="col-md-12">
+                 <div class="box box-primary">
+                     <div class="card-body">
+                                    <form action="~/Staff/Index" method="post" id="form" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="form-group col-3">
+                                                    <label for="Term" style="font-weight: normal !important;">Staff Type</label><small class="req"> *</small>
+                                                    @Html.DropDownListFor(m => m.Category, new List<SelectListItem>
+                                                    {       new SelectListItem{Text="Select", Value=""},
+                                                    new SelectListItem{Text="Teaching", Value="T"},
+                                                    new SelectListItem{Text="Non Teaching", Value="NT"}},htmlAttributes:new { @class = "select",style = "width: 100%;",id="Category",name="Category",required = "required"})
+                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                </div>
+                                                <div class="form-group col-12 col-sm-12 col-md-3" style="margin-top:30px;">
+                                                    <input type="submit" value="Search" class="btn btn-sm btn-block mybtn" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                 <table id="example2" class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+
+            <th>
+               StaffNo
+            </th>
+            <th>
+                Names
+            </th>
+            @*<th>
+                Last Name
+            </th>
+            <th>
+              Gender
+            </th>
+           
+            <th>
+                Contact
+            </th>*@
+            
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (listmodel != null)
+        {
+@foreach (var item in listmodel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Lastname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact1)
+            </td>*@
+            <td>
+                 <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.StaffId">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.StaffId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.StaffId')" data-controller="Staff">Del</button>
+                                                            <a asp-action="Details" class="btn btn-xs btn-warning" asp-route-id="@item.StaffId">Details</a>
+            </td>
+        </tr>
+}
+
+        }
+        else
+        {
+                <tr>
+                    <td colspan="10" class="text-centere">
+                      No Staff Added 
+                    </td>
+                                       
+             </tr>
+        }
+    </tbody>
+</table>
+                 </div>
+              
+                                </div>
+         
+                        
+ 
+</div>
+</div>
+ </div>
+</section>
+</div>
+</div>
+</div>

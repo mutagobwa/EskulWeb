@@ -1,0 +1,173 @@
+﻿@model Eskul.Models.TermsessionVm
+@{
+
+    var listmodel = Model.Termsessions;
+}
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit Term</h6>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="TermSessionId" name="TermSessionId" id="TermSessionId" />
+                                            <div class="form-group">
+                                                <label for="year" style="font-weight:normal;">Year</label>
+                                                <input asp-for="Year" name="year" id="year" class="form-control form-control-sm" autocomplete="off" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="termcode" style="font-weight:normal;">Term</label>
+                                                @Html.DropDownListFor(m => m.TermCode, new List<SelectListItem>
+                                                {
+                                                new SelectListItem{Text="Select", Value=""},
+                                                new SelectListItem{Text="Term One", Value="1"},
+                                                new SelectListItem{Text="Term Two", Value="2"},
+                                                new SelectListItem{Text="Term Three", Value="3"}
+                                                }, htmlAttributes: new { @class = "select", style = "width: 100%;", id = "Termcode", name = "Termcode", required = "required" })
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="startdate" style="font-weight:normal;">Start Date</label>
+                                                <input asp-for="StartDate" name="StartDate" id="StartDate" type="date" class="form-control form-control-sm" autocomplete="off" required />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="enddate" style="font-weight:normal;">End Date</label>
+                                                <input asp-for="EndDate" type="date" name="EndDate" id="EndDate" class="form-control form-control-sm" autocomplete="off" required />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" formaction="~/TermSession/Create" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+        <div class="row">
+            <!-- /.col-md-8 -->
+                        <div class="col-md-12">
+                <div class="box box-primary">
+                     <div class="card-body">
+                         <p>
+                                        <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i>&nbsp; Add Term</a>
+
+                         </p>
+
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Academic Year
+                                </th>
+                                <th>
+                                    Term Code
+                                </th>
+                                <th>
+                                   Start Date
+                                </th>
+                                <th>
+                                    End Date
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Year
+                                            </td>
+                                            <td>
+                                                    @item.TermCode
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:dd-MMM-yyyy}", @item.StartDate)
+                                                    
+                                            </td>
+                                            <td>  
+                                                    @string.Format("{0:dd-MMM-yyyy}", @item.EndDate)
+                                            </td>
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.TermSessionId" data-year="@item.Year" data-startdate="@item.StartDate" data-enddate="@item.EndDate" data-term="@item.TermCode" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.TermSessionId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.TermSessionId')" data-action="Delete" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit', 'click', function (e) {
+        var TermSessionId = $(this).data('id');
+        var year = $(this).data('year');
+        var startdate = $(this).data('startdate');
+        var enddate = $(this).data('enddate');
+        var term = $(this).data('term');
+
+        console.log('TermSessionId', TermSessionId);
+        console.log('year', year);
+        console.log('startdate', startdate);
+        console.log('enddate', enddate);
+        console.log('term', term);
+
+        // Convert startdate and enddate to Date objects
+        var startDateObject = new Date(startdate);
+        var endDateObject = new Date(enddate);
+
+        // Format the dates to "YYYY-MM-DD"
+        var formattedStartDate = startDateObject.toISOString().split('T')[0];
+        var formattedEndDate = endDateObject.toISOString().split('T')[0];
+
+        console.log('Formatted StartDate', formattedStartDate);
+        console.log('Formatted EndDate', formattedEndDate);
+
+        // Update modal form fields
+        $('#modal-default #TermSessionId').val(TermSessionId);
+        $('#modal-default #StartDate').val(formattedStartDate);
+        $('#modal-default #EndDate').val(formattedEndDate);
+        $('#Termcode').val(term).change();
+    });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>

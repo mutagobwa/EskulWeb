@@ -1,0 +1,136 @@
+﻿@model Eskul.Models.SalaryScale
+@{
+
+    var listmodel = Model.salaryScales;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                                <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Salary Scale</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                                <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+                            <input type="hidden" asp-for="Code"/>
+                            <div class="form-group">
+                <label asp-for="Code" style="font-weight:normal;">Salary Code</label>
+                <input asp-for="Code" name="Code" class="form-control form-control-sm" autocomplete="off" disabled  required/>
+            </div>
+                            <div class="form-group">
+                <label asp-for="Monthly" style="font-weight:normal;">Monthly</label>
+                <input asp-for="Monthly" name="Monthly" class="form-control form-control-sm" type="text" required autocomplete="off"/>
+                                            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Annually" style="font-weight:normal;">Annually</label>
+                <input asp-for="Annually" name"Annually" class="form-control form-control-sm" required autocomplete="off" type="text" />
+                                            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Designation" class="control-label" style="font-weight: normal !important;">Designation</label>
+                                            @Html.DropDownList("Designation", (IEnumerable<SelectListItem>)ViewBag.Designations, new { @class = "select",style = "width: 100%;",id="Designation", name="Designation",required = "required"})
+                <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScaleDesc" style="font-weight:normal;">Description</label>
+                <textarea asp-for="ScaleDesc" name="ScaleDesc" class="form-control form-control-sm" required autocomplete="off" type="text"> </textarea>
+            <div class="invalid-feedback">This Field is Required</div>
+            </div>
+                            <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" style="" />
+                        </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                         <p>
+                                        <a asp-action="Create" class="btn btn-sm mybtnsm"><i class="fa fa-plus"></i>&nbsp; Add New</a>
+                        </p>
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                     Code
+                                </th>
+                                <th>
+                                   Monthly
+                                </th>
+                                <th>
+                                    Annually
+                                </th>
+                                <th>
+                                    Designation
+                                </th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Code
+                                                </td>
+                                            <td>
+                                                    @item.Monthly
+                                            </td>
+                                            <td>
+                                                    @item.Annual
+                                            </td>
+                                            <td>
+                                                    @item.Designation
+                                            </td>
+                                            <td>
+                                                    @item.ScaleDesc
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.Code">Edit</a>
+                                                <button class="btn btn-xs btn-danger " id="delete" data-id="@item.Code"data-toggle="modal" data-target="#modal-info" onclick="del('@item.Code')" data-controller="SalaryScale" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

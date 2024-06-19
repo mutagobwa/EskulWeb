@@ -1,0 +1,61 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+<nav class="main-header navbar navbar-expand navbar-dark">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                <i class="fas fa-bars"></i>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Middle section -->
+    <ul class="navbar-nav flex-fill justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" style="color:darkorange;">
+                <h5>@SessionHelper.GetLicenceMsg()</h5>
+                </a>
+        </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <h5>Branch: @SessionData.UserBranchName</h5>
+            </a>
+        </li>
+        <li class="nav-item">
+            <img src="~/image/admin.jpg" alt="user Logo" class="brand-image img-circle elevation-3"
+                 style="opacity: .8;width:40px;">
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <h5>@SessionData.Username</h5>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <div class="dropdown-divider"></div>
+                <span class="dropdown-item dropdown-header" style="background:#000055;color:orange;">Profile Info</span>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-envelope mr-2"></i>Admin@gmailcom
+                    <span class="float-right text-muted text-sm"></span>
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a href="~/PassChange" class="dropdown-item">
+                    <i class="fas fa-password mr-2"></i>Change Password
+                    <span class="float-right text-muted text-sm"></span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button onclick="location.href='@Url.Action("Create", "Login", new {Username = SessionData.Username})'"
+                        class="dropdown-item dropdown-footer" style="background:#000055;color:#FFCCFF;">
+                    Logout
+                </button>
+            </div>
+        </li>
+
+    </ul>
+</nav>

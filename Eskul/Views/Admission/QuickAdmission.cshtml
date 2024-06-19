@@ -1,0 +1,299 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.StudentAdd
+@{
+
+    var House = Model.house;
+    var StudentImage = Model.Image;
+    var PreviousSchool = Model.previousSchool;
+    var uploadedDocument = Model.documents;
+    var regdate = Model.Dateregistered == null ? DateTime.Now.ToString("yyyy-MM-dd") : Model.Dateregistered.Value.ToString("yyyy-MM-dd");
+    var dob = Model.Dob == null ? DateTime.Now.ToString("yyyy-MM-dd") : Model.Dob.Value.ToString("yyyy-MM-dd");
+}
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+            <section class="content">
+                <div class="container-fluid">
+                    <form asp-action="QuickAdmission" class="needs-validation" novalidate>
+                        <div class="col-12 col-sm-6 col-md-12">
+                            <div class="box box-primary">
+                                <div class="card-body">
+                                    <div class="tab-content" id="custom-tabs-three-tabContent">
+                                        <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+<div class="row">
+                                                <input type="hidden" asp-for="Dateregistered" />
+                                                <input type="hidden" asp-for="Studentid" />
+                                                <input type="hidden" asp-for="Studentno" />
+                                                <input type="hidden" asp-for="Statusid" />
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Termregistered" style="font-weight: normal !important;">Term Registered</label><small class="req"> *</small>
+            @Html.DropDownListFor(m => m.Termregistered, new List<SelectListItem>
+            {       new SelectListItem{Text="Select", Value=""},
+            new SelectListItem{Text="Term One", Value="1"},
+            new SelectListItem{Text="Term Two", Value="2"},
+            new SelectListItem{Text="Term Three", Value="3"}},
+           htmlAttributes:new { @class = "select",style = "width: 100%;",name="Termregistered",id="Termregistered",required = "required"})
+            <div class="invalid-feedback">This Field is Required</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label asp-for="Dateregistered" class="control-label" style="font-weight: normal !important;">Date Registered</label><small class="req"> *</small>
+            <div class="input-group date">
+                <input type="date" asp-for="Dateregistered" value="@regdate" class="form-control form-control-sm" required />
+                <div class="invalid-feedback">This Field is Required</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label asp-for="Firstname" class="control-label" style="font-weight: normal !important;">First Name</label><small class="req"> *</small>
+            <input asp-for="Firstname" name="Firstname" class="form-control form-control-sm" required autocomplete="off" />
+            <div class="invalid-feedback">This Field is Required</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label asp-for="Middlename" class="control-label" style="font-weight: normal !important;">Middle Name</label>
+            <input asp-for="Middlename" class="form-control form-control-sm" autocomplete="off" />
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label asp-for="Lastname" class="control-label" style="font-weight: normal !important;">Last Name</label><small class="req"> *</small>
+            <input asp-for="Lastname" name="Lastname" class="form-control form-control-sm" required autocomplete="off" />
+            <div class="invalid-feedback">This Field is Required</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="Dob" class="control-label" style="font-weight: normal !important;">Date Of Birth</label><small class="req"> *</small>
+                                                                    <input type="date" id="Dob" asp-for="Dob" value="@dob" class="form-control form-control-sm" required />
+                                                            </div>
+                                                            <div class="invalid-feedback">This Field is Required</div>
+                                                        </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="Gender" style="font-weight: normal !important;">Gender</label><small class="req"> *</small>
+
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            @Html.RadioButtonFor(m => m.Gender, "M", new { @class = "custom-control-input", id = "genderMale" })
+                                                            <label class="custom-control-label" for="genderMale">M</label>
+                                                        </div>
+
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            @Html.RadioButtonFor(m => m.Gender, "F", new { @class = "custom-control-input", id = "genderFemale" })
+                                                            <label class="custom-control-label" for="genderFemale">F</label>
+                                                        </div>
+
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Level" style="font-weight: normal !important;">Academic Level</label><small class="req"> *</small>
+            @Html.DropDownListFor(m => m.Level, new List<SelectListItem>
+            {       new SelectListItem{Text="Select", Value=""},
+            new SelectListItem{Text="O LEVEL", Value="O"},
+            new SelectListItem{Text="A Level", Value="A"}},htmlAttributes:new { @class = "select",style = "width: 100%;",id="Level",name="Level",required = "required"})
+            <div class="invalid-feedback">This Field is Required</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+            @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"} )
+            <div class="invalid-feedback">This Field is Required</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label asp-for="StreamCode" class="control-label" style="font-weight: normal !important;">Stream</label>
+            @Html.DropDownList("StreamCode", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="StreamCode",name="StreamCode"})
+
+        </div>
+    </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <div id="input-type" class="row">
+                                                                <div class="col-sm-4">
+                                                                    <label class="radio-inline" style="font-weight:normal;">
+                                                                        <input name="Type" class="Core" value="L" type="radio" checked="checked">L
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <label class="radio-inline" style="font-weight:normal;">
+                                                                        <input name="Type" class="finetype" value="A" type="radio">F
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="Section" style="font-weight: normal !important;">Section</label><small class="req"> *</small>
+
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            @Html.RadioButtonFor(m => m.Section, "D", new { @class = "custom-control-input", id = "sectionDay" })
+                                                            <label class="custom-control-label" for="sectionDay">D</label>
+                                                        </div>
+
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            @Html.RadioButtonFor(m => m.Section, "B", new { @class = "custom-control-input", id = "sectionBoarding" })
+                                                            <label class="custom-control-label" for="sectionBoarding">B</label>
+                                                        </div>
+
+                                                        <div class="invalid-feedback">This Field is Required</div>
+                                                    </div>
+                                                </div>
+
+                                                
+</div>
+                                            <div class="d-flex justify-content-center">
+                                            <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Save" class="btn btn-block btn-sm mybtn"/>
+                                           </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+               
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script src="~/js/Valid.js"></script>
+<script>
+    function populateDropdown() {
+        // get selected radio button value
+        var level = document.getElementById('Level').value;
+        
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === "/") {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/QuickAdmission', '');
+        console.log('fullurl', fullUrl);
+        // make first AJAX call to retrieve dropdown values based on selected level
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", fullUrl + "/ClassByLevel?level=" + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var values = JSON.parse(xhr.responseText);
+
+                // populate first dropdown with retrieved values
+                var dropdown1 = document.getElementById("Class");
+                dropdown1.innerHTML = "";
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+
+                // add default option with value 0
+                var defaultOption = document.createElement("option");
+                defaultOption.value = "0";
+                defaultOption.text = "Select";
+                defaultOption.selected = true;
+                defaultOption.disabled = true;
+                dropdown1.insertBefore(defaultOption, dropdown1.firstChild);
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Level').change(function () {
+            populateDropdown();
+        });
+    });
+</script>
+<script>
+    function populateStreamCodeDropdown() {
+        // get selected Class value
+        var selectedClass = document.getElementById('Class').value;
+        console.log('selectedClass', selectedClass);
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/QuickAdmission', '');
+        console.log('fullurl', fullUrl);
+        // make AJAX call to retrieve StreamCodeed classes based on selected Class
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/StreamsByClass?classs=' + selectedClass);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var StreamCodeedClasses = JSON.parse(xhr.responseText);
+
+                // check if there are any StreamCodeed classes
+                var hasStreamCodeedClasses = StreamCodeedClasses.length > 0;
+
+                // populate StreamCode dropdown with retrieved values
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '';
+                if (hasStreamCodeedClasses) {
+                    for (var i = 0; i < StreamCodeedClasses.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = StreamCodeedClasses[i].StreamId;
+                        option.text = StreamCodeedClasses[i].Name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'Class Not StreamCodeed';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = false;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamCodeDropdown();
+        });
+    });
+</script>

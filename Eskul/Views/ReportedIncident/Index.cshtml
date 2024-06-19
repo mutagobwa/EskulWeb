@@ -1,0 +1,96 @@
+﻿@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.ReportedIncident
+@{
+    var listmodel = Model.reportedIncidents;
+}
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="card-body">
+                        <p>
+                            <a class="addbtn btn btn-sm mybtn" asp-action="Create"><i class="fa fa-plus"></i>&nbsp; Add Incident</a>
+                        </p>
+                        <table id="example2" class="table table-bordered table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+                                       Student Name
+                                    </th>
+                                    <th>
+                                        Captured By
+                                    </th>
+                                    <th>
+                                        Reviewed By
+                                    </th>
+                                    <th>
+                                        Confirmed BY
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (listmodel != null && listmodel.Count > 0)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.StudentName
+                                            </td>
+                                            <td>
+                                                @item.CapturedByName
+                                            </td>
+                                            <td>
+                                                @item.ReviewReferralName
+                                            </td>
+                                            <td>
+                                                @item.ConfirmReferralName
+                                            </td>
+                                            <td>
+                                                @item.StatusId
+                                            </td>
+                                            
+                                                <td>
+                                                @if (SessionData.UserId == item.CapturedBy && Model.Reviewed==false)
+                                                {
+                                                    <a asp-action="Edit" class="edit-button btn btn-xs btn-primary" asp-route-id="@item.IncidentID">Edit</a>
+                                                    <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.IncidentID" data-toggle="modal" data-target="#modal-info" onclick="del('@item.IncidentID')" data-controller="Branch">Del</button>
+                                                }
+                                                @if (SessionData.UserId == item.ReviewReferral && Model.Reviewed == false)
+                                                {
+                                                    <a asp-action="Verify" class="edit-button btn btn-xs btn-primary" asp-route-id="@item.IncidentID">Review</a>
+                                                }
+                                                @if (SessionData.UserId == item.ConfirmReferral && Model.Reviewed == true && Model.Confirmed==false)
+                                                {
+                                                    <a asp-action="Confirm" class="edit-button btn btn-xs btn-primary" asp-route-id="@item.IncidentID">Confirm</a>
+                                                }
+                                                </td>
+                                           
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-centere">
+                                            No Record Found
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

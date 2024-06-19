@@ -1,0 +1,138 @@
+﻿@model Eskul.Models.disabileReason
+@{
+
+    var listmodel = Model.disabileReassons;
+}
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit Disable Reason</h6>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="Create" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="reasonId" id="reasonId" name="reasonId" />
+                                            <div class="form-group">
+                                                <label asp-for="reasonName" style="font-weight:normal;">Reason Name</label>
+                                                <input asp-for="reasonName" id="reasonName" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="reasonDesc" style="font-weight:normal;">Reason Desc</label>
+                                                <textarea asp-for="reasonDesc" id="reasonDesc" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" formaction="~/DisableReason/Create" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+        <div class="row">
+                        <div class="col-md-12" id="sectionContainer" style="display:none;">
+                <div class="box box-primary">
+                    <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Disable Reason</h3>
+                                </div>
+
+                   
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-12">
+                <div class="box box-primary">
+                     <div class="card-body">
+                                    <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default">Add Disable Reasons</a>
+
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Reason Name
+                                </th>
+                                <th>
+                                    Reason Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.reasonName
+                                                </td>
+                                            <td>
+                                                    @item.reasonDesc
+                                            </td>
+                                            
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.reasonId" data-namee="@item.reasonName" data-desc="@item.reasonDesc" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <button class="btn btn-xs btn-danger " id="delete" data-id="@item.reasonId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.reasonId')" data-controller="DisableReason">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var DisId = $(this).data('id');
+            var Namee = $(this).data('namee');
+            var Description = $(this).data('desc');
+            $('#modal-default #reasonId').val(DisId);
+            $('#modal-default #reasonName').val(Namee);
+            $('#modal-default #reasonDesc').val(Description);
+        });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>
+
+
+
+
+

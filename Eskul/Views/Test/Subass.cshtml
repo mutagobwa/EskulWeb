@@ -1,0 +1,110 @@
+﻿@model Eskul.Models.FormModel
+@{
+
+    //var listmodel = Model.AttendenceLists;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Page</title>
+</head>
+<body>
+    <h2>Section One</h2>
+    <form>
+        <label for="level">Level:</label><br>
+        <input type="radio" id="level" name="level" value="O level">
+        <label for="olevel">O level</label><br>
+        <input type="radio" id="level" name="level" value="A level">
+        <label for="alevel">A level</label><br><br>
+
+        <label for="class">Class:</label>
+        <select id="class" name="class">
+            @foreach (var c in Model.Classes)
+            {
+                <option value="@c">@c</option>
+            }
+        </select><br><br>
+
+        <label for="stream">Stream:</label>
+        <select id="stream" name="stream">
+            @foreach (var s in Model.Streams)
+            {
+                <option value="@s">@s</option>
+            }
+        </select><br><br>
+
+        <label for="students">Students:</label>
+        <select id="students" name="students">
+            @foreach (var student in Model.Students)
+            {
+                <option value="@student">@student</option>
+            }
+        </select><br><br>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Section Two</h2>
+    <table id="example2" class="table table-bordered table-striped table-sm">
+        <tr>
+            <th>Subject Name</th>
+            <th>Papers</th>
+            <th>Offered</th>
+        </tr>
+        @foreach (var subject in Model.Subjects)
+        {
+            <tr>
+                <td>@subject.Name</td>
+                <td>
+                    @for (int i = 1; i <= subject.Papers; i++)
+                    {
+                        int paperNumber = i;
+                        <label>
+                            <input type="checkbox" name="papers_@subject.Name" value="@paperNumber" @(paperNumber == subject.PaperStatus ? "checked" : "")>
+                            Paper @paperNumber
+                        </label>
+                    }
+                </td>
+                <td></td>
+            </tr>
+        }
+    </table>
+
+
+</body>
+</html>
+
+    <script src="~/js/Jquery.min.3.6.0.js" ></script>
+    <script>
+    $(document).ready(function () {
+        $(".save-button").click(function () {
+            var button = $(this);
+            var subjectId = button.data("subject-id");
+            var selectedPapers = [];
+
+            button.closest("tr").find("input[type=checkbox]:checked").each(function () {
+                var paperNumber = $(this).val();
+                selectedPapers.push({
+                    SubjectId: subjectId,
+                    PaperNumber: paperNumber,
+                    StudentId: 1
+                        });
+            });
+
+            // Send AJAX request to save the selected papers
+            $.ajax({
+                url: "/StudentSubjects/Create",
+                type: "POST",
+                data: JSON.stringify(selectedPapers),
+                contentType: "application/json",
+                success: function (response) {
+                    // Handle success response, if needed
+                },
+                error: function (error) {
+                    // Handle error response, if needed
+                }
+            });
+        });
+    });
+</script>

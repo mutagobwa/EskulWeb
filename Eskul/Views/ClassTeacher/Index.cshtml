@@ -1,0 +1,256 @@
+﻿@model Eskul.Models.Classteacher
+@{
+    var listmodel = Model.classteachers;
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-lg" >
+                        <div class="modal-dialog modal-lg" style="width:450px">
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h6 class="modal-title" style="font-weight:bold;">Add/Edit Class Teacher</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="Id" name="Id" id="Id" />
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <div id="input-type" class="row">
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="year" style="font-weight:normal;">Year</label>
+                                                <input asp-for="year" class="form-control form-control-sm" autocomplete="off" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Class" class="control-label" style="font-weight: normal !important;">Class</label>
+                                                @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="stream" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                                @Html.DropDownList("stream", (IEnumerable<SelectListItem>) ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="Stream",name="stream"})
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="tearcherid" class="control-label" style="font-weight: normal !important;">Teacher</label>
+                                                @Html.DropDownList("tearcherid", (IEnumerable<SelectListItem>) ViewBag.Teachers, new { @class = "select",style = "width: 100%;",id="tearcherid",name="tearcherid",required = "required"})
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="card-body">
+                                    <p>
+                                        <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg"><i class="fa fa-plus"></i>&nbsp; Class Teacher</a>
+                                    </p>
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Year
+                                </th>
+                                <th>
+                                    Class
+                                </th>
+                                <th>
+                                   Stream
+                                </th>
+                                <th>
+                                   Teacher
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.year
+                                            </td>
+                                            <td>
+                                                    @item.ClassName
+                                            </td>
+                                            <td>
+                                                    @item.SteamName
+                                            </td>
+                                            <td>
+                                                    @item.FullName
+                                            </td>
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.Id" data-class="@item.Class" data-teacher="@item.tearcherid" data-stream="@item.stream" data-toggle="modal" data-target="#modal-lg">Edit</a>
+                                                            @* <button asp-action="Edit" id="editButton" class="btn btn-xs btn-primary" data-id="@item.Id" onclick="loadEditModal(this)">Edit</button> *@
+                                                <button class="btn btn-xs btn-danger " id="delete" data-id="@item.Id"data-toggle="modal" data-target="#modal-info" onclick="del('@item.Id')" data-action="Delete" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+
+<script>
+    function populateDropdown(callback) {
+        var level = document.querySelector('input[name="Level"]:checked').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var final = fullUrl.replace('Index', '');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', final + 'ClassByLevel?level=' + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+                var dropdown1 = document.getElementById('Class');
+                dropdown1.innerHTML = '<option value="">Select</option>';
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+                if (callback) {
+                    callback();
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function populateStreamDropdown(callback) {
+        var selectedClass = document.getElementById('Class').value;
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        var fullUrl = baseUrl + '/' + pathName;
+        var final = fullUrl.replace('/Index', '');
+        console.log('fullurl', final);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', final + '/StreamsByClass?classs=' + selectedClass);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var streamedClasses = JSON.parse(xhr.responseText);
+                var dropdown = document.getElementById('Stream');
+                dropdown.innerHTML = '<option value="0">Select</option>';
+                if (streamedClasses.length > 0) {
+                    for (var i = 0; i < streamedClasses.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = streamedClasses[i].StreamId;
+                        option.text = streamedClasses[i].Name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'Class Not Streamed';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+                if (callback) {
+                    callback();
+                }
+            } else {
+                var dropdown = document.getElementById('Stream');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = true;
+            }
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            populateStreamDropdown();
+        });
+    });
+
+    $(document).ready(function () {
+        var today = new Date();
+        $('#DispalyDate').text("Full date=" + today.toDateString());
+        $('#FullYear').text("Full year=" + today.getFullYear());
+        $('#DayOfMonth').text("Day=" + today.getDate());
+        $('#GetMonth').text("Number of month=" + today.getMonth());
+    });
+
+    $(document).delegate('#Edit', 'click', function (e) {
+        var classtid = $(this).data('id');
+        var classs = $(this).data('class');
+        var stream = $(this).data('stream');
+        var teacherr = $(this).data('teacher');
+
+        console.log('stream', stream);
+
+        $('#modal-lg #Class').val(classs).trigger('change');
+        $('#modal-lg #Id').val(classtid);
+        $('#modal-lg #tearcherid').val(teacherr).trigger('change');
+
+        populateStreamDropdown(function () {
+            $('#modal-lg #Stream').val(stream).trigger('change');
+        });
+    });
+</script>
+
+<script src="~/js/jquery-3.6.4.min.js"></script>
+
+
+<script src="~/js/ModalRest.js"></script>

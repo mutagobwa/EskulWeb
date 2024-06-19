@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Eskul.Models.Book>
+
+<br/>
+
+<div class="col-md-12">
+    <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<div class="col-md-12">
+<div class="box box-primary">
+                     <div class="card-body">
+<p>
+                            <a asp-action="Create" class="btn btn-sm mybtn"><i class="fa fa-plus"></i>&nbsp; Add New Book</a>
+</p>
+ <table id="example2" class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+            <th>
+                Tittle
+            </th>
+            <th>
+                Number
+            </th>
+            <th>
+               ISBN
+            </th>
+            <th>
+                Publisher
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Subject
+            </th>
+            
+            <th>
+                Qty
+            </th>
+            <th>
+                Available
+            </th>
+            <th>
+                Price
+            </th>
+           
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+         @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookTittle)
+                    </td>
+                   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsbnNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Publisher)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject)
+                    </td>
+                   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Available)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                   
+                    <td>
+                        <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.BookId">Edit</a>
+                        <button class="btn btn-xs btn-danger " id="delete" data-id="@item.BookId"data-toggle="modal" data-target="#modal-info" onclick="del('@item.BookId')" data-action="Delete" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr>
+                <td colspan="13" class="text-centere">
+                      No Record Found
+                    </td>
+                                       
+             </tr>
+        }
+    </tbody>
+</table>
+</div>
+</div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>

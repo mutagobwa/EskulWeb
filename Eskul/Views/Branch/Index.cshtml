@@ -1,0 +1,151 @@
+﻿@model Eskul.Models.Branch
+@{
+
+    var listmodel = Model.Branches;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+                    <div class="modal fade" id="modal-default">
+                        <div class="modal-dialog">
+                            <div class="modal-content box box-primary" style="width:380px;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="font-weight:bold;">Add/Edit Branch</h5>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form asp-action="" id="myform" method="post" class="needs-validation" novalidate>
+                                        <div class="card-body">
+                                            <input type="hidden" asp-for="BranchId" id="BranchId" name="BranchId" />
+                                            <div class="form-group">
+                                                <label asp-for="BranchCode" style="font-weight: normal !important;">Branch Code</label>
+                                                <input asp-for="BranchCode" id="BranchCode" name="BranchCode" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="BranchName" style="font-weight: normal !important;">Branch Name</label>
+                                                <input asp-for="BranchName" id="BranchName" name="BranchName" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="BranchLocation" style="font-weight: normal !important;">Location</label>
+                                                <input asp-for="BranchLocation" id="BranchLocation" name="BranchLocation" class="form-control form-control-sm" required autocomplete="off" />
+                                                <div class="invalid-feedback">This Field is Required</div>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label" style="font-weight: normal !important;">
+                                                    <input class="form-check-input" asp-for="HeadOffice" name="HeadOffice" id="HeadOffice" /> @Html.DisplayNameFor(model => model.HeadOffice)
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" formaction="~/Branch/Create" />
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+        <div class="row">
+            <!-- /.col-md-8 -->
+                        <div class="col-md-12" id="tableContainer">
+                <div class="box box-primary">
+                     <div class="card-body">
+                                    <a class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-default">Add Branch</a>
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Branch Code
+                                </th>
+                                <th>
+                                    Branch Name
+                                </th>
+                                <th>
+                                    Location
+                                </th>
+                                <th>
+                                    Head Office
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null && listmodel.Count>0)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.BranchCode
+                                                </td>
+                                            <td>
+                                                    @item.BranchName
+                                            </td>
+                                            <td>
+                                                    @item.BranchLocation
+                                            </td>
+                                            <td>
+                                                    @item.HeadOffice
+                                            </td>
+                                            <td>
+                                                            <a asp-action="Edit" id="Edit" class="edit-button btn btn-xs btn-primary" data-id="@item.BranchId" data-code="@item.BranchCode" data-name="@item.BranchName" data-location="@item.BranchLocation" data-headoffice="@item.HeadOffice" data-toggle="modal" data-target="#modal-default">Edit</a>
+                                                            <button class="delete-button btn btn-xs btn-danger " id="delete" data-id="@item.BranchId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.BranchId')" data-controller="Branch" data-body-message="Are You Sure You Want To Delete This Stream">Delete</button>
+ 
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+ </div>
+        </div>
+    </div>
+<script src="~/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).delegate('#Edit',
+        'click',
+        function (e) {
+            var branchId = $(this).data('id');
+            var branchCode = $(this).data('code');
+            var branchName = $(this).data('name');
+            var branchLocation = $(this).data('location');
+            var headOffice = $(this).data('headoffice');
+            // Populate the modal with the data
+            $('#modal-default #BranchId').val(branchId);
+            $('#modal-default #BranchCode').val(branchCode);
+            $('#modal-default #BranchName').val(branchName);
+            $('#modal-default #BranchLocation').val(branchLocation);
+            $('#modal-default #HeadOffice').prop('checked', headOffice.toLowerCase() === 'true');
+            
+        });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>

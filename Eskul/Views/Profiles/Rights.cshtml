@@ -1,0 +1,173 @@
+﻿@model List<MenuItem>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var pageSize = 4; // Number of cards per page
+        var totalCards = $(".card.cardPage").length;
+        var totalPages = Math.ceil(totalCards / pageSize);
+
+        // Hide all cards except the first page initially
+        $(".card.cardPage").hide();
+        $(".card.cardPage:lt(" + pageSize + ")").show();
+
+        $("#cardPagination ul.pagination li a").click(function (e) {
+            e.preventDefault();
+            var pageIndex = parseInt($(this).data("page"));
+
+            // Show the selected page and hide the rest
+            $(".card.cardPage").hide();
+            var startIndex = (pageIndex - 1) * pageSize;
+            var endIndex = startIndex + pageSize;
+            $(".card.cardPage").slice(startIndex, endIndex).show();
+
+            // Update the active state of the pagination links
+            $(this).parent().addClass("active").siblings().removeClass("active");
+        });
+    });
+</script>
+<style>
+    .submenu {
+        display: none;
+        padding-left: 20px;
+    }
+
+    .toggle-icon {
+        cursor: pointer;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: orange;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+
+        .toggle-icon i {
+            font-size: 16px;
+            font-weight: bold;
+        }
+</style>
+
+<br />
+<form id="menuAccessForm" method="post" action="@Url.Action("SaveMenuAccess")">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-outline card-default">
+                    <div class="card-body">
+                        @{
+                            var groupedMenus = Model.GroupBy(menu => menu.MenuCategoryName);
+                            var pageSize = 4; // Number of items per page
+
+                            var groupedMenusList = groupedMenus.ToList();
+                            var totalGroups = groupedMenusList.Count;
+                            var totalCards = totalGroups % pageSize == 0 ? totalGroups / pageSize : (totalGroups / pageSize) + 1;
+
+                            var pageIndex = 1;
+                            foreach (var group in groupedMenusList)
+                            {
+                                var totalGroupItems = group.Count();
+                                var totalPagesInGroup = Math.Ceiling((double)totalGroupItems / pageSize);
+                                var groupIndex = 0;
+
+                                <div class="card cardPage" data-page="@pageIndex" style="display: @(pageIndex == 1 ? "block" : "none")">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <span class="toggle-icon">
+                                                <i class="fa fa-plus-circle"></i>
+                                            </span>
+                                            @group.Key
+                                        </h3>
+                                    </div>
+                                    <div class="card-body submenu">
+                                        <table class="table table-bordered table-striped table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Url</th>
+                                                    <th>Access</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var menu in group)
+                                                {
+                                                    <tr>
+                                                        <td>@menu.MenuName</td>
+                                                        <td>@menu.MenuUrl</td>
+                                                        <td>
+                                                            <input type="checkbox" name="Menus[@menu.MenuId].Status" value="true" @(menu.Status ? "checked" : "") />
+                                                            <input type="hidden" name="Menus[@menu.MenuId].RightId" value="@menu.RightId" />
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                pageIndex++;
+                            }
+                        }
+                        <!-- Pagination -->
+                        <div id="cardPagination" class="text-center d-flex justify-content-center">
+                            <ul class="pagination pagination-sm">
+                                @for (var i = 1; i <= totalCards; i++)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" data-page="@i">@i</a></li>
+                                }
+                            </ul>
+                        </div>
+                        <!-- End Pagination -->
+                        <!-- Your form button -->
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-block btn-sm mybtn" style="width: 200px;">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</form>
+<script src="~/js/jquery-3.6.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.toggle-icon').click(function () {
+            var submenu = $(this).closest('.card').find('.submenu');
+            submenu.slideToggle();
+            $(this).toggleClass('expanded');
+        });
+
+        $('#menuAccessForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var form = $(this);
+            var url = form.attr('action');
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: form.serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 200) {
+                        toastr.success(response.res);
+                        // Perform any additional actions on success
+                    } else {
+                        toastr.error("Error: " + response.res);
+                        // Perform any additional actions on error
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("An error occurred while processing the request.");
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+

@@ -1,0 +1,33 @@
+﻿@if (TempData["success"] != null)
+{
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/plugs/toastr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var toastTitle = '@(TempData["toastTitle"] ?? "Eskul")'; // Get the toast title from TempData or use a default value
+            toastr.success('@TempData["success"]', toastTitle);
+        });
+    </script>
+}
+@if (TempData["error"] != null)
+{
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/plugs/toastr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var toastTitle = '@(TempData["toastTitle"] ?? "Eskul")'; // Get the toast title from TempData or use a default value
+            toastr.error('@TempData["error"]', toastTitle);
+        });
+    </script>
+}
+@if (TempData["info"] != null)
+{
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/plugs/toastr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var toastTitle = '@(TempData["toastTitle"] ?? "Eskul")'; // Get the toast title from TempData or use a default value
+            toastr.info('@TempData["info"]', toastTitle);
+        });
+    </script>
+}

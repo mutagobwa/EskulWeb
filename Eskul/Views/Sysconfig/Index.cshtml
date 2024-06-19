@@ -1,0 +1,108 @@
+﻿@model Eskul.Models.SysConfigVm
+@{
+
+    var listmodel = Model.Sysconfigs;
+}
+
+<br />
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Edit System Configurations</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" class="needs-validation" novalidate>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="SysconfigName" style="font-weight:normal;">Sysconfig Name</label>
+                                <input asp-for="SysconfigName" class="form-control form-control-sm" disabled/>
+                            </div>
+                            <div class="form-group">
+                                <label for="SysconfigValue" style="font-weight:normal;">Sysconfig Value</label>
+                                <input asp-for="SysconfigValue" class="form-control form-control-sm" required />
+                                            <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                             <div class="form-group">
+                                <label for="SysconfigDescription" style="font-weight:normal;">Sysconfig Description</label>
+                                <input asp-for="SysconfigDesc" class="form-control form-control-sm" required />
+                                            <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="form-group">
+                                        <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                        </div>
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Sysconfig Name
+                                </th>
+                                <th>
+                                    Sysconfig Value
+                                </th>
+                                <th>
+                                   Sysconfig Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.SysconfigName
+                                            </td>
+                                            <td>
+                                                    @item.SysconfigValue
+                                            </td>
+                                            <td>
+                                                    @item.SysconfigDesc
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.Id">Edit</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

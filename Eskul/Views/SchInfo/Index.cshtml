@@ -1,0 +1,298 @@
+﻿@model Eskul.Models.GeneralSettingAdd
+<br/>
+<script type="text/javascript" src="~/js/jQuery v3.4.1.js"></script>
+@using (Html.BeginForm("Edit", "SchInfo", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="row">        
+        <div class="col-lg-2 col-md-3 col-sm-12 uploadsticky">
+            <div class="box box-primary">
+                                <div class="box-body text-centere" id="image_upload_preview">
+                                
+                                    <img id="image_preview" src="@ViewBag.Logo" alt="School Badge" class="img-thumbnail" width="304" height="236" />                    <br>
+                    <br>
+                                    <input type="file" class="form-control select2" name="files" onchange="readfile(this);" value="Browse" />
+                            </div>              
+            </div>
+        </div>
+        <div class="col-lg-10 col-md-9 col-sm-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header ptbnull">
+                                    <h3 class="box-title titlefix"><i class="fa fa-gear"></i> <b>General Setting</b></h3>
+                    <div class="box-tools pull-right">
+                    </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="">
+                        <div class="box-body">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                                    <label class="col-sm-4" style=" font-weight:normal;">School Name:</label>
+                                        <div class="col-sm-8">
+                                                        <input asp-for="SchoolName" class="form-control form-control-sm" value="@Model.SchoolName" />
+                                        </div>
+                                    </div>
+                                    </div>           
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">Reg Number:</label>
+                                        <div class="col-sm-8">
+                                                        <input asp-for="RegistrationNo" class="form-control form-control-sm" value="@Model.RegistrationNo" />
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!--./row-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                                    <label class="col-sm-2" style="font-weight:normal;">Address:</label>
+                                        <div class="col-sm-10">
+                                                        <input asp-for="LocationAddress" class="form-control form-control-sm" value="@Model.LocationAddress" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--./row-->
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">School Code:</label>
+                                        <div class="col-sm-8">
+                                                        <input asp-for="SchoolCode" class="form-control form-control-sm" value="@Model.SchoolCode" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">Established Year:</label>
+                                        <div class="col-sm-8">
+                                                        <input asp-for="EstablishedYear" class="form-control form-control-sm" value="@Model.EstablishedYear" autocomplete="off"/>
+                                                       
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!--./row-->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2" style="font-weight:normal;">Website:</label>
+                                                    <div class="col-sm-10">
+                                                        <input asp-for="Website" class="form-control form-control-sm" value="@Model.Website" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!--./row-->
+                                        <div class="row">
+
+                                            <div class="col-md-5">
+
+                                                <div class="form-group form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" asp-for="IsUnebRegistered" id="IsUnebRegistered" /> @Html.DisplayNameFor(model => model.IsUnebRegistered)
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">Uneb Centre No:</label>
+                                                    <div class="col-sm-8">
+                                                        <input asp-for="UNEBNo" class="form-control form-control-sm" value="@Model.UNEBNo" />
+                                                        <span class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div><!--./row-->
+                                        
+                             <div class="row">
+
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">Phone:</label>
+                                        <div class="col-sm-8">
+                                                        <input asp-for="Contact" class="form-control form-control-sm" value="@Model.Contact" />
+                                                    </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" style="font-weight:normal;">Email:</label>
+                                        <div class="col-sm-8">
+                                                        <input asp-for="Email" class="form-control form-control-sm" value="@Model.Email" />
+                                                       
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4" for="DefaultLanguage" style="font-weight:normal; display:block">Language:</label>
+                                                    @Html.DropDownListFor(m => m.DefaultLanguage, new List<SelectListItem>
+                                                {       new SelectListItem{Text="English", Value="ENG"},
+                                                new SelectListItem{Text="Swahili", Value="SW"}},"Select",htmlAttributes:new { @class = "select",style = "width: 100%;"})
+                                                </div>
+                                            </div>
+                            </div><!--./row-->
+                             <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="Sponser" style="font-weight:normal;">Sponsor:</label>
+                                                    @Html.DropDownListFor(m => m.Sponser, new List<SelectListItem>
+                                                {       new SelectListItem{Text="Government", Value="G"},
+                                                new SelectListItem{Text="Private", Value="P"},new SelectListItem{Text="Church", Value="C"},new SelectListItem{Text="Community", Value="V"}},"Select",htmlAttributes:new { @class = "select",style = "width: 100%;"})
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                    <div class="form-group">
+                                                    <label for="AcademicLevel" style="font-weight:normal;">Academic Level:</label>
+                                                        @Html.DropDownListFor(m => m.AcademicLevel, new List<SelectListItem>
+                                                    {       new SelectListItem{Text="O Level", Value="O"},
+                                                    new SelectListItem{Text="A Level", Value="A"},new SelectListItem{Text="Mixed O And A", Value="B"}},"Select",htmlAttributes:new { @class = "select",style = "width: 100%;"})
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                    <div class="form-group">
+                                                    <label for="Gender" style="font-weight:normal;">Supported Gender:</label>
+                                                        @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                                    {       new SelectListItem{Text="Boys", Value="M"},
+                                                    new SelectListItem{Text="Girls", Value="G"},new SelectListItem{Text="Mixed Boys And Girls ", Value="M"}},"Select",htmlAttributes:new { @class = "select",style = "width: 100%;"})
+                                                    </div>
+                                            </div>
+                             </div>
+                                        <hr />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                <div class="box-header ptbnull">
+                                                <h3 class="box-title titlefix"> <b>ID Auto Generation</b></h3>
+                                            
+                                        </div>
+                                            </div>
+                                        <!--./col-md-12-->
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                <div class="form-group form-check">
+                                                        <label class="form-check-label" style="font-weight:normal;">
+                                                        <input class="form-check-input" asp-for="StudentNoAutGen" id="StudentNoAutGen" /> @Html.DisplayNameFor(model => model.StudentNoAutGen)
+                                                    </label>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">Student ID Prefix:</label>
+                                                    <div class="col-sm-8">
+                                                        <input asp-for="StudentNoPrefix" class="form-control form-control-sm" value="@Model.StudentNoPrefix" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="StaffNoAutGen" id="StaffNoAutGen" /> @Html.DisplayNameFor(model => model.StaffNoAutGen)
+                                        </label>
+                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">Staff ID Prefix:</label>
+                                                <div class="col-sm-8">
+                                                        <input asp-for="StaffNoPrefix" class="form-control form-control-sm" value="@Model.StaffNoPrefix" />
+
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="form-group form-check">
+                                                    <label class="form-check-label">
+                                                            <input class="form-check-input" asp-for="ParentNoAutGen" id="ParentNoAutGen" /> @Html.DisplayNameFor(model => model.ParentNoAutGen)
+                                                    </label>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4" style="font-weight:normal;">Parent ID Prefix:</label>
+                                                    <div class="col-sm-8">
+                                                            <input asp-for="ParentNoPrefix" class="form-control form-control-sm" value="@Model.ParentNoPrefix" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                    <!--./row-->
+                                    </div>
+                              @*      <hr/>
+                            <div class="row">
+                                <div class="col-md-12">
+                                                    <div class="box-header ptbnull">
+                                                        <h3 class="box-title titlefix"> <b>Miscellaneous</b></h3>
+
+                                                    </div>
+                                    <div class="settinghr"></div>
+                                     <h3 class="box-title titlefix"> <b></b></h3>
+                                    
+                                </div><!--./col-md-12-->
+                                                <div class="box-header ptbnull">
+                                                    
+                                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                                <div class="form-group form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" asp-for="TrRestrictedMode" id="TrRestrictedMode" /> @Html.DisplayNameFor(model => model.TrRestrictedMode)
+                                                    </label>
+                                                </div>
+                                                </div>
+                                </div>
+                            </div><!--./row-->*@
+                        </div><!-- /.box-body -->
+                                    <div class="d-flex justify-content-center">
+                                        <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" style=" width:200px;" />
+                                        </div>
+                                    </div>
+                        
+                  @*  </form>*@
+                </div><!-- /.box-body -->
+            </div>
+        </div><!--/.col (left) -->
+        <!-- right column -->
+
+    </div>
+
+</section>
+    </div>
+</div><!--/.col (left) -->
+<!-- right column -->
+    </div>
+    }
+
+<script type="text/javascript">
+    function readfile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

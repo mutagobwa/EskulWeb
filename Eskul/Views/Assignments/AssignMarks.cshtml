@@ -1,0 +1,367 @@
+﻿@model Eskul.Models.AssignmentScoreViewModel
+@{
+
+    var listmodel = Model.StudentsList;
+}  
+<style>
+   .small-textbox {
+    width: 50px;
+    height: 25px;
+    font-size: 14px;
+    padding: 2px;
+    border: 1px solid gray;
+}
+.big-textbox {
+    width: 100%;
+    height: 25px;
+    font-size: 14px;
+    padding: 2px;
+    border: 1px solid gray;
+}
+.round {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background:gray;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+}
+input[type="number"]::-webkit-outer-spin-button, 
+input[type="number"]::-webkit-inner-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"] {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid black;
+  text-align: center;
+}
+.error {
+    font-weight: bold;
+    color: red;
+     font-size: 24px;
+}
+</style>
+
+<br/>
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+              <!-- /.card-header -->
+        <div class="card-body">
+            <section class="content">
+                <p>
+                    <a asp-action="Index" class="btn btn-sm mybtnsm"  asp-route-Term="@Model.Term" asp-route-Class="@Model.Class" asp-route-SubjectCode="@Model.SubjectCode">Back To List</a>
+                </p>
+<div class="col-md-12">
+
+                    <div class="card card-outline card-default box box-primary">
+                        <div class="card-body">
+                        <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <input type="hidden" id="assignmentId" asp-for="@Model.AssignmentId" name="AssignmentId" />
+                                    <input type="hidden" id="Class" asp-for="@Model.Class" name="Class" />
+                                    <div class="form-group">
+                                        <span class="badge bg-success" style="font-size:16px;">Topic: @Model.TopicName</span>
+                                    </div>
+                                </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <span class="badge bg-success" style="font-size:16px;">Year: @Model.Year</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <span class="badge bg-success" style="font-size:16px;">Class: @Model.Class</span>
+                                        </div>
+                                    </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <span class="badge bg-success" style="font-size:16px;">Stream: @(listmodel.FirstOrDefault()?.StreamName ?? "N/A")</span>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <span class="badge bg-success" style="font-size:16px;">Term: @Model.Term</span>
+                                            </div>
+                                        </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <span class="badge bg-success" style="font-size:16px; max-width: 100%; display: inline-block; overflow: hidden; white-space: normal; display: flex; align-items: flex-start;">
+                                            Competency: @Model.Competency
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+<div class="box box-primary">
+  <div class="card-body">
+                            <form action="~/Assignments/AssignMarks" method="get" id="form" class="needs-validation" novalidate>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <input type="hidden" id="assignmentId" asp-for="@Model.AssignmentId" name="AssignmentId" />
+                                        <input type="hidden" id="Class" asp-for="@Model.Class" name="classId" />
+                                        <div class="form-group col-12 col-sm-12 col-md-3">
+                                            <label asp-for="StreamCode" class="control-label" style="font-weight: normal !important;">Stream</label>
+                                            @Html.DropDownList("StreamCode", (IEnumerable<SelectListItem>) ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="StreamCode",name="StreamCode"})
+
+                                        </div>
+                                        <div class="form-group col-12 col-sm-12 col-md-3" style="margin-top:30px;">
+                                            <input type="submit" value="Search" class="btn btn-sm btn-block mybtn" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <table id="example2" class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <!-- Add a hidden column to store StreamCode -->
+                                        <th class="d-none">
+                                            Stream Code
+                                        </th>
+                                        <th class="d-none">
+                                            Student No
+                                        </th>
+                                        <th>
+                                            Student Name
+                                        </th>
+                                        <th>
+                                            Stream
+                                        </th>
+
+                                        <th>
+                                            Score
+                                        </th>
+                                        <th>
+                                            Generic Skill
+                                        </th>
+                                        <th>
+                                            Comment
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (listmodel != null && listmodel.Count > 0)
+                                    {
+                                        @foreach (var item in listmodel.OrderBy(p=>p.StudentName))
+                                        {
+                                            <tr>
+                                                <!-- Add a hidden column to store StreamCode -->
+                                                <td class="d-none">
+                                                    @Html.DisplayFor(modelItem => item.StreamCode)
+                                                </td>
+                                                <td style="display:none">
+                                                    @Html.DisplayFor(modelItem => item.StudentNo)
+                                                </td>
+                                                <td style="width:220px;">
+                                                    @Html.DisplayFor(modelItem => item.StudentName)
+                                                </td>
+                                                <td style="width:100px;">
+                                                    @Html.DisplayFor(modelItem => item.StreamName)
+                                                </td>
+                                                <td style="width:30px;">
+                                                    <input type="number" class="big-textbox" id="score-@item.StudentId" oninput="validateScore(this)" value="@item.Score" onchange="saveData(this.id)" />
+                                                </td>
+                                                <td style="width:250px;">
+                                                    <div class="form-group">
+                                                        @Html.DropDownList("GenericSkillId", (IEnumerable<SelectListItem>)ViewBag.GsCat, new { @class = "select", style = "width: 100%;", id = "GenericSkillId-" + item.StudentId, name = "GenericSkillId", required = "required", onchange = "saveGenericSkill(this)" })
+
+                                                        <script>
+                                                            var savedGenericSkillId = '@item.GenericSkillId';
+                                                            var studentId = '@item.StudentId';
+                                                            var dropdown = document.getElementById("GenericSkillId-" + studentId);
+                                                            for (var i = 0; i < dropdown.options.length; i++) {
+                                                                if (dropdown.options[i].value === savedGenericSkillId) {
+                                                                    dropdown.options[i].selected = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        </script>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <textarea type="text" class="big-textbox" id="comment-@item.StudentId" value="@item.Comment" onchange="saveData(this.id)"></textarea>
+                                                </td>
+                                                <td>
+                                                    <span id="status-@item.StudentId" class="status round">
+                                                        <div class="spinner-border spinner-border-sm" role="status" style="display: none;">
+                                                            <span class="sr-only">Loading...</span>
+                                                        </div>
+                                                        <span id="tick-@item.StudentId" class="tick" style="display: none;">✔</span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="10" class="text-centere">
+                                                No Record Found
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+</div>
+ </div>
+</div>
+            </section>
+</div>
+</div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<form id="myForm"></form>
+<Script>
+    function saveData(id) {
+         var assignmentId = $("#assignmentId").val();
+        var studentId = id.split("-")[1];
+        var score = document.getElementById("score-" + studentId).value;
+        var comment = document.getElementById("comment-" + studentId).value;
+        console.log("Saving data for student: " + studentId);
+        console.log("Score: " + score);
+        console.log("Comment: " + comment);
+       console.log("assignmentId:"+ assignmentId); 
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        pathName = pathName.replace(/\/\d+\.\d+$/, '');
+        var fullUrl = baseUrl + '/' + pathName;
+        console.log('url is',fullUrl)
+        var fd = document.getElementById('myForm');
+        var formData = new FormData(fd);
+        formData.append('studentId',studentId);
+        formData.append('score',score);
+        formData.append('comment',comment);
+        formData.append('assignmentId',assignmentId);
+        
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ": " + pair[1]);
+          }
+          console.log($(fd).serialize());
+        $.ajax({
+            type: "POST",
+            url:fullUrl,
+             data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                console.log("Server Response: " + res.res);
+                var comment = res.res;
+                if (res.status === 100) {
+                    $('#comment-' + studentId).val(comment);
+                    document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+                    console.log("Data saved successfully for student: " + studentId);
+                } else {
+                    document.getElementById("status-" + studentId).innerHTML = "&#10060;";
+                    console.log("Error"+res.res+" "+" while saving data for student: " + studentId);
+                }
+            }
+        });
+    }
+</Script>
+<script>
+    function validateScore(input) {
+    var value = parseInt(input.value);
+    if (isNaN(value) || value < 0 || value > 10) {
+        input.value = "";  // Clear the input field
+    }
+}
+</script>
+<script>
+    // Function to save data when the GenericSkillId dropdown changes
+    function saveGenericSkill(element) {
+        var studentId = element.id.split("-")[1];
+        saveData('GenericSkillId-' + studentId); // Trigger saveData with the specific student's ID
+    }
+
+    // Existing saveData function remains unchanged as previously provided
+    function saveData(id) {
+        var assignmentId = $("#assignmentId").val();
+        var studentId = id.split("-")[1];
+        var score = document.getElementById("score-" + studentId).value;
+        var comment = document.getElementById("comment-" + studentId).value;
+        var genericSkillId = document.getElementById("GenericSkillId-" + studentId).value;
+
+        console.log("Saving data for student: " + studentId);
+        console.log("Score: " + score);
+        console.log("Comment: " + comment);
+        console.log("Generic Skill ID: " + genericSkillId);
+        console.log("Assignment ID: " + assignmentId);
+
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+        pathName = pathName.replace(/\/\d+\.\d+$/, '');
+        var fullUrl = baseUrl + '/' + pathName;
+
+        var fd = document.getElementById('myForm');
+        var formData = new FormData(fd);
+        formData.append('studentId', studentId);
+        formData.append('score', score);
+        formData.append('comment', comment);
+        formData.append('assignmentId', assignmentId);
+        formData.append('genericSkillId', genericSkillId);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ": " + pair[1]);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: fullUrl,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                console.log("Server Response: " + res.res);
+                var comment = res.res;
+                if (res.status === 100) {
+                    $('#comment-' + studentId).val(comment);
+                    document.getElementById("status-" + studentId).innerHTML = "&#10004;";
+                    console.log("Data saved successfully for student: " + studentId);
+                } else {
+                    document.getElementById("status-" + studentId).innerHTML = "&#10060;";
+                    console.log("Error" + res.res + " " + " while saving data for student: " + studentId);
+                }
+            }
+        });
+    }
+
+    // Attaching event listeners to the dropdowns
+    $(document).ready(function () {
+        // Select all elements with class 'select' (assuming this class is assigned to your dropdowns)
+        $('#GenericSkillId').change(function () {
+            saveGenericSkill(this); // Trigger saveGenericSkill when a dropdown value changes
+        });
+    });
+</script>
+
+
+
+

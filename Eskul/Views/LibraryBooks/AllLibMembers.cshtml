@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Eskul.Models.LibraryMembers>
+
+@{
+    ViewData["Title"] = "AllLibMembers";
+}
+
+</br>
+<div class="col-md-12">
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<div class="col-md-12">
+<div class="box box-primary">
+                     <div class="card-body">
+                         <p>
+    <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp; Add New Member</a>
+</p>
+            <table id="example1" class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+            <th>
+                Membership Number
+            </th>
+            <th>
+               Admission Number
+            </th>
+            <th>
+                Membership Type
+            </th>
+            <th>
+               Card Number
+            </th>
+            <th>
+               School Number
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Member Names
+            </th>
+            <th>
+                Member Type
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MembershipNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdmissionNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LibraryCardNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SchoolNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberType1)
+            </td>
+            <td>
+               <a asp-action="AddLibStaff" asp-route-id="@item.MembershipNo"><i class="fa fa-minus-circle"></i></a>
+                                <a asp-action="Delete" class="btn btn-xs btn-danger" asp-route-id="@item.MembershipNo">Take</a>
+                                <a asp-action="Details" class="btn btn-xs btn-warning" asp-route-id="@item.MembershipNo">Return</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

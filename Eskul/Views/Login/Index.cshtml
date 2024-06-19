@@ -1,0 +1,105 @@
+﻿@model Eskul.Models.LoginModel
+@{
+    Layout = null;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Eskul - School Management System">
+    <title>Eskul - School Management System</title>
+    <!-- Application CSS -->
+    <link rel="stylesheet" href="~/css/dashforge.css" />
+    <link rel="stylesheet" href="~/css/dashforge.auth.css">
+    <link rel="stylesheet" href="~/css/customa.css">
+    <link rel="stylesheet" href="~/css/select2.css" />
+    <link rel="stylesheet" href="~/css/select2-bootstrap4.min.css" />
+
+    <style type="text/css">
+        .loadingDiv {
+            position: fixed;
+            text-align: center;
+            /*top: 40%;
+                    left: 45%;*/
+            z-index: 999999;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+        }
+
+            .loadingDiv .loading-image {
+                display: block;
+                margin: 25px 75px;
+            }
+
+    </style>
+
+</head>
+
+<body class="spmp-bg">
+    <form asp-action="Index">
+        <div class="content content-fixed content-auth">
+            <div class="container box box-primary">
+                <div class="media align-items-stretch justify-content-center ht-100p pos-relative">
+
+                    <div class="sign-wrapper mg-t-100">
+                        <div class="wd-100p p-4 bg-white rounded-5 signin-holder">
+                            <label style="color:red;">@ViewBag.ErrorMessage</label>
+                            <h3 class="tx-color-01 mg-b-5" style="text-align:center">WELCOME TO ESKUL</h3>
+                            <p class="tx-color-03 tx-12 mg-b-20" style="text-align:center;">Please login to your account</p>
+                            <div class="form-group mg-b-2">
+                                <label>UserName</label>
+                                <input asp-for="UserName" name="UserName" class="form-control form-control-sm" autocomplete="off" placeholder="Enter Username" required />
+                            </div>
+                            <div class="form-group mg-b-5">
+                                <div class="d-flex justify-content-between mg-b-5">
+                                    <label class="mg-b-0-f">Password</label>
+                                </div>
+                                <input asp-for="Password" type="password" class="form-control form-control-sm" placeholder="Enter Password" autocomplete="off" required />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                            </div>
+                            <input type="submit" value="LOGIN" class="btn btn-brand-uba-dark btn-block" />
+                        </div>
+                    </div><!-- sign-wrapper -->
+
+                    <div class="media-body align-items-center d-none d-lg-flex p-5 mg-t-100">
+                        <div class="b-0 l-0 tx-12 tx-left tx-white">
+                            <h1 class="tx-white tx-uppercase font-weight-bold">ESKUL</h1>
+                            <p class="tx-white tx-15">
+                                Streamline your school's administration with our system in this Revolutionizing era.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- media-body -->
+
+                </div><!-- media -->
+            </div><!-- container -->
+        </div><!-- content -->
+    </form>
+
+    <footer class="footer">
+
+        <div><span class="tx-color-01"></span> <span class="tx-bold">Eskul 2.0</span></div>
+    </footer>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $(".select").select2();
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+        });
+    </script>
+
+
+
+    <div class="backdrop"></div>
+    <p></p>
+</body>
+</html>

@@ -1,0 +1,44 @@
+﻿@model Eskul.Models.IssueBook
+@{
+
+    var editmodel = Model.BookReturn;
+}
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Return Book</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form asp-action="ReturnBook" id="ReturnBook" class="needs-validation" novalidate>
+                <div class="form-group">
+                        <input type="hidden" id="bookid" asp-for="BookId" />
+                       @* <input type="hidden" id="@Model.BookReturn.Comment" asp-for="@Model.BookReturn.Comment" />*@
+                        <label asp-for="@Model.BookReturn.Comment" style="font-weight: normal !important;">Comment</label>
+                        <textarea asp-for="@Model.BookReturn.Comment" name="Comment" class="form-control form-control-sm" required autocomplete="off"></textarea>
+                        <div class="invalid-feedback">This Field is Required</div>
+
+                    </div>
+               <div class="form-group">
+                    <label asp-for="@Model.BookReturn.ReturnDate" class="control-label" style="font-weight: normal !important;">Return Date</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                            <input type="date" asp-for="@Model.BookReturn.ReturnDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control form-control-sm" required />
+
+                                        </div>
+                        <div class="invalid-feedback">This Field is Required</div>
+
+                                    </div>
+                <div class="modal-footer justify-content-between">
+                        <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

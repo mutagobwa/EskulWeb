@@ -1,0 +1,315 @@
+﻿@model Eskul.Models.ReportTemplate
+@{
+
+    var listmodel = Model.reportTemplates;
+   
+}
+
+<br />
+<div class="col-md-12">
+     <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                                <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Report Template</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                                <form asp-action="Create" method="post" id="Cteacher" class="needs-validation" novalidate>
+                        <div class="card-body">
+                            <input type="hidden" asp-for="TemplateId"/>
+                             
+                             <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                <input name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+                                                
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+                                           <input name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                            </label>
+                                        </div>
+                              
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                        <label asp-for="Class" class="control-label" style="font-weight: normal !important;">Class</label>
+                                            @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"})
+                                       <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                             <div class="form-group">
+                                        <label asp-for="SubjectCode" class="control-label" style="font-weight: normal !important;">Subject</label>
+                                            @Html.DropDownList("SubjectCode", (IEnumerable<SelectListItem>)ViewBag.Subjects, new { @class = "select",style = "width: 100%;",id="SubjectCode",name="SubjectCode",required = "required"})
+                                        <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="CurriculumType" class="control-label" style="font-weight: normal !important;">Curriculum</label>
+                                            @Html.DropDownList("CurriculumType", (IEnumerable<SelectListItem>)ViewBag.Curriculum, new { @class = "select",style = "width: 100%;",id="CurriculumType",name="CurriculumType",required = "required"})
+                                       <div class="invalid-feedback">This Field is Required</div>
+                                    </div>
+                                    <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                <input name="CoreElective" class="Core" id="input-type-student" value="Core" type="radio" onchange="submitForm()">Core
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+                                                <input name="CoreElective" class="finetype" id="input-type-student" value="Elective" type="radio" checked="checked" onchange="submitForm()">Elective
+                                            </label>
+                                        </div>
+                              
+                                    </div>
+                                </div>
+                            </div>                 
+                            <div class="form-group">
+                                <label for="OrderLevel" style="font-weight: normal !important;">OrderLevel</label>
+                                <input asp-for="OrderLevel" name="OrderLevel" class="form-control form-control-sm" value="1" required autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn" />
+                        </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="card-body">
+                                    <form asp-action="Index" class="needs-validation" novalidate>
+                             <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                <input name="Level1" class="Core" id="input-type-studento" value="O" type="radio" checked="checked" onchange="populateDropdowno()">O-Level
+                                                
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline" style="font-weight:normal;">
+                                           <input name="Level1" class="finetype" id="input-type-studento" value="A" type="radio" onchange="populateDropdowno()">A-Level
+                                            </label>
+                                        </div>
+                              
+                                    </div>
+                                </div>
+                            </div> 
+                                            <div class="form-group">
+                                        <label asp-for="Class" class="control-label" style="font-weight: normal !important;">Class</label>
+                                            @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class1",name="Class1" ,required = "required"})
+                                            <div class="invalid-feedback">This Field is Required</div>
+                                    </div> 
+                                    <div class="form-group">
+                            <input type="submit" value="Load" class="btn btn-primary btn-centre"  style=""/>
+                        </div>
+                                    </form>
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                               
+                                <th>
+                                   Subject 
+                                </th>
+                                <th>
+                                   Curriculum
+                                </th>
+                                <th>
+                                  Core Elective
+                                </th>
+                                <th>
+                                  Order Level
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                           
+                                            <td>
+                                                    @item.SubjectName
+                                            </td>
+                                            <td>
+                                                    @item.CurriculumName
+                                            </td>
+                                            <td>
+                                                    @item.CoreElective
+                                            </td>
+                                            <td>
+                                                    @item.OrderLevel
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.TemplateId">Edit</a>
+                                                <button class="btn btn-xs btn-danger " id="delete" data-id="@item.TemplateId" data-toggle="modal" data-target="#modal-info" onclick="del('@item.TemplateId')" data-action="Delete" data-body-message="Are You Sure You Want To Delete This Stream">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/Jquery.min.3.6.0.js"></script>
+<script>
+    function populateDropdown() {
+        // get selected radio button value
+        var level = document.querySelector('input[name="Level"]:checked').value;
+
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName;
+
+        // make first AJAX call to retrieve dropdown values based on selected level
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var values = JSON.parse(xhr.responseText);
+
+                // populate first dropdown with retrieved values
+                var dropdown1 = document.getElementById('Class');
+                dropdown1.innerHTML = '';
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+
+                // make second AJAX call to retrieve subjects for selected level
+                var xhr2 = new XMLHttpRequest();
+                xhr2.open('GET', fullUrl + '/SubjectByLevel?level=' + level);
+                xhr2.onload = function() {
+                    if (xhr2.status === 200) {
+                        // parse retrieved values as JSON
+                        var subjects = JSON.parse(xhr2.responseText);
+
+                        // populate second dropdown with retrieved subjects
+                        var dropdown2 = document.getElementById('SubjectCode');
+                        dropdown2.innerHTML = '';
+                        for (var i = 0; i < subjects.length; i++) {
+                            var option = document.createElement('option');
+                            option.value = subjects[i].Subject_code;
+                            option.text = subjects[i].Subject_name;
+                            dropdown2.appendChild(option);
+                        }
+                    }
+                };
+                xhr2.send();
+            }
+        };
+        xhr.send();
+    }
+</script>
+<script>
+    function populateDropdowno() {
+        // get selected radio button value
+        var level1 = document.querySelector('input[name="Level1"]:checked').value;
+
+        // get the base URL of the website
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        // get the path to the application files
+        var pathName = window.location.pathname;
+
+        // remove any leading slashes from the path
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        // combine the base URL and the path to get the full URL
+        var fullUrl = baseUrl + '/' + pathName;
+
+        // make AJAX call to retrieve dropdown values based on selected level
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/ClassByLevel?level=' + level1);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // parse retrieved values as JSON
+                var values = JSON.parse(xhr.responseText);
+
+                // populate first dropdown with retrieved values
+                var dropdown1 = document.getElementById('Class1');
+                dropdown1.innerHTML = '';
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+var today=new Date();
+
+$('#DispalyDate').text("Full date=" + today.toDateString()); 
+$('#FullYear').text("Full year=" + today.getFullYear()); 
+$('#DayOfMonth').text("Day=" + today.getDate()); 
+$('#GetMonth').text("Number of month=" + today.getMonth()); 
+
+ });
+</script>
+
+
+
+

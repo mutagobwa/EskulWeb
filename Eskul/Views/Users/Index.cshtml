@@ -1,0 +1,437 @@
+﻿@using Newtonsoft.Json;
+@using SmartPaperEdms.Web.App_Code;
+@model Eskul.Models.UserS
+@{
+
+    var listmodel = Model.userS;
+}
+<br/>
+
+<div class="col-md-12">
+    
+<div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <partial name="_delete" />
+                    <div class="modal fade" id="modal-lg" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content box box-primary">
+                                <div class="modal-header myheader">
+                                    <h6 class="modal-title" id="modalTitle" style="font-weight:bold;">Add/Edit User</h6>
+                                    <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                                        <div class="col-12 col-sm-6 col-md-12">
+                                            <div class="card-body">
+                                                <div class="tab-content" id="custom-tabs-three-tabContent">
+                                                    <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                                                        <div class="row">
+                                                           @*  <div class="col-md-6">
+                                                                <div class="col-sm-12">
+                                                                    <div id="input-type" class="row">
+                                                                        <div class="col-sm-4">
+                                                                            <label class="radio-inline" style="font-weight:normal;">
+
+                                                                                <input asp-for="Level" name="Level" class="Core" id="input-type-student" value="O" type="radio" checked="checked" onchange="populateDropdown()">O-Level
+
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="col-sm-4">
+                                                                            <label class="radio-inline" style="font-weight:normal;">
+                                                                                <input asp-for="Level" name="Level" class="finetype" id="input-type-student" value="A" type="radio" onchange="populateDropdown()">A-Level
+                                                                            </label>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Class" class="control-label" style="font-weight: normal !important;"></label><small class="req"> *</small>
+                                                                    @Html.DropDownList("Class", (IEnumerable<SelectListItem>)ViewBag.Classes, new { @class = "select",style = "width: 100%;",id="Class",name="Class",required = "required"} )
+                                                                    <span id="classSpinner" class="spinner-border text-warning spinner-border-sm" style="position: absolute; top: 36%; right: 28px; display: none;"></span>
+                                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label asp-for="StreamCode" class="control-label" style="font-weight: normal !important;"> Stream</label>
+                                                                    @Html.DropDownList("StreamCode", (IEnumerable<SelectListItem>)ViewBag.Streams, new { @class = "select",style = "width: 100%;",id="StreamCode",name="StreamCode"})
+                                                                    <span id="streamSpinner" class="spinner-border text-warning spinner-border-sm" style="position: absolute; top: 36%; right: 28px; display: none;"></span>
+                                                                </div>
+                                                            </div> *@
+                                                            <div class="col-md-6">
+                                                                <input type="hidden" asp-for="ReferenceNo" />
+                                                                <div class="form-group">
+                                                                    <label asp-for="UserType" class="control-label">User Type</label>
+                                                                    <select id="UserType" onchange="TextChanged()" name="UserType" class="select" required>
+                                                                        <option value="" selected>Select</option>
+                                                                        <option value="Staff">Staff</option>
+                                                                        <option value="Parent">Parent</option>
+                                                                        <option value="Student">Student</option>
+                                                                    </select>
+                                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                                <div class="form-group hidden-select d-none">
+                                                                    <label for="ReferenceNo" class="control-label">Ref No</label>
+                                                                    <select id="refno" class="select" name="ReferenceNo" style="width: 100%;" required></select>
+                                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="UserName" class="control-label">User Name</label>
+                                                                    <input asp-for="UserName" name="UserName" id="UserName" class="form-control form-control-sm" required autocomplete="off" />
+                                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="Password" class="control-label">Password</label>
+                                                                    <input asp-for="Password" type="password" class="form-control form-control-sm" required autocomplete="off" />
+                                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input type="submit" value="Create" class="btn btn-block btn-sm mybtn" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ProfileCode" class="control-label">User Profile</label>
+                                                                    @Html.DropDownList("ProfileCode", (IEnumerable<SelectListItem>)ViewBag.Profiles, new { @class = "select", id = "ProfileCode", name = "ProfileCode", required = "required" })
+                                                                    <div class="invalid-feedback">This Field is Required</div>
+                                                                </div>
+                                                                <div class="form-group form-check">
+                                                                    <label class="form-check-label">
+                                                                        <input class="form-check-input" asp-for="CanAdd" /> @Html.DisplayNameFor(model => model.CanAdd)
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-group form-check">
+                                                                    <label class="form-check-label">
+                                                                        <input class="form-check-input" asp-for="CanUpdate" /> @Html.DisplayNameFor(model => model.CanUpdate)
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-group form-check">
+                                                                    <label class="form-check-label">
+                                                                        <input class="form-check-input" asp-for="CanDelete" /> @Html.DisplayNameFor(model => model.CanDelete)
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+        <div class="row">
+<div class="col-md-12">
+                            <p>
+                                <a id="newParentButton" class="btn btn-sm mybtnsm" data-toggle="modal" data-target="#modal-lg"><i class="fa fa-plus"></i>&nbsp; Add New User</a>
+                            </p>
+                <div class="box box-primary">
+                     <div class="card-body">
+                         <div class="row">
+                                        <div class="col-md-12">
+                                                <form asp-action="Index" method="post" id="UserFilter">
+                                                    <div class="card-body">
+                                                        
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label for="Type" class="control-label" style="font-weight: normal !important;">User Type</label>
+                                                                @Html.DropDownListFor(m => m.UserType, new List<SelectListItem>
+                                                                {
+                                                                new SelectListItem{Text="Select", Value=""},
+                                                                new SelectListItem{Text="Staff", Value="Staff"},
+                                                                new SelectListItem{Text="Parent", Value="Parent"}
+                                                                // new SelectListItem{Text="Student", Value="Student"}
+                                                                }, new { @class = "select", style = "width: 100%;", id = "UserType", onchange = "TextChanged()" })
+                                                                <div class="invalid-feedback">This Field is Required</div>
+                                                            </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ProfileCode" class="control-label" style="font-weight: normal !important;">Profile</label><small class="req"> *</small>
+                                                                    @Html.DropDownList("ProfileCode", (IEnumerable<SelectListItem>)ViewBag.Profiles, new { @class = "select",style = "width: 100%;",name="ProfileCode"})
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="submit" value="Search" class="btn btn-block btn-sm mybtn" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                        </div>
+                         </div>
+                                   
+                    <table id="example2" class="table table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+            <th class="d-none">
+                @Html.DisplayNameFor(model => model.Userrefno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (listmodel != null)
+        {
+            @foreach (var item in listmodel)
+            {
+             <tr>
+               <td class="d-none">
+                @Html.DisplayFor(modelItem => item.ReferenceNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+               <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.ReferenceNo">Edit</a>
+                                                            <a asp-action="ResetUser" class="btn btn-xs btn-info" asp-route-id="@item.ReferenceNo">Reset</a>
+                                                            <a asp-action="Details" class="btn btn-xs btn-warning" asp-route-id="@item.ReferenceNo">Details</a>
+            <button class="btn btn-xs btn-danger" id="delete" data-id="@item.ReferenceNo"data-toggle="modal" data-target="#modal-info" onclick="del('@item.ReferenceNo')" data-action="Delete">Del</button>
+                                            </td>
+        </tr>
+                              }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-centere">
+                                                No Record Found
+                                        </td>
+                                       
+                                    </tr>
+                                }
+</table>
+ 
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script>
+    function TextChanged() {
+        var select = document.getElementById("UserType");
+        var selectedValue = select.options[select.selectedIndex].value;
+        console.log(selectedValue);
+        if (selectedValue === "Staff" || selectedValue === "Parent" || selectedValue === "Student") {
+            var baseUrl = window.location.protocol + "//" + window.location.host;
+            var pathName = window.location.pathname;
+            if (pathName.charAt(0) === '/') {
+                pathName = pathName.slice(1);
+            }
+            var fullUrl1 = baseUrl + '/' + pathName.replace('/Index', '');
+            var refinedUrl = fullUrl1.replace('UsersGetUserCodes', 'Users/GetUserCodes').replace('UsersLoadStudentList', 'Users/LoadStudentList');
+            var requestUrl = refinedUrl;
+
+            var requestData = { UserType: selectedValue };
+
+            if (selectedValue === "Student") {
+                var classs = document.getElementById("Class").value;
+                var stream = document.getElementById("StreamCode").value;
+                var level = document.querySelector('input[name="Level"]:checked').value;  // Get the selected Level value
+                requestUrl = fullUrl1 + "/LoadStudentList";
+                requestData.classs = classs;
+                requestData.Stream = stream;
+                requestData.Level = level;  // Add Level to request data
+            } else {
+                requestUrl = fullUrl1 + "/GetUserCodes";
+            }
+
+            console.log('requestUrl', requestUrl);
+
+            $.ajax({
+                type: "GET",
+                url: requestUrl,
+                data: requestData,
+                success: function (data) {
+                    console.log(data);
+
+                    var opt = '';
+
+                    $("#Usersession").empty();
+
+                    $.each(data, function (key, value) {
+                        var userOption;
+                        if (selectedValue === "Staff") {
+                            userOption = '<option value="' + value["StaffNo"] + '">' + value["FullName"] + '</option>';
+                        } else if (selectedValue === "Parent") {
+                            userOption = '<option value="' + value["ParentNo"] + '">' + value["FirstName"] + ' ' + value["LastName"] + '</option>';
+                        } else if (selectedValue === "Student") {
+                            userOption = '<option value="' + value["StudentNo"] + '">' + value["FullName"] + '</option>';
+                        }
+
+                        opt += userOption;
+                        $("#Usersession").append($("<option></option>").attr("value", key).text(value));
+                    });
+
+                    $('#refno').html(opt);
+                    $('.hidden-select').removeClass('d-none');
+                    $("#refno").prepend("<option value='0' selected='selected'>--Select--</option>");
+                    $('#refno').select2();
+                },
+                error: function (xhr, status, error) {
+                    // handle the error
+                    console.log(error);
+                }
+            });
+        }
+    }
+    </script>
+<script>
+    $(function () {
+        var clientCode = @Html.Raw(JsonConvert.SerializeObject(SessionData.ClientCode));
+
+        $('#refno').change(function () {
+            var fullName = $(this).find('option:selected').text();
+            var username = generateUserName(fullName);
+            $('#UserName').val(username);
+        });
+
+        function generateUserName(fullName) {
+            var nameParts = fullName.split(' ');
+            var firstName = nameParts[0];
+            var middleName = nameParts.length > 2 ? nameParts[1] : '';
+            var lastName = nameParts.length > 2 ? nameParts[2] : nameParts[1];
+
+            var username = (middleName ? middleName.charAt(0).toUpperCase() : '') +
+                lastName.charAt(0).toUpperCase() +
+                firstName +
+                '-' + clientCode;
+
+            return username;
+        }
+    });
+</script>
+<script>
+    function populateDropdown() {
+        var level = document.getElementById('Level').value;
+        console.log(level);
+
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var pathName = window.location.pathname;
+        if (pathName.charAt(0) === "/") {
+            pathName = pathName.slice(1);
+        }
+
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl1 = fullUrl1.replace('/Index', '');
+        var fullUrl = fullUrl1;
+        console.log('fullurl', fullUrl);
+        $('#classSpinner').show();
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", fullUrl + "/ClassByLevel?level=" + level);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var values = JSON.parse(xhr.responseText);
+
+                var dropdown1 = document.getElementById("Class");
+                dropdown1.innerHTML = "";
+                for (var i = 0; i < values.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = values[i].classcode;
+                    option.text = values[i].Name;
+                    dropdown1.appendChild(option);
+                }
+
+                var defaultOption = document.createElement("option");
+                defaultOption.value = "0";
+                defaultOption.text = "Select";
+                defaultOption.selected = true;
+                defaultOption.disabled = true;
+                dropdown1.insertBefore(defaultOption, dropdown1.firstChild);
+            }
+            $('#classSpinner').hide();
+        };
+
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Level').change(function () {
+            $('#Class').empty().append('<option value="">Select</option>').val('').trigger('change');
+            $('#StreamCode').empty().append('<option value="">Select</option>').val('').trigger('change');
+            populateDropdown();
+        });
+        $('#awardcode').change(function () {
+        });
+    });
+</script>
+
+<script>
+    function populateStreamDropdown() {
+        var selectedClass = document.getElementById('Class').value;
+        console.log('selectedClass', selectedClass);
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+
+        var pathName = window.location.pathname;
+
+        if (pathName.charAt(0) === '/') {
+            pathName = pathName.slice(1);
+        }
+
+        var fullUrl1 = baseUrl + '/' + pathName;
+        fullUrl = fullUrl1.replace('/Index', '');
+        console.log('fullurl', fullUrl);
+        $('#streamSpinner').show();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', fullUrl + '/StreamsByClass?classs=' + selectedClass);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var StreamedClasses = JSON.parse(xhr.responseText);
+
+                var hasStreamedClasses = StreamedClasses.length > 0;
+
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '';
+                if (hasStreamedClasses) {
+                    for (var i = 0; i < StreamedClasses.length; i++) {
+                        var option = document.createElement('option');
+                        option.value = StreamedClasses[i].StreamId;
+                        option.text = StreamedClasses[i].Name;
+                        dropdown.appendChild(option);
+                    }
+                } else {
+                    var option = document.createElement('option');
+                    option.text = 'Class Not Streamed';
+                    option.disabled = true;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                var dropdown = document.getElementById('StreamCode');
+                dropdown.innerHTML = '<option disabled>An error occurred</option>';
+                dropdown.disabled = false;
+            }
+            $('#streamSpinner').hide();
+        };
+        xhr.send();
+    }
+
+    $(function () {
+        $('#Class').change(function () {
+            $('#StreamCode').empty().append('<option value="">Select</option>').val('').trigger('change');
+            populateStreamDropdown();
+        });
+    });
+</script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/ModalRest.js"></script>
+
+
+

@@ -1,0 +1,112 @@
+﻿@model Eskul.Models.PayModeAccount
+@{
+
+    var listmodel = Model.payModeAccounts;
+}
+
+<br />
+<div class="col-md-12">
+    <partial name="_delete" />
+    <div class="card card-outline card-default">
+        <div class="card-body">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                                <div class="card-header mycard">
+                                    <h3 class="card-title" style="font-weight: bold;">Add/Edit Pay Account</h3>
+                                </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" id="myform" class="needs-validation" novalidate>
+                        <div class="card-body">
+                             <input type="hidden" asp-for="SettingId"/>
+            <div class="form-group">
+             <label asp-for="BranchId" class="control-label" style="font-weight: normal !important;">Branch</label>
+               @Html.DropDownList("BranchId", (IEnumerable<SelectListItem>)ViewBag.Branches, new { @class = "select",style = "width: 100%;",id="BranchId",name="BranchId",required = "required"})
+            <div class="invalid-feedback">This Field is Required</div>
+               </div>
+            <div class="form-group">
+             <label asp-for="PaymentMode" class="control-label" style="font-weight: normal !important;">Payment Mode</label>
+               @Html.DropDownList("PaymentMode", (IEnumerable<SelectListItem>)ViewBag.PaymentModes, new { @class = "select",style = "width: 100%;",id="PaymentMode",name="PaymentMode",required = "required"})
+            <div class="invalid-feedback">This Field is Required</div>
+               </div>
+            <div class="form-group">
+                <label asp-for="AccountNo" style="font-weight:normal;">Account No</label>
+                <input asp-for="AccountNo" class="form-control form-control-sm" required autocomplete="off"/>
+           <div class="invalid-feedback">This Field is Required</div>
+            </div>
+            <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-block btn-sm mybtn btn-centre" style="" />
+            </div>
+        </div>
+                        <!-- /.card-body -->   
+                    </form>
+                </div>
+                </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                     <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                  Code
+                                </th>
+                                <th>
+                                   Name
+                                </th>
+                                <th>
+                                  Description
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @if (listmodel!=null)
+                                {
+                                    @foreach (var item in listmodel)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.PaymentMode
+                                                </td>
+                                            <td>
+                                                    @item.AccountNo
+                                            </td>
+                                            <td>
+                                                    @item.BranchId
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" class="btn btn-xs btn-primary" asp-route-id="@item.SettingId">Edit</a>
+                                                 <button class="btn btn-xs btn-danger " id="delete" data-id="@item.SettingId"data-toggle="modal" data-target="#modal-info" onclick="del('@item.SettingId')" data-controller="PayModeAccount" data-body-message="Are You Sure You Want To Delete This Stream">Del</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-centere">
+                                                No Record Found 
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <!-- /.col-md-8 -->
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>

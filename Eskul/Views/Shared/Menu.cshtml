@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Menu>
+
+<div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+<li class="nav-item">
+                        <a class="nav-link" href="~/Home">
+                    <i class="nav-icon fa fa-home" style="color:#CCCCCC; font-weight: bold;font-size:18px;"></i>
+                            <p>
+                                DASHBOARD
+                            </p>
+                        </a>
+                    </li>
+
+            @if (Model != null && Model.ToList().Count() > 0)    
+            {
+                @foreach (var c in Model.Select(p => p.MenuCategoryName).Distinct())
+                {
+                    if (Model.Any(p => p.MenuCategoryName == c & p.Functional & p.Status==true))
+                    {
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fa fa-plus fa-lg" style="color:#CCCCCC; font-weight: bold;font-size:18px;"></i>
+                                <p>
+                                    @c.ToString()
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                @foreach (var s in Model.Where(p => p.MenuCategoryName == c && p.MenuLevel == 1 && p.Status==true).ToList())
+                                {
+                                    if (!s.MainMenu)
+                                    {
+                                        if (Model.Any(p => p.MenuCode.StartsWith(s.MenuCode.Substring(0, 2)) & p.Functional))
+                                        {
+                                            <li class="nav-item">
+                                                @if (!s.MenuUrl.Contains("#"))
+                                                {
+                                                    <a class="nav-link" href="~/@s.MenuControler/@s.MenuAction"><i class="left fas fa-angle-right" style="color:antiquewhite;"></i> @s.MenuName </a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="nav-link"><i class="left fas fa-angle-right" style="color:antiquewhite;"></i> @s.MenuName <span class="fa fa-chevron-down"></span></a>
+                                                    <ul class="nav child_menu">
+                                                        @foreach (var t in Model.Where(p => p.MenuCode.StartsWith(s.MenuCode.Substring(0, 2)) && p.MenuLevel == 2).OrderBy(p => p.MenuCode).ToList())
+                                                        {
+                                                            if (!t.MainMenu)
+                                                            {
+                                                                <li class="nav-item">
+                                                                    <a href="~/@t.MenuControler/@t.MenuAction"> @t.MenuName </a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                }
+
+                                            </li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+            }
+            
+        </ul>
+        </nav>
+    </div>
+
+

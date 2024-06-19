@@ -1,0 +1,56 @@
+﻿@model Eskul.Models.subjectpaper
+@{
+
+    var listmodel = Model.subjectPaperLists;
+}
+<div class="modal fade" id="modal-info">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Subject Paper</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Create" class="needs-validation" novalidate>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="Subjectcode">Paper Code</label>
+                                <input asp-for="PaperCode" class="form-control form-control-sm" required />
+                                <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Subjectname">Subject Name</label>
+                                <input asp-for="SubjectCode" class="form-control form-control-sm" required/>
+                                <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Subjectname">Paper Name</label>
+                                <input asp-for="PaperName" class="form-control form-control-sm" required/>
+                                <div class="invalid-feedback">This Field is Required</div>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input custom-control-input-primary custom-control-input-outline" type="checkbox" id="customCheckbox5" asp-for="Compulsory">
+                                <label for="customCheckbox5" class="custom-control-label" /> Is Compulsory </label>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-block btn-sm mybtn" />
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
