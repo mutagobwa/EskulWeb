@@ -42,6 +42,7 @@ namespace Eskul.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //just pushing to git
                     model.ClientCode = model?.UserName?.Split('-').Last();
                     Url = $"Users/SignIn/{model?.ClientCode}/{model?.UserName}/{ model?.Password}";
                     var res = await request.GetAsync(Url);
